@@ -1,0 +1,13 @@
+﻿DataType,Suffix,sub,ses,task,acq,ce,rec,dir,run,mod,echo,flip,inv,mt,part,recording,chunk
+anat,T1w,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,T2w,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,PDw,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,starw,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,FLAIR,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,inplaneT1,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,inplaneT2,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,PDT2,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,angio,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,T2star,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,FLASH,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
+anat,PD,required,optional,optional,optional,optional,prohibited,optional,prohibited,optional,prohibited,prohibited,prohibited,prohibited,optional,prohibited,optional
