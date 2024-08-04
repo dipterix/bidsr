@@ -23,3 +23,20 @@ NULL
   }
 }
 
+BIDS_VERSION <- "1.9.0"
+
+# Default BIDS folder depth
+BIDS_MAP_MAX_DEPTH <- 29L
+
+DEFAULT_GENERATED_BY <- function() {
+  desc <- read.dcf(system.file("DESCRIPTION", package = "bidsr"))
+  desc <- structure(names = colnames(desc), as.list(desc))
+  bids_generated_by(
+    Name = as.character(desc$Package),
+    Version = as.character(desc$Version),
+    Description = paste(desc$Description, collapse = "\n"),
+    CodeURL = as.character(desc$URL)
+  )
+}
+
+

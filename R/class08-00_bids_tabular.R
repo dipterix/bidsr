@@ -89,9 +89,7 @@ bids_tabular_header <- S7::new_class(
         self
       }
     ),
-    format = S7::new_property(
-      class = S7::class_character,
-      getter = function(self) {
+    format = property_format(function(self) {
         nms <- names(self@columns)
         li <- structure(
           names = nms,
@@ -113,7 +111,20 @@ bids_tabular_data <- S7::new_class(
   package = "bidsr",
   properties = list(
     header = S7::new_property(class = bids_tabular_header),
-    data = S7::new_property(class = S7::class_data.frame)
+    data = S7::new_property(class = S7::class_data.frame),
+    format = property_format(function(self) {
+      s <- utils::capture.output({
+        if(nrow(self@data) >= 10) {
+          print(utils::head(self@data, n = 3L))
+          cat("...\n")
+          print(utils::tail(self@data, n = 3L))
+        } else {
+          print(self@data)
+        }
+      })
+      paste(s, collapse = "\n")
+    }),
+    print = property_print_format
   )
 )
 
@@ -131,18 +142,20 @@ bids_read_tabular <- function(file, ..., header_only = FALSE, as_class = bids_ta
   json_path <- correct_filepath(sprintf("%s.json", prefix))
   tsv_path <- correct_filepath(sprintf("%s.tsv", prefix))
 
-  stopifnot(file.exists(tsv_path))
+  stopifnot(file_exists(tsv_path))
 
   header <- bids_tabular_header()
   if(!is.na(json_path)) {
-    json <- rjson::fromJSON(json_str = paste(readLines(json_path), collapse = "\n"))
+    json <- rjson::fromJSON(file = json_path)
     header@columns <- lapply(names(json), function(nm) {
       bids_tabular_colname(name = nm, descriptors = json[[nm]])
     })
   }
   if( header_only ) { return(header) }
 
-  tbl <- utils::read.csv(file = tsv_path, header = TRUE, sep = "\t", na.strings = "n/a")
+  suppressWarnings({
+    tbl <- utils::read.csv(file = tsv_path, header = TRUE, sep = "\t", na.strings = "n/a")
+  })
 
   as_class(header = header, data = tbl)
 }
@@ -252,6 +265,9 @@ new_bids_builtin_tabular <- function(x, header, as_class, default_descriptors = 
                          descriptors = list(Description = "no description"))
   }))
   impl@header <- header
+
+  # There might be some active setter (e.g. participants), trygger setter modification
+  impl@data <- impl@data
 
   impl
 }

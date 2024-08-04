@@ -7,8 +7,14 @@ bids_filename_definition <- S7::new_class(
   abstract = FALSE,
   parent = bids_object,
   properties = list(
-    data_type = bids_data_type,
-    suffix = bids_suffix,
+    data_type = S7::new_property(
+      class = S7::class_character,
+      validator = validator_nonempty_string
+    ),
+    suffix = S7::new_property(
+      class = S7::class_character,
+      validator = validator_nonempty_string
+    ),
     entities = S7::new_property(
       class = S7::class_list,
       validator = function(value) {
@@ -33,9 +39,7 @@ bids_filename_definition <- S7::new_class(
       }
     ),
     description = S7::new_property(S7::class_character),
-    format = S7::new_property(
-      S7::class_character,
-      getter = function(self) {
+    format = property_format(function(self) {
         # https://bids-specification.readthedocs.io/en/stable/common-principles.html#uniqueness-of-data-files
         # Data (not meta) files MUST be uniquely identified by BIDS path components (entities, datatype, suffix)
         #

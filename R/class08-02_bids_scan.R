@@ -32,7 +32,7 @@ bids_scans_impl <- S7::new_class(
 bids_scans <- function(x, header = NULL) {
   # DIPSAUS DEBUG START
   # x <- data.frame(
-  #   participant_id = "sub-01",
+  #   filename = "sub-01",
   #   age = 66,
   #   species = "homo sapiens"
   # )
@@ -44,6 +44,5 @@ bids_scans <- function(x, header = NULL) {
   )
 }
 
-# bids_dataset_description()
 
 

@@ -25,7 +25,7 @@ build_bids_filename_registry <- function(
 
   load_csv_if_is_path <- function(x) {
     if(is.data.frame(x)) { return(x) }
-    if(!file.exists(x)) {
+    if(!file_exists(x)) {
       stop("Path `", x, "` does not exists")
     }
     suppressWarnings({ utils::read.csv(x) })
@@ -91,9 +91,27 @@ build_bids_filename_registry <- function(
 
 
 build_default_filename_registry <- function() {
-  build_bids_filename_registry(
-    definition_table = system.file("definitions", "MagneticResonanceImaging.csv", package = "bidsr"),
-    entity_table = system.file("definitions", "MagneticResonanceImagingEntity.csv", package = "bidsr"),
-    overwrite = TRUE
+  registry_dir <- system.file("definitions", package = "bidsr")
+  registries <- list.files(
+    registry_dir,
+    pattern = "csv$",
+    full.names = FALSE,
+    recursive = FALSE,
+    ignore.case = TRUE
   )
+
+  prefix <- unique(gsub("(Entity\\.csv|\\.csv)$", "", registries))
+
+  lapply(prefix, function(p) {
+    def_path <- file.path(registry_dir, sprintf("%s.csv", p))
+    ent_path <- file.path(registry_dir, sprintf("%sEntity.csv", p))
+    if(file_exists(def_path) && file_exists(ent_path)) {
+      build_bids_filename_registry(
+        definition_table = def_path,
+        entity_table = ent_path,
+        overwrite = TRUE
+      )
+    }
+  })
+
 }

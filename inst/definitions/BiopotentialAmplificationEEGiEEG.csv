@@ -1,0 +1,17 @@
+﻿DataType,Suffix,sub,ses,task,acq,run,space,recording
+eeg,channels,required,optional,required,optional,optional,prohibited,prohibited
+eeg,eeg,required,optional,required,optional,optional,prohibited,prohibited
+eeg,events,required,optional,required,optional,optional,prohibited,prohibited
+eeg,coordsystem,required,optional,prohibited,optional,prohibited,optional,prohibited
+eeg,electrodes,required,optional,prohibited,optional,prohibited,optional,prohibited
+eeg,photo,required,optional,prohibited,optional,prohibited,prohibited,prohibited
+eeg,physio,required,optional,required,optional,optional,prohibited,optional
+eeg,stim,required,optional,required,optional,optional,prohibited,optional
+ieeg,channels,required,optional,required,optional,optional,prohibited,prohibited
+ieeg,eeg,required,optional,required,optional,optional,prohibited,prohibited
+ieeg,events,required,optional,required,optional,optional,prohibited,prohibited
+ieeg,coordsystem,required,optional,prohibited,optional,prohibited,optional,prohibited
+ieeg,electrodes,required,optional,prohibited,optional,prohibited,optional,prohibited
+ieeg,photo,required,optional,prohibited,optional,prohibited,prohibited,prohibited
+ieeg,physio,required,optional,required,optional,optional,prohibited,optional
+ieeg,stim,required,optional,required,optional,optional,prohibited,optional
