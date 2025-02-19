@@ -4,6 +4,14 @@
 #' Used in \code{property} to generate properties with constraints in
 #' class generators such as \code{\link{new_bids_class}}.
 #' @param name required, string, name of the property
+#' @param name_meta for tabular content, the name of the meta property; default
+#' is \code{"meta"}
+#' @param name_content for tabular meta, the name of the content property;
+#' default is \code{"content"}
+#' @param lower_case_column_names for tabular content, whether to convert
+#' column names to lower case; default is \code{TRUE}
+#' @param preset a list of preset meta data; default is \code{NULL}
+#'
 #' @param class \code{'S7'} class, often pre-specified and rarely needed
 #' to alter
 #' @param getter,setter,validator,default see \code{\link[S7]{new_property}}
@@ -546,20 +554,26 @@ bids_property_data_frame <- function(
   )
 }
 
-
-bids_property_tabular_content <- function(name = "content", setter = NULL, ..., meta_name = "meta") {
+#' @rdname bids_property
+#' @export
+bids_property_tabular_content <- function(name = "content", setter = NULL, ..., name_meta = "meta", lower_case_column_names = TRUE) {
   force(name)
-  force(meta_name)
+  force(name_meta)
+  force(lower_case_column_names)
 
   setter_ <- function(self, value) {
 
     if(!data.table::is.data.table(value)) {
       value <- data.table::as.data.table(value)
     }
-    nms <- tolower(names(value))
-    names(value) <- tolower(nms)
+    if( lower_case_column_names ) {
+      nms <- tolower(names(value))
+      names(value) <- tolower(nms)
+    } else {
+      nms <- names(value)
+    }
 
-    meta <- S7::prop(self, meta_name)
+    meta <- S7::prop(self, name_meta)
     for(nm in nms) {
       descriptor <- meta$columns[[nm]]
       if(!is.list(descriptor)) {
@@ -573,7 +587,7 @@ bids_property_tabular_content <- function(name = "content", setter = NULL, ..., 
       S7::prop(self, name) <- value
     }
 
-    S7::prop(self, meta_name) <- meta
+    S7::prop(self, name_meta) <- meta
 
     self
   }
@@ -582,6 +596,8 @@ bids_property_tabular_content <- function(name = "content", setter = NULL, ..., 
 
 }
 
+#' @rdname bids_property
+#' @export
 bids_property_tabular_meta <- function(name = "meta", setter = NULL, preset = NULL, ..., name_content = "content") {
   force(name)
 

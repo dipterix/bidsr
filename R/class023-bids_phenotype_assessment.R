@@ -5,8 +5,8 @@
 # Template:
 #
 #   phenotype/
-#   <measurement_tool_name>.tsv
-#   <measurement_tool_name>.json
+#     <measurement_tool_name>.tsv
+#     <measurement_tool_name>.json
 #
 # Optional: Yes
 #
@@ -53,4 +53,78 @@
 # In addition to the keys available to describe columns in all tabular files (LongName, Description, Levels, Units, and TermURL) the participants.json file as well as phenotypic files can also include column descriptions with a Derivative field that, when set to true, indicates that values in the corresponding column is a transformation of values from other columns (for example a summary score based on a subset of items in a questionnaire).
 
 
+preset_phenotype_meta <- local({
+  meta <- NULL
+  function(...) {
+    if(is.null(meta)) {
+      meta <<- bids_tabular_meta_sidecar(columns = list(
+        MeasurementToolMetadata = bids_tabular_column_descriptor(
+          LongName    = "Measurement Tool Metadata",
+          Description = "[Optional, object] A description of the measurement tool as a whole. Contains two fields: 'Description' and 'TermURL'. 'Description' is a free text description of the measurement tool. 'TermURL' is a URL to an entity in an ontology corresponding to this tool."
+        ),
+        Derivative = bids_tabular_column_descriptor(
+          LongName    = "Derivative",
+          Description = "[Optional, boolean] Indicates that values in the corresponding column are transformations of values from other columns (for example a summary score based on a subset of items in a questionnaire).",
+          Levels = list("true" = "true", "false" = "false")
+        ),
+        ...
+      ))
+    }
+    return(meta)
+  }
+})
 
+
+
+
+#' @title 'BIDS' phenotype and assessment table class
+#' @description
+#' A tabular containing a list of phenotype & assessment, with their metadata.
+#' The class is a child class of \code{\link{bids_tabular}}, hence see
+#' the methods there.
+#' The original specification is at
+#' \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#phenotypic-and-assessment-data}.
+#' @param content,meta see \code{\link{bids_tabular}}
+#' @returns A \code{bids_tabular_phenotype} instance inheriting
+#' \code{\link{bids_tabular}}.
+#' @examples
+#'
+#'
+#'
+#' bids_tabular_phenotype(
+#'   meta = list(
+#'     MeasurementToolMetadata = list(
+#'       Description = "Adult ADHD Clinical Diagnostic Scale V1.2",
+#'       TermURL = "https://www.cognitiveatlas.org/task/id/trm_5586ff878155d"
+#'     ),
+#'     adhd_b = list(
+#'       Description = "B. CHILDHOOD ONSET OF ADHD (PRIOR TO AGE 7)",
+#'       Levels = list(
+#'         "1" = "YES",
+#'         "2" = "NO"
+#'       )
+#'     ),
+#'     adhd_c_dx = list(
+#'       Description = "As child met A, B, C, D, E and F diagnostic criteria",
+#'       Levels = list(
+#'         "1" = "YES",
+#'         "2" = "NO"
+#'       )
+#'     )
+#'   ),
+#'   content = data.frame(
+#'     MeasurementToolMetadata = c(2, 3, 4),
+#'     adhd_b = c(1, 2, 1),
+#'     adhd_c_dx = c(2, 1, 2)
+#'   )
+#' )
+#'
+#'
+#' @export
+bids_tabular_phenotype <- new_bids_tabular_class(
+  table_name = "phenotype",
+  lower_case_column_names = FALSE,
+  content_setter = NULL,
+  meta_preset = preset_phenotype_meta(),
+  prepare_save = NULL
+)

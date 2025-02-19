@@ -5,6 +5,7 @@
 \alias{bids_tabular_column_descriptor}
 \alias{bids_tabular_meta_sidecar}
 \alias{as_bids_tabular}
+\alias{new_bids_tabular_class}
 \title{Class definitions and utilities for 'BIDS' tabular}
 \usage{
 bids_tabular_column_descriptor(..., .list = list())
@@ -14,6 +15,15 @@ bids_tabular_meta_sidecar(columns = list())
 bids_tabular(content, meta = NULL)
 
 as_bids_tabular(x, ...)
+
+new_bids_tabular_class(
+  table_name,
+  parent = bids_tabular,
+  content_setter = NULL,
+  meta_preset = NULL,
+  prepare_save = NULL,
+  lower_case_column_names = TRUE
+)
 }
 \arguments{
 \item{..., .list}{for \code{bids_tabular_column_descriptor}, this is
@@ -34,6 +44,24 @@ a list of descriptors for each column (see argument \code{columns})}
 
 \item{x}{R object that can be converted (e.g. list, table), or a path
 to a tabular file.}
+
+\item{table_name}{name of the table, used to generate a new class;
+the class name will be \code{bids_tabular_<table_name>}}
+
+\item{parent}{parent class of the new class; default is \code{bids_tabular}}
+
+\item{content_setter}{a \code{setter} function to set the content; see
+\code{\link{bids_property}}}
+
+\item{meta_preset}{a \code{preset} function to set the meta; see
+\code{bids_tabular_meta_sidecar}}
+
+\item{prepare_save}{a function to prepare the content before saving; should
+take the \code{bids_tabular} object as the first argument, and return the
+content to be saved}
+
+\item{lower_case_column_names}{if \code{TRUE}, the column names will be
+converted to lower case; default is \code{TRUE}}
 }
 \value{
 A component in \code{bids_tabular}.

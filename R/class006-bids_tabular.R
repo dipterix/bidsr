@@ -66,6 +66,18 @@ as_bids_tabular_table <- function(x, meta, ..., cls = NULL) {
 #' to \code{bids_tabular_meta_sidecar}
 #' @param x R object that can be converted (e.g. list, table), or a path
 #' to a tabular file.
+#' @param table_name name of the table, used to generate a new class;
+#' the class name will be \code{bids_tabular_<table_name>}
+#' @param parent parent class of the new class; default is \code{bids_tabular}
+#' @param content_setter a \code{setter} function to set the content; see
+#' \code{\link{bids_property}}
+#' @param meta_preset a \code{preset} function to set the meta; see
+#' \code{bids_tabular_meta_sidecar}
+#' @param prepare_save a function to prepare the content before saving; should
+#' take the \code{bids_tabular} object as the first argument, and return the
+#' content to be saved
+#' @param lower_case_column_names if \code{TRUE}, the column names will be
+#' converted to lower case; default is \code{TRUE}
 #' @returns A component in \code{bids_tabular}.
 #'
 #' @examples
@@ -244,7 +256,7 @@ bids_tabular <- new_bids_class(
       cat("\n$content:\n")
       print(self@content)
     },
-    save = function(self, path, meta = TRUE, ...) {
+    save = function(self, path, meta = TRUE, compact_meta = TRUE, ...) {
       if(!grepl("\\.(tsv|tsv\\.gz)", tolower(path))) {
         path <- paste0(path, ".tsv")
       }
@@ -317,9 +329,12 @@ S7::method(as_bids_tabular, S7::class_character) <- function(x, meta = NULL, ...
 
 # generator
 
+
+#' @rdname bids_tabular
 new_bids_tabular_class <- function(
     table_name, parent = bids_tabular,
-    content_setter = NULL, meta_preset = NULL, prepare_save = NULL) {
+    content_setter = NULL, meta_preset = NULL, prepare_save = NULL,
+    lower_case_column_names = TRUE) {
 
   class_name <- sprintf("bids_tabular_%s", table_name)
 
@@ -337,8 +352,9 @@ new_bids_tabular_class <- function(
     properties = list(
       content = bids_property_tabular_content(
         name = "content",
-        meta_name = "meta",
-        setter = content_setter
+        name_meta = "meta",
+        setter = content_setter,
+        lower_case_column_names = lower_case_column_names
       ),
       meta = bids_property_tabular_meta(
         name = "meta",

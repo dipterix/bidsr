@@ -19,6 +19,8 @@
 \alias{bids_property_entity_list}
 \alias{bids_property_tabular_column_descriptor_list}
 \alias{bids_property_data_frame}
+\alias{bids_property_tabular_content}
+\alias{bids_property_tabular_meta}
 \title{\code{'S7'} property for 'BIDS' classes}
 \format{
 An object of class \code{S7_property} of length 6.
@@ -180,6 +182,22 @@ bids_property_data_frame(
   ...,
   class = S7::class_data.frame
 )
+
+bids_property_tabular_content(
+  name = "content",
+  setter = NULL,
+  ...,
+  name_meta = "meta",
+  lower_case_column_names = TRUE
+)
+
+bids_property_tabular_meta(
+  name = "meta",
+  setter = NULL,
+  preset = NULL,
+  ...,
+  name_content = "content"
+)
 }
 \arguments{
 \item{name}{required, string, name of the property}
@@ -213,6 +231,17 @@ entity keys, and values are vector of length 0 to 2, indicating the type
 (\code{'required'}, \code{'optional'}, or \code{'prohibited'}) and data
 format (\code{'index'}, \code{'label'}); see
 \code{\link{bids_entity_file_registry}} for usages.}
+
+\item{name_meta}{for tabular content, the name of the meta property; default
+is \code{"meta"}}
+
+\item{lower_case_column_names}{for tabular content, whether to convert
+column names to lower case; default is \code{TRUE}}
+
+\item{preset}{a list of preset meta data; default is \code{NULL}}
+
+\item{name_content}{for tabular meta, the name of the content property;
+default is \code{"content"}}
 }
 \value{
 All functions call \code{\link[S7]{new_property}} internally.
