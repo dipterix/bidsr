@@ -535,6 +535,7 @@ bids_property_tabular_column_descriptor_list <- function(
 bids_property_data_frame <- function(
     name, getter = NULL, setter = NULL, validator = NULL,
     default = data.frame(), ..., class = S7::class_data.frame) {
+
   bids_property(
     name = name,
     class = class,
@@ -546,19 +547,72 @@ bids_property_data_frame <- function(
 }
 
 
-bids_property_tabular_meta <- function(name = "meta", setter = NULL, ...) {
+bids_property_tabular_content <- function(name = "content", setter = NULL, ..., meta_name = "meta") {
   force(name)
+  force(meta_name)
+
+  setter_ <- function(self, value) {
+
+    if(!data.table::is.data.table(value)) {
+      value <- data.table::as.data.table(value)
+    }
+    nms <- tolower(names(value))
+    names(value) <- tolower(nms)
+
+    meta <- S7::prop(self, meta_name)
+    for(nm in nms) {
+      descriptor <- meta$columns[[nm]]
+      if(!is.list(descriptor)) {
+        meta$columns[[nm]] <- list()
+      }
+    }
+
+    if(is.function(setter)) {
+      self <- setter(self, value)
+    } else {
+      S7::prop(self, name) <- value
+    }
+
+    S7::prop(self, meta_name) <- meta
+
+    self
+  }
+
+  bids_property_data_frame(name = name, setter = setter_, ...)
+
+}
+
+bids_property_tabular_meta <- function(name = "meta", setter = NULL, preset = NULL, ..., name_content = "content") {
+  force(name)
+
+  preset_meta <- as_bids_tabular_meta(meta = preset)
+  preset_meta_colums <- preset_meta$columns
+  preset_names <- names(preset_meta_colums)
 
   setter_ <-  function(self, value) {
     if(!S7::S7_inherits(value, bids_tabular_meta_sidecar)) {
       value <- as_bids_tabular_meta(meta = value)
     }
+
+    # value is already a bids_tabular_meta_sidecar now
+    # check whether there are presets
+    if(length(preset_meta)) {
+      v_cols <- value$columns
+      for(nm in preset_names) {
+        if(!length(as.list(v_cols[[nm]]))) {
+          v_cols[[nm]] <- preset_meta_colums[[nm]]
+        }
+      }
+      value$columns <- v_cols
+    }
+
     # check keys
-    nms <- names(self$content)
+    nms <- names(S7::prop(self, name_content))
     nms <- nms[!nms %in% names(value$columns)]
     if(length(nms)) {
       value$columns[nms] <- structure(names = nms, lapply(nms, function(o) { list() }))
     }
+
     if(is.function(setter)) {
       self <- setter(self, value)
     } else {
@@ -571,3 +625,4 @@ bids_property_tabular_meta <- function(name = "meta", setter = NULL, ...) {
     setter = setter_, ...
   )
 }
+

@@ -1,5 +1,13 @@
 BIDS_TABULAR_COLUME_DESCRIPTOR_FIELDS <- c("LongName", "Description", "Levels", "Units", "Delimiter", "TermURL", "HED")
 
+bids_tabular_constuctor <- function(content, meta = NULL) {
+  S7::new_object(
+    S7::S7_object(),
+    content = data.table::as.data.table(content),
+    meta = as_bids_tabular_meta(meta)
+  )
+}
+
 as_bids_tabular_meta <- function(meta = NULL, ...) {
   more <- list(...)
   if( !S7::S7_inherits(meta, bids_tabular_meta_sidecar) ) {
@@ -210,40 +218,28 @@ bids_tabular_meta_sidecar <- new_bids_class(
 
 
 
+
 #' @rdname bids_tabular
 #' @export
 bids_tabular <- new_bids_class(
   name = "bids_tabular",
+  # function .prepare_save is called before saving
+  #   to allow for any data manipulation
+  hidden_names = c(".prepare_save"),
   properties = list(
-    content = bids_property_data_frame(
-      name = "content",
-      setter = function(self, value) {
-        if(!data.table::is.data.table(value)) {
-          value <- data.table::as.data.table(value)
-        }
-        nms <- names(value)
-        for(nm in nms) {
-          descriptor <- self@meta$columns[[nm]]
-          if(!is.list(descriptor)) {
-            self@meta$columns[[nm]] <- list()
-          }
-        }
-        self@content <- value
-        self
-      }
-    ),
+    content = bids_property_tabular_content(name = "content"),
     meta = bids_property_tabular_meta(name = "meta")
   ),
-  constructor = function(content, meta = NULL) {
-    S7::new_object(
-      S7::S7_object(),
-      content = data.table::as.data.table(content),
-      meta = as_bids_tabular_meta(meta)
-    )
-  },
+  constructor = bids_tabular_constuctor,
   methods = list(
     print = function(self, ...) {
-      cat("<BIDS Tabular>\n$meta:\n")
+      class_name <- attr(S7::S7_class(self), "name")
+      if(length(class_name)) {
+        class_name <- sprintf("[%s]", class_name[[1]])
+      } else {
+        class_name <- "bids_tabular"
+      }
+      cat(sprintf("<BIDS Tabular>%s\n$meta:\n", class_name))
       print(self@meta)
       cat("\n$content:\n")
       print(self@content)
@@ -252,13 +248,20 @@ bids_tabular <- new_bids_class(
       if(!grepl("\\.(tsv|tsv\\.gz)", tolower(path))) {
         path <- paste0(path, ".tsv")
       }
-      write_tsv(x = self$content, file = path, ...)
+
+      if(is.function(self$.prepare_save)) {
+        content <- self$.prepare_save(...)
+      } else {
+        content <- self$content
+      }
+
+      write_tsv(x = content, file = path)
       path <- path_abs(path)
       sidecar_path <- NA
       if(meta) {
         sidecar_path <- gsub("\\.[ct](sv|sv\\.gz)", ".json", x = path, ignore.case = TRUE)
 
-        writeLines(text = self$meta$format(compact = TRUE, name_list = names(self$content)),
+        writeLines(text = self$meta$format(compact = TRUE, name_list = names(content)),
                    con = sidecar_path)
         sidecar_path <- path_abs(sidecar_path)
       }
@@ -308,4 +311,46 @@ S7::method(as_bids_tabular, S7::class_character) <- function(x, meta = NULL, ...
   tbl <- reader(x_)
   as_bids_tabular_table(x = tbl, meta = meta, ..., cls = cls)
 }
+
+
+
+
+# generator
+
+new_bids_tabular_class <- function(
+    table_name, parent = bids_tabular,
+    content_setter = NULL, meta_preset = NULL, prepare_save = NULL) {
+
+  class_name <- sprintf("bids_tabular_%s", table_name)
+
+  if(is.function(prepare_save)) {
+    methods <- list(
+      .prepare_save = prepare_save
+    )
+  } else {
+    methods <- NULL
+  }
+
+  new_bids_class(
+    name = class_name,
+    parent = parent,
+    properties = list(
+      content = bids_property_tabular_content(
+        name = "content",
+        meta_name = "meta",
+        setter = content_setter
+      ),
+      meta = bids_property_tabular_meta(
+        name = "meta",
+        name_content = "content",
+        preset = meta_preset
+      )
+    ),
+    methods = methods,
+    constructor = bids_tabular_constuctor
+  )
+}
+
+
+
 
