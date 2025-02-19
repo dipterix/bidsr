@@ -2,7 +2,7 @@
 % Please edit documentation in R/class024-bids_scans.R
 \name{bids_tabular_scans}
 \alias{bids_tabular_scans}
-\title{'BIDS' samples table class}
+\title{'BIDS' scans table class}
 \usage{
 bids_tabular_scans(content, meta = NULL)
 }
@@ -10,19 +10,10 @@ bids_tabular_scans(content, meta = NULL)
 \item{content, meta}{see \code{\link{bids_tabular}}}
 }
 \value{
-A \code{bids_tabular_samples} instance inheriting
-\code{\link{bids_tabular}}.
-
 A \code{bids_tabular_scans} instance inheriting
 \code{\link{bids_tabular}}.
 }
 \description{
-A tabular containing a list of samples and their metadata.
-The class is a child class of \code{\link{bids_tabular}}, hence see
-the methods there.
-The original specification is at
-\url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#samples-file}.
-
 A tabular containing a list of scans and their metadata.
 The class is a child class of \code{\link{bids_tabular}}, hence see
 the methods there.
@@ -30,46 +21,6 @@ The original specification is at
 \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#scans-file}.
 }
 \examples{
-
-
-# basic
-tabular <- bids_tabular_samples(
-  data.frame(
-    sample_id = "sample-001",
-    participant_id = "sub-001",
-    sample_type = "cell line"
-  )
-)
-tabular
-
-
-# convert existing tabular
-tabular <- bids_tabular(
-  data.frame(
-    sample_id = "sample-001",
-    participant_id = "sub-001",
-    sample_type = "cell line"
-  )
-)
-tabular <- as_bids_tabular(tabular, cls = bids_tabular_samples)
-
-
-# save to tsv
-tsv <- file.path(tempdir(), "samples.tsv")
-paths <- tabular$save(tsv)
-print(paths)
-
-# use base R to read
-read.table(tsv, header = TRUE, na.strings = "n/a")
-
-# get sidecar
-cat(readLines(paths$sidecar_path), sep = "\n")
-
-# clean up
-unlink(tsv)
-unlink(paths$sidecar_path)
-
-
 
 
 # basic
