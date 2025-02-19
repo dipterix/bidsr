@@ -107,91 +107,50 @@ preset_participants_meta <- local({
 #'
 #'
 #' @export
-bids_tabular_participants <- new_bids_class(
-  name = "bids_tabular_participants",
-  parent = bids_tabular,
-  properties = list(
-    content = bids_property_data_frame(
-      name = "content",
-      setter = function(self, value) {
-        if(!data.table::is.data.table(value)) {
-          value <- data.table::as.data.table(value)
-        }
-        nms_ <- names(value)
-        nms <- tolower(nms_)
+bids_tabular_participants <- new_bids_tabular_class(
+  table_name = "participants",
+  content_setter = function(self, value) {
+    # table name already lower-cased, value is data.table
 
-        if(!all(nms_ == nms)) {
-          names(value) <- nms
-        }
+    # make sure participant_id is the first one
+    nms <- names(value)
+    if (!identical(nms[[1]], "participant_id")) {
+      value <- value[, unique(c("participant_id", nms)), with = FALSE]
+    }
 
-        if(nrow(value)) {
-
-          if(!"species" %in% nms) {
-            # The species column SHOULD be a binomial species name from the
-            # NCBI Taxonomy (for example, homo sapiens, mus musculus, rattus
-            # norvegicus). For backwards compatibility, if species is absent,
-            # the participant is assumed to be homo sapiens.
-            value$species <- "homo sapiens"
-          }
-
-          if(length(value$sex) > 0) {
-            sex_lower <- tolower(value$sex)
-            value$sex[sex_lower %in% c("m")] <- "male"
-            value$sex[sex_lower %in% c("f")] <- "female"
-            value$sex[sex_lower %in% c("o")] <- "other"
-          }
-
-          if(length(value$handedness) > 0) {
-            handedness_lower <- tolower(value$handedness)
-            value$handedness[handedness_lower %in% c("l")] <- "left"
-            value$handedness[handedness_lower %in% c("r")] <- "right"
-            value$handedness[handedness_lower %in% c("a")] <- "ambidextrous"
-          }
-        }
-
-        for(nm in nms) {
-          descriptor <- self@meta$columns[[nm]]
-          if(!is.list(descriptor)) {
-            self@meta$columns[[nm]] <- list()
-          }
-        }
-        self@content <- value
-      },
-      validator = function(value) {
-        nms <- names(value)
-        if(!identical(nms[[1]], "participant_id")) {
-          return("Invalid participants.tsv: the first column must be named ", sQuote("participant_id"))
-        }
-        if(nrow(value) && !all(startsWith(value$participant_id, "sub-"))) {
-          return("BIDS participants.tsv requires that all `participant_id` must have format `sub-<label>`")
-        }
-        return()
+    if (nrow(value)) {
+      if (!all(startsWith(value$participant_id, "sub-"))) {
+        warning(
+          "BIDS participants.tsv requires that all `participant_id` must have format `sub-<label>`"
+        )
       }
-    ),
-    meta = bids_property_tabular_meta(
-      name = "meta",
-      setter = function(self, value) {
-        # value is already a bids_tabular_meta_sidecar
-        preset_meta <- preset_participants_meta()
-        preset_names <- names(preset_meta$columns)
-        v_cols <- value$columns
-        for(nm in preset_names) {
-          if(!length(as.list(v_cols[[nm]]))) {
-            v_cols[[nm]] <- preset_meta$columns[[nm]]
-          }
-        }
-        value$columns <- v_cols
-        self@meta <- value
-        self
+
+      if (!"species" %in% nms) {
+        # The species column SHOULD be a binomial species name from the
+        # NCBI Taxonomy (for example, homo sapiens, mus musculus, rattus
+        # norvegicus). For backwards compatibility, if species is absent,
+        # the participant is assumed to be homo sapiens.
+        value$species <- "homo sapiens"
       }
-    )
-  ),
-  constructor = function(content, meta = NULL) {
-    meta <- do.call(preset_participants_meta, as.list(meta))
-    S7::new_object(
-      bids_tabular(content = content, meta = meta)
-    )
-  }
+
+      if (length(value$sex) > 0) {
+        sex_lower <- tolower(value$sex)
+        value$sex[sex_lower %in% c("m")] <- "male"
+        value$sex[sex_lower %in% c("f")] <- "female"
+        value$sex[sex_lower %in% c("o")] <- "other"
+      }
+
+      if (length(value$handedness) > 0) {
+        handedness_lower <- tolower(value$handedness)
+        value$handedness[handedness_lower %in% c("l")] <- "left"
+        value$handedness[handedness_lower %in% c("r")] <- "right"
+        value$handedness[handedness_lower %in% c("a")] <- "ambidextrous"
+      }
+    }
+
+    self@content <- value
+    self
+  },
+  meta_preset = preset_participants_meta(),
+  prepare_save = NULL
 )
-
-
