@@ -1,6 +1,12 @@
 
 key_missing <- structure(list(), class = "key_missing")
+
+blank_named_list <- function() {
+  structure(list(), names = character(0L))
+}
+
 do_nothing <- function(...) {}
+
 missing_property <- function(self) { key_missing }
 
 is_key_missing <- function(x) {
@@ -22,3 +28,15 @@ get_prop_in_getter <- function(self, name) {
   attr(self, name, exact = TRUE)
 }
 
+new_function <- function (
+    args = alist(), body = {}, env = parent.frame(),
+    quoted = FALSE, quasi_env = parent.frame()
+) {
+  if(!quoted) {
+    body <- substitute(body)
+  }
+  f <- local({ function() {} }, envir = env)
+  formals(f) <- args
+  body(f) <- body
+  f
+}

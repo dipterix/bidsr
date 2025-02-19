@@ -70,8 +70,24 @@ validator_nonempty_string <- validator_wizard(
   null.ok = FALSE
 )
 
+validator_nonnegative_intergerish <- function(value) {
+  if(!is.numeric(value)) {
+    value <- as.numeric(value)
+  }
+  validator_wizard(
+    type = "integerish",
+    any.missing = FALSE,
+    lower = 0,
+    null.ok = FALSE
+  )(value)
+}
+
 bids_validator_warn <- function(...) {
-  s <- paste(c(...), collapse = "")
+  s <- c(...)
+  if(!inherits(s, "condition")) {
+    s <- paste(s, collapse = "")
+  }
+
   if(getOption("bidsr.error_on_warn", FALSE)) {
     stop(s)
   }

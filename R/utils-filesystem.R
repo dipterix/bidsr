@@ -87,7 +87,7 @@ path_expand <- function(path) {
 }
 
 path_norm <- function(path) {
-  fs::path_abs(path)
+  fs::path_norm(path)
 }
 
 path_rel <- function(path, start = ".") {
@@ -104,4 +104,20 @@ file_exists <- function(path) {
 
 dir_exists <- function(path) {
   fs::dir_exists(path)
+}
+
+path_has_parent <- function(path, parent) {
+  fs::path_has_parent(path = path, parent = parent)
+}
+
+path_split <- function(path) {
+  fs::path_split(path)
+}
+
+path_join <- function(parts) {
+  fs::path_join(parts)
+}
+
+is_absolute_path <- function(path) {
+  fs::is_absolute_path(path)
 }

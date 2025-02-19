@@ -4,12 +4,12 @@
 \name{bidsr-package}
 \alias{bidsr}
 \alias{bidsr-package}
-\title{bidsr: What the Package Does (One Line, Title Case)}
+\title{bidsr: A Brain Imaging Data Structure ('BIDS') Parser in R}
 \description{
-What the package does (one paragraph).
+Provides something cool
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Zhengjia Wang \email{dipterix.wang@gmail.com} (\href{https://orcid.org/0000-0001-5629-1116}{ORCID})
 
 }
 \keyword{internal}

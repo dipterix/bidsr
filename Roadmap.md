@@ -28,11 +28,11 @@ bsubj$stimuli
 rawdata = bsubj$rawdata
 rawdata$bids_compliant  # TRUE
 ieegdata = rawdata$ieeg
-ieegdata$datatype # 'ieeg'
+ieegdata$data_type # 'ieeg'
 
 # Query data
 query_result = bids_query(
-  bproj, sub = "01", datatype = "ieeg",
+  bproj, sub = "01", data_type = "ieeg",
   task = ...
 )
 query_result = bids_query(

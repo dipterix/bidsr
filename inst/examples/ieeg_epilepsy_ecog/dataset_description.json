@@ -10,5 +10,8 @@
     "License": "Property of the Epilepsy Centre, University Hospital Freiburg, Germany",
     "ReferencesAndLinks": [
         "https://neuroimage.usc.edu/brainstorm/Tutorials/ECoG"
-    ]
+    ],
+    "DatasetLinks" : {
+        "freesurfer" : "derivatives/freesurfer"
+    }
 }
