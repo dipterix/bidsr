@@ -82,13 +82,13 @@ class(bids_class_base) <- c("bids_class", class(bids_class_base))
 #' @export
 new_bids_class <- function(
     name,
-    properties = NULL,
-    methods = NULL,
-    constructor = NULL,
-    validator = NULL,
     parent = bids_class_base,
     abstract = FALSE,
-    hidden_names = NULL
+    hidden_names = NULL,
+    properties = NULL,
+    methods = NULL,
+    validator = NULL,
+    constructor = NULL
 ) {
 
   v <- validator
@@ -157,9 +157,11 @@ new_bids_class <- function(
   constructor <- attr(cls, "constructor")
   expr <- body(cls)
   expr <- bquote({
+
     .object <- .(expr)
     attr(.object, ".bids_object_extra") <- .(methods)
     attr(.object, ".bids_object_hidden_names") <- .(hidden_names)
+
     .object
   })
 
