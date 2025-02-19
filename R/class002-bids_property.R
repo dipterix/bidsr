@@ -9,7 +9,7 @@
 #' @param name_content for tabular meta, the name of the content property;
 #' default is \code{"content"}
 #' @param lower_case_column_names for tabular content, whether to convert
-#' column names to lower case; default is \code{TRUE}
+#' column names to lower case; default is \code{FALSE}
 #' @param preset a list of preset meta data; default is \code{NULL}
 #'
 #' @param class \code{'S7'} class, often pre-specified and rarely needed
@@ -556,7 +556,7 @@ bids_property_data_frame <- function(
 
 #' @rdname bids_property
 #' @export
-bids_property_tabular_content <- function(name = "content", setter = NULL, ..., name_meta = "meta", lower_case_column_names = TRUE) {
+bids_property_tabular_content <- function(name = "content", setter = NULL, ..., name_meta = "meta", lower_case_column_names = FALSE) {
   force(name)
   force(name_meta)
   force(lower_case_column_names)

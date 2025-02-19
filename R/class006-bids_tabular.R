@@ -334,7 +334,7 @@ S7::method(as_bids_tabular, S7::class_character) <- function(x, meta = NULL, ...
 new_bids_tabular_class <- function(
     table_name, parent = bids_tabular,
     content_setter = NULL, meta_preset = NULL, prepare_save = NULL,
-    lower_case_column_names = TRUE) {
+    lower_case_column_names = FALSE) {
 
   class_name <- sprintf("bids_tabular_%s", table_name)
 

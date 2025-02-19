@@ -22,7 +22,7 @@ new_bids_tabular_class(
   content_setter = NULL,
   meta_preset = NULL,
   prepare_save = NULL,
-  lower_case_column_names = TRUE
+  lower_case_column_names = FALSE
 )
 }
 \arguments{

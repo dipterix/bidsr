@@ -101,6 +101,7 @@ preset_samples_meta <- local({
 #' @export
 bids_tabular_samples <- new_bids_tabular_class(
   table_name = "samples",
+  lower_case_column_names = TRUE,
   content_setter = function(self, value) {
     # table name already lower-cased, value is data.table
 

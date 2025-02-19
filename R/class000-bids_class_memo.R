@@ -17,9 +17,9 @@
 #'    class02x: (modality agnostic files)
 #'            020: dataset_description.json
 #'            021: participants.tsv
-#'                participants.json
+#'                 participants.json
 #'            022: samples.tsv
-#'                samples.json
+#'                 samples.json
 #'            023: Phenotypic and assessment data
 #'                      phenotype/
 #'                        <measurement_tool_name>.tsv

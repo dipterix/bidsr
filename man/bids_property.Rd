@@ -188,7 +188,7 @@ bids_property_tabular_content(
   setter = NULL,
   ...,
   name_meta = "meta",
-  lower_case_column_names = TRUE
+  lower_case_column_names = FALSE
 )
 
 bids_property_tabular_meta(
@@ -236,7 +236,7 @@ format (\code{'index'}, \code{'label'}); see
 is \code{"meta"}}
 
 \item{lower_case_column_names}{for tabular content, whether to convert
-column names to lower case; default is \code{TRUE}}
+column names to lower case; default is \code{FALSE}}
 
 \item{preset}{a list of preset meta data; default is \code{NULL}}
 
