@@ -23,6 +23,14 @@ get_timezone_offset <- function(time_zone = "") {
 bids_datetime_to_nanotime <- function(string) {
   # string <- c("1867-06-15T13:45:30.0132916Z", "1867-06-15T13:45:30.0132916")
 
+  if(inherits(string, "nanotime")) {
+    return(string)
+  }
+
+  if(!length(string)) {
+    return(nanotime::nanotime())
+  }
+
   if(is.character(string)) {
     if(identical(toupper(substring(string[[1]], nchar(string[[1]]))), "Z")) {
       # UTC
@@ -41,18 +49,23 @@ bids_datetime_to_nanotime <- function(string) {
 }
 
 nanotime_to_bids_datetime <- function(time, milliseconds = TRUE, utc = TRUE) {
+  if(!length(time)) {
+    return(character(0))
+  }
   if(milliseconds) {
     fmt <- "%Y-%m-%dT%H:%M:%E6S"
   } else {
     fmt <- "%Y-%m-%dT%H:%M:%S"
   }
   if( utc ) {
-    format(time, format = paste0(fmt, "Z"), tz = "UTC")
+    re <- format(time, format = paste0(fmt, "Z"), tz = "UTC")
   } else {
     tz <- Sys.timezone()
     if(is.na(tz)) {
       tz <- ""
     }
-    format(time, format = fmt, tz = tz)
+    re <- format(time, format = fmt, tz = tz)
   }
+  re[is.na(time)] <- NA_character_
+  re
 }
