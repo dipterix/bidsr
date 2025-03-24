@@ -5,7 +5,7 @@ Authors@R:
     person("Zhengjia", "Wang", email = "dipterix.wang@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5629-1116"))
 Description: 
-    Provides something cool
+    Provides something cool.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

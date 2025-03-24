@@ -266,6 +266,7 @@ new_bids_entity_file_class <- function(name, data_type, suffix, entity_rules = l
 }
 
 
+
 #' @title Parse 'BIDS' entities from file path
 #' @param path path to the entity file, recommended to input the absolute path
 #' or relative path from the 'BIDS' root directory
@@ -297,6 +298,15 @@ parse_path_bids_entity <- function(path, auto_new = TRUE) {
   stopifnot(length(path) == 1 && !is.na(path))
 
   data_type <- basename(dirname(path))
+  if(
+    startsWith(data_type, "ses-") ||
+    startsWith(data_type, "sub-")
+  ) {
+    # This is a root file for session/subject
+    # e.g. sub-06/ses-ieeg01/sub-06_ses-ieeg01_scans.tsv
+    data_type <- "root"
+    auto_new <- TRUE
+  }
   file_name <- basename(path)
   parsed <- strsplit(file_name, "_")[[1]]
   n_parsed <- length(parsed)

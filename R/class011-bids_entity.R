@@ -1,5 +1,4 @@
-BIDS_ENTITY_REQUIREMENT_OPTIONS <- c("optional", "required", "prohibited")
-BIDS_ENTITY_VALUE_TYPES <- c("label", "index", "any")
+
 
 bids_entity <- new_bids_class(
   name = "bids_entity",

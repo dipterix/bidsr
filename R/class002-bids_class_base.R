@@ -193,23 +193,21 @@ new_bids_class <- function(
 `format.bidsr::bids_class_base` <- function(x, indent = json_indent(), collapse = "\n", ...) {
   S7::check_is_S7(x)
   s <- character(0L)
-  if( S7::prop_exists(x, "format") ) {
-    s <- paste(x@format, collapse = collapse)
-  } else {
-    fun <- attr(x, ".bids_object_extra")$format
-    if(is.function(fun)) {
-      if(names(formals(fun))[[1]] == "cls") {
-        s <- fun(cls = S7::S7_class(x), indent = indent, ...)
-      } else {
-        s <- fun(self = x, indent = indent, ...)
-      }
+  fun <- attr(x, ".bids_object_extra")$format
+  if(is.function(fun)) {
+    if(names(formals(fun))[[1]] == "cls") {
+      s <- fun(cls = S7::S7_class(x), indent = indent, ...)
+    } else {
+      s <- fun(self = x, indent = indent, ...)
     }
+  } else if( S7::prop_exists(x, "format") ) {
+    s <- paste(x@format, collapse = collapse)
   }
   s <- paste(s, collapse = collapse)
   if(!nzchar(s)) { return(character(0L)) }
   if(indent > 0) {
-    prefix <- paste(rep(" ", indent), collapse = "")
-    s <- paste(sprintf("%s%s", prefix, strsplit(s, "\n")[[1]]), collapse = collapse)
+    # prefix <- paste(rep(" ", indent), collapse = "")
+    s <- paste(sprintf("%s", strsplit(s, "\n")[[1]]), collapse = collapse)
   }
   s
 }

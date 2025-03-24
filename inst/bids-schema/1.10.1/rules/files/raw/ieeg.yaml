@@ -1,0 +1,23 @@
+---
+ieeg:
+  suffixes:
+    - ieeg
+  extensions:
+    - .medd/
+    - .mefd/
+    - .json
+    - .edf
+    - .vhdr
+    - .eeg
+    - .vmrk
+    - .set
+    - .fdt
+    - .nwb
+  datatypes:
+    - ieeg
+  entities:
+    subject: required
+    session: optional
+    task: required
+    acquisition: optional
+    run: optional

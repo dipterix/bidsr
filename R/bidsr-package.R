@@ -33,28 +33,5 @@ NULL
   }
 }
 
-BIDS_VERSION <- "1.9.0"
-
-# Default BIDS folder depth
-BIDS_MAP_MAX_DEPTH <- function() {
-  depth <- as.integer(getOption("bidsr.map.seach_depth", Sys.getenv("BIDS_MAP_MAX_DEPTH", "29")))
-  if(length(depth) != 1 || is.na(depth) || !is.numeric(depth) || is.infinite(depth)) {
-    depth <- 29L
-  }  else if (depth < 0) {
-    depth <- 0L
-  }
-  depth
-}
-
-DEFAULT_GENERATED_BY <- function() {
-  desc <- read.dcf(system.file("DESCRIPTION", package = "bidsr"))
-  desc <- structure(names = colnames(desc), as.list(desc))
-  bids_dataset_generated_by(
-    Name = as.character(desc$Package),
-    Version = as.character(desc$Version),
-    Description = paste(desc$Description, collapse = "\n"),
-    CodeURL = as.character(desc$URL)
-  )
-}
 
 

@@ -172,7 +172,74 @@ bids_property_prohibited <- function(
 
 }
 
-bids_property_internal <- function(name, type = c("optional", "required", "prohibited"), ...) {
+
+#' @rdname bids_property
+#' @export
+bids_property_recommended <- function(
+    name, class = S7::class_any, getter = NULL, setter = NULL,
+    validator = NULL, default = NULL, ..., max_len = 1L) {
+
+  force(name)
+  force(setter)
+
+  setter_ <- function(self, value) {
+    if(isTRUE(getOption("bidsr.warn.recommended", TRUE)) && !length(value)) {
+      warning('Property ', sQuote(name), " is recommended but missing")
+    }
+    if(is.function(setter)) {
+      self <- setter(self, value)
+    } else {
+      S7::prop(self, name) <- value
+    }
+    self
+  }
+
+  bids_property_optional(
+    name = name,
+    class = class,
+    getter = getter,
+    setter = setter_,
+    validator = validator,
+    default = default,
+    max_len = max_len
+  )
+
+}
+
+#' @rdname bids_property
+#' @export
+bids_property_deprecated <- function(
+    name, class = S7::class_any, getter = NULL, setter = NULL,
+    validator = NULL, default = NULL, ..., max_len = 1L) {
+
+  force(name)
+  force(setter)
+
+  setter_ <- function(self, value) {
+    if(isTRUE(getOption("bidsr.warn.deprecated", TRUE)) && length(value) > 0) {
+      warning('Property ', sQuote(name), " is deprecated but specified")
+    }
+    if(is.function(setter)) {
+      self <- setter(self, value)
+    } else {
+      S7::prop(self, name) <- value
+    }
+    self
+  }
+
+  bids_property_optional(
+    name = name,
+    class = class,
+    getter = getter,
+    setter = setter_,
+    validator = validator,
+    default = default,
+    max_len = max_len
+  )
+
+}
+
+bids_property_internal <- function(name, type = c("optional", "recommended", "required", "deprecated", "prohibited"), ...) {
   type <- match.arg(type)
   property <- switch(
     type,
@@ -184,7 +251,14 @@ bids_property_internal <- function(name, type = c("optional", "required", "prohi
     },
     "optional" = {
       bids_property_optional(name = name, ...)
-    }, {
+    },
+    "deprecated" = {
+      bids_property_deprecated(name = name, ...)
+    },
+    "recommended" = {
+      bids_property_recommended(name = name, ...)
+    },
+    {
       bids_property(name = name, ...)
     }
   )
@@ -196,7 +270,7 @@ bids_property_internal <- function(name, type = c("optional", "required", "prohi
 #' @rdname bids_property
 #' @export
 bids_property_character <- function(
-    name, type = c("optional", "required", "prohibited"),
+    name, type = c("optional", "recommended", "required", "deprecated", "prohibited"),
     getter = NULL, setter = NULL, validator = NULL, default = NULL,
     ..., class = S7::class_character) {
   type <- match.arg(type)
@@ -207,7 +281,7 @@ bids_property_character <- function(
 #' @rdname bids_property
 #' @export
 bids_property_collapsed_character <- function(
-    name, type = c("optional", "required", "prohibited"), collapse = " ",
+    name, type = c("optional", "recommended", "required", "deprecated", "prohibited"), collapse = " ",
     ..., class = S7::class_character) {
 
   type <- match.arg(type)
@@ -232,7 +306,7 @@ bids_property_collapsed_character <- function(
 
 #' @rdname bids_property
 #' @export
-bids_property_choice <- function(name, choices, type = c("optional", "required", "prohibited"), ..., class = S7::class_character) {
+bids_property_choice <- function(name, choices, type = c("optional", "recommended", "required", "deprecated", "prohibited"), ..., class = S7::class_character) {
   type <- match.arg(type)
   force(choices)
 
@@ -244,7 +318,12 @@ bids_property_choice <- function(name, choices, type = c("optional", "required",
       if(missing(value) || !length(value) || is.na(value) || !nzchar(value)) {
         value <- character(0L)
       } else {
-        value <- match.arg(value, choices, several.ok = TRUE)
+        tryCatch({
+          value <- match.arg(value, choices, several.ok = TRUE)
+        }, error = function(e) {
+          stop(sprintf("Cannot set property `%s` with value [%s], reason: %s", name, deparse1(value), e$message))
+        })
+
       }
       S7::prop(self, name = name) <- value
       self
@@ -256,7 +335,7 @@ bids_property_choice <- function(name, choices, type = c("optional", "required",
 #' @rdname bids_property
 #' @export
 bids_property_numeric <- function(
-    name, type = c("optional", "required", "prohibited"),
+    name, type = c("optional", "recommended", "required", "deprecated", "prohibited"),
     getter = NULL, setter = NULL, validator = NULL, default = NULL,
     ..., class = S7::class_numeric) {
   type <- match.arg(type)
@@ -267,7 +346,7 @@ bids_property_numeric <- function(
 #' @rdname bids_property
 #' @export
 bids_property_integerish <- function(
-    name, type = c("optional", "required", "prohibited"),
+    name, type = c("optional", "recommended", "required", "deprecated", "prohibited"),
     getter = NULL, setter = NULL, validator = NULL, default = NULL,
     ..., class = S7::class_numeric) {
   type <- match.arg(type)
@@ -641,4 +720,17 @@ bids_property_tabular_meta <- function(name = "meta", setter = NULL, preset = NU
     setter = setter_, ...
   )
 }
+
+
+
+bids_property_schema_term_type <- function(name = "group", type = BIDS_SCHEMA_OBJECT_GROUP_TERM_TYPES) {
+  type <- match.arg(type)
+  bids_property_choice(
+    name = name,
+    type = "required",
+    choices = BIDS_SCHEMA_OBJECT_GROUP_TERM_TYPES,
+    default = type
+  )
+}
+
 

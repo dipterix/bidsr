@@ -315,16 +315,36 @@ S7::method(
 S7::method(as_bids_tabular, S7::class_character) <- function(x, meta = NULL, ..., cls = NULL) {
   # csv, tsv
   x_ <- gsub(".gz$", "", tolower(x))
+  if(endsWith(x_, "json")) {
+    meta <- x
+    x <- gsub("\\.json", "", x = x, ignore.case = TRUE)
+    x <- sprintf("%s.%s", x, c("tsv", "tsv.gz", "csv", "csv.gz"))
+    x <- x[file_exists(x)]
+  }
+
+  if(length(x) == 0) {
+    stop("Canot find path to to tabular: ", x_)
+  } else {
+    x <- normalizePath(x, mustWork = TRUE)
+  }
+
   if(endsWith(x_, "csv")) {
     reader <- read_csv
   } else {
     reader <- read_tsv
   }
-  tbl <- reader(x_)
+  tbl <- reader(x)
+
+  if(length(meta) == 0 || is.na(meta)) {
+    # check if *.json exists
+    x_ <- gsub("\\.(csv|tsv|csv\\.gz|tsv\\.gz)$", ".json", x = x, ignore.case = TRUE)
+    if(file_exists(x_)) {
+      meta <- x_
+    }
+  }
+
   as_bids_tabular_table(x = tbl, meta = meta, ..., cls = cls)
 }
-
-
 
 
 # generator
