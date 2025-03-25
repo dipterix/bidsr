@@ -6,7 +6,14 @@
 \alias{bidsr-package}
 \title{bidsr: A Brain Imaging Data Structure ('BIDS') Parser in R}
 \description{
-Provides something cool.
+Read, parse, modify the files to comply with brain imaging data structure ('BIDS') \doi{10.1038/sdata.2016.44} in R.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://dipterix.org/bidsr/}
+}
+
 }
 \author{
 \strong{Maintainer}: Zhengjia Wang \email{dipterix.wang@gmail.com} (\href{https://orcid.org/0000-0001-5629-1116}{ORCID})

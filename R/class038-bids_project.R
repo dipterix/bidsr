@@ -75,7 +75,74 @@ bids_project <- new_bids_class(
       name = "derivative_data_relpath",
       type = "required",
       default = "derivatives"
+    ),
+    README = bids_property_collapsed_character(
+      name = "README",
+      type = "required",
+      collapse = "\n"
     )
+  ),
+  constructor = function(path, raw_data_relpath = ".", source_data_relpath = "sourcedata", derivative_data_relpath = "derivatives", strict = TRUE) {
+    path <- normalizePath(path = path, mustWork = strict, winslash = "/")
+    readme_path <- file_path(path, "README")
+    readme <- "(No README)"
+    if(file_exists(readme_path)) {
+      suppressWarnings({
+        try({
+          readme <- readLines(readme_path)
+        })
+      })
+    }
+    S7::new_object(
+      S7::S7_object(),
+      path = path,
+      raw_data_relpath = raw_data_relpath,
+      source_data_relpath = source_data_relpath,
+      derivative_data_relpath = derivative_data_relpath,
+      README = readme
+    )
+  },
+  methods = list(
+    format = function(self, storage = c("root", "raw", "source", "derivative"), ...) {
+      storage <- match.arg(storage)
+      path <- switch(
+        storage,
+        "root" = self@path,
+        "raw" = path_join(c(self@path, self@raw_data_relpath)),
+        "source" = path_join(c(self@path, self@source_data_relpath)),
+        "derivative" = path_join(c(self@path, self@derivative_data_relpath))
+      )
+      path
+    },
+    print = function(self, ...) {
+      screen_width <- max(20L, min(getOption("width"), 80L))
+      cat(
+        sep = "\n",
+        c(
+          sprintf("<%s>[bids_project] at:", self@name),
+          sprintf("  %s", format(self)),
+          sprintf("  - raw-data path: %s", self@raw_data_relpath),
+          sprintf("  - source-data path: %s", self@source_data_relpath),
+          sprintf("  - derivative path: %s", self@derivative_data_relpath),
+          sprintf("+- Descriptions: %s", paste(rep("-", max(screen_width - 17L, 20L)), collapse = "")),
+          strwrap(self@README, prefix = "| ", width = max(screen_width - 2L, 20L))
+        )
+      )
+    },
+    get_dataset_description = function(self, relpath = "dataset_description.json") {
+      ds_path <- file_path(self, relpath)
+      if(!file_exists(ds_path)) {
+        stop(sprintf("Cannot find `%s` under the project folder. Please specify the path explicitly.", relpath))
+      }
+      as_bids_dataset_description(x = ds_path)
+    },
+    get_participants = function(self, relpath = "participants.tsv") {
+      ds_path <- file_path(self, relpath)
+      if(!file_exists(ds_path)) {
+        stop(sprintf("Cannot find `%s` under the project folder. Please specify the path explicitly.", relpath))
+      }
+      as_bids_tabular(x = ds_path)
+    }
   )
 )
 
@@ -190,6 +257,9 @@ bids_subject <- new_bids_class(
       storage_root <- path_join(c(self$project$path, relpath, additional_prefix, sprintf("sub-%s", self$subject_code)))
       storage_root
     },
+    print = function(self, ...) {
+      cat(sprintf("<BIDS Subject> `sub-%s` (project `%s`)\n", self@subject_code, self@project@name))
+    },
     query_modality = function(
       self, modality, storage = c("raw", "source", "derivative"),
       ..., derivative_prefix = NULL) {
@@ -228,10 +298,11 @@ bids_subject <- new_bids_class(
       )
 
       # Example 1: immediately under subject folder
-      associated_files_0 <- list_files_only(path = storage_root, all = FALSE, full_names = FALSE)
+      associated_files_0 <- list_files_only(path = dirname(storage_root), all = FALSE, full_names = FALSE)
+      associated_files_1 <- list_files_only(path = storage_root, all = FALSE, full_names = FALSE)
 
 
-      associated_files_1 <- lapply(modality_paths, function(modality_path) {
+      associated_files_2 <- lapply(modality_paths, function(modality_path) {
         # modality_path <- modality_paths[[1]]
         modality_pathsplit <- strsplit(modality_path, "[/|\\\\]")[[1]]
         modality_root1 <- file_path(storage_root, modality_pathsplit[[1]])
@@ -247,7 +318,7 @@ bids_subject <- new_bids_class(
         c(associated_subfiles_1, associated_subfiles_2)
       })
 
-      associated_files <- unique(c(associated_files_0, unlist(associated_files_1)))
+      associated_files <- unique(c(associated_files_0, associated_files_1, unlist(associated_files_2)))
 
       file_parsed <- lapply(associated_files, function(path) {
         parse_path_bids_entity(path)
@@ -256,7 +327,11 @@ bids_subject <- new_bids_class(
       entity_names <- lapply(file_parsed, function(item) {
         names(item@entities)
       })
+      has_entities <- vapply(entity_names, function(nms) { length(nms) > 0 }, FALSE)
       entity_names <- unique(unlist(entity_names))
+
+      associated_files <- associated_files[has_entities]
+      file_parsed <- file_parsed[has_entities]
 
       query_result <- lapply(seq_along(associated_files), function(ii) {
         path <- associated_files[[ii]]

@@ -9,3 +9,6 @@
 ^inst/examples/ieeg_epilepsy_ecog/derivatives$
 ^LICENSE\.md$
 ^Roadmap\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

@@ -5,10 +5,11 @@
 \title{'BIDS' project class}
 \usage{
 bids_project(
-  path = character(0),
+  path,
   raw_data_relpath = ".",
   source_data_relpath = "sourcedata",
-  derivative_data_relpath = "derivatives"
+  derivative_data_relpath = "derivatives",
+  strict = TRUE
 )
 }
 \arguments{

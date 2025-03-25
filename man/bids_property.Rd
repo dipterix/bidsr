@@ -226,8 +226,7 @@ bids_property_tabular_meta(
 \arguments{
 \item{name}{required, string, name of the property}
 
-\item{class}{\code{'S7'} class, often pre-specified and rarely needed
-to alter}
+\item{class}{\code{'S7'} class}
 
 \item{getter, setter, validator, default}{see \code{\link[S7]{new_property}}}
 

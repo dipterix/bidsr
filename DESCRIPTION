@@ -1,11 +1,14 @@
 Package: bidsr
 Title: A Brain Imaging Data Structure ('BIDS') Parser in R
 Version: 0.0.0.9000
+URL: https://dipterix.org/bidsr/
+BugReport: https://github.com/dipterix/bidsr/
 Authors@R: 
     person("Zhengjia", "Wang", email = "dipterix.wang@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5629-1116"))
 Description: 
-    Provides something cool.
+    Read, parse, modify the files to comply with brain imaging data structure 
+    ('BIDS') <doi:10.1038/sdata.2016.44> in R.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

@@ -12,8 +12,7 @@
 #' column names to lower case; default is \code{FALSE}
 #' @param preset a list of preset meta data; default is \code{NULL}
 #'
-#' @param class \code{'S7'} class, often pre-specified and rarely needed
-#' to alter
+#' @param class \code{'S7'} class
 #' @param getter,setter,validator,default see \code{\link[S7]{new_property}}
 #' @param final whether the property is final once initialized; default is
 #' false; this is for properties that should not be altered
