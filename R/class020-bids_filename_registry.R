@@ -45,6 +45,7 @@ bids_entity_file <- new_bids_class(
   name = "bids_entity_file",
   abstract = TRUE,
   properties = list(
+    parent_directory = bids_property_character(name = "parent_directory", type = "required", validator = validator_nonempty_string),
     data_type = bids_property_character(name = "data_type", type = "required", validator = validator_nonempty_string, final = TRUE),
     suffix = bids_property_character(name = "suffix", type = "required", validator = validator_nonempty_string, final = TRUE),
     entities = bids_property_entity_list(name = "entities"),
@@ -88,7 +89,7 @@ bids_entity_file <- new_bids_class(
       if(length(extension)) {
         re <- sprintf("%s.%s", re, extension)
       }
-      re
+      path_join(c(self@parent_directory, re))
     },
     print = function(self, details = FALSE, ...) {
       fmt <- format(self)
@@ -117,8 +118,10 @@ is_child_bids_entity_file <- function(definition) {
 
 #' @title Class generator for 'BIDS' file class with entities
 #' @description
-#' Function to generate file name definitions with entity constraints; see
-#' specification at \url{https://bids-specification.readthedocs.io/en/stable/common-principles.html#filenames}.
+#' Low-level function to generate file name definitions with entity
+#' constraints; use \code{\link{parse_path_bids_entity}} instead.
+#' The specification is at
+#' \url{https://bids-specification.readthedocs.io/en/stable/common-principles.html#filenames}.
 #' For bulk generating and registering 'BIDS' file classes, see
 #' \code{\link{bids_entity_file_registry}}
 #'
@@ -161,6 +164,7 @@ is_child_bids_entity_file <- function(definition) {
 #' )
 #'
 #' file1 <- behavior_event_file_def(
+#'   parent_directory = "sub-001/beh",
 #'   sub = "001", task = "test", .extension = "tsv")
 #'
 #' print(file1)
@@ -168,7 +172,10 @@ is_child_bids_entity_file <- function(definition) {
 #' file.path("root/to/path", file1)
 #'
 #' # get entity values
-#' file1$get_entity("run")
+#' file1$get_entity("task")
+#'
+#' # parent directory
+#' file1$parent_directory
 #'
 #' file1$entities$run$value
 #'
@@ -205,6 +212,7 @@ new_bids_entity_file_class <- function(name, data_type, suffix, entity_rules = l
   ))
   explicit_entity_args <- names(entity_args)
   constructor_args <- c(
+    "parent_directory = ",
     unlist(entity_args),
     "... = ",
     ".list = list()",
@@ -214,7 +222,7 @@ new_bids_entity_file_class <- function(name, data_type, suffix, entity_rules = l
 
   constructor_formals <- eval(parse(text = sprintf("alist(%s)", paste(constructor_args, collapse = ", "))))
 
-  constructor <- function(..., .list = list(), .suffix = suffix, .extension = character(0L)) {
+  constructor <- function(parent_directory, ..., .list = list(), .suffix = suffix, .extension = character(0L)) {
     if(!identical(tolower(.suffix), tolower(suffix))) {
       stop("Cannot change suffix from ", sQuote(suffix), " to ", sQuote(.suffix), ". You can use `.suffix` to change cases only.")
     }
@@ -235,6 +243,7 @@ new_bids_entity_file_class <- function(name, data_type, suffix, entity_rules = l
 
     S7::new_object(
       S7::S7_object(),
+      parent_directory = parent_directory,
       data_type = data_type,
       suffix = suffix,
       entities = entities,
@@ -276,14 +285,35 @@ new_bids_entity_file_class <- function(name, data_type, suffix, entity_rules = l
 #' @examples
 #'
 #'
-#' path <- "anat/sub-001_t1w.nii.gz"
+#' path <- "anat/sub-01_chunk-001_t1w.nii.gz"
 #'
+#' # --- parse ------------------------------------------------
 #' parsed_filename <- parse_path_bids_entity(path)
 #' parsed_filename
 #'
+#' parsed_filename$get_entity("sub")
+#'
+#' # alternatively
 #' parsed_filename$entities$sub$value
 #'
-#' # get entity rules
+#' # data type is `anat` imaging
+#' parsed_filename$data_type
+#'
+#' # data is T1-weighted
+#' parsed_filename$suffix
+#'
+#' # --- usage ------------------------------------------------
+#' # use it as character
+#' file.path("/path/to/bids/dir/sub-01", parsed_filename)
+#'
+#' # modify
+#' parsed_filename$entities$task <- "special"
+#'
+#' # new file path: anat/sub-01_task-special_chunk-001_T1w.nii.gz
+#' parsed_filename
+#'
+#' # ---- schema -----------------------------------------------
+#' # get BIDS entity rules
 #' parsed_filename$get_entity_rules()
 #'
 #' # get class definition
@@ -362,6 +392,7 @@ parse_path_bids_entity <- function(path, auto_new = TRUE) {
   )
   args$.extension <- ext
   args$.suffix <- suffix
+  args$parent_directory <- dirname(path)
   do.call(definition, args)
 
 }
@@ -447,6 +478,7 @@ parse_path_bids_entity <- function(path, auto_new = TRUE) {
 #' t1_definition <- bids_entity_file_registry_get("anat/t1w")
 #'
 #' filename <- t1_definition(
+#'   parent_directory = "anat",
 #'   sub = "001",
 #'   ses = "001",
 #'   task = "001",
@@ -457,7 +489,7 @@ parse_path_bids_entity <- function(path, auto_new = TRUE) {
 #' # use formatting
 #' format(filename)
 #'
-#' file.path("BIDS/directory/to/", filename)
+#' file.path("BIDS/directory/to", filename)
 #'
 #' # with descriptions
 #' filename$print(details = TRUE)

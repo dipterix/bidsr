@@ -27,8 +27,10 @@ Examples' below}
 \item{description}{file class description}
 }
 \description{
-Function to generate file name definitions with entity constraints; see
-specification at \url{https://bids-specification.readthedocs.io/en/stable/common-principles.html#filenames}.
+Low-level function to generate file name definitions with entity
+constraints; use \code{\link{parse_path_bids_entity}} instead.
+The specification is at
+\url{https://bids-specification.readthedocs.io/en/stable/common-principles.html#filenames}.
 For bulk generating and registering 'BIDS' file classes, see
 \code{\link{bids_entity_file_registry}}
 }
@@ -63,6 +65,7 @@ behavior_event_file_def <- new_bids_entity_file_class(
 )
 
 file1 <- behavior_event_file_def(
+  parent_directory = "sub-001/beh",
   sub = "001", task = "test", .extension = "tsv")
 
 print(file1)
@@ -70,7 +73,10 @@ print(file1)
 file.path("root/to/path", file1)
 
 # get entity values
-file1$get_entity("run")
+file1$get_entity("task")
+
+# parent directory
+file1$parent_directory
 
 file1$entities$run$value
 

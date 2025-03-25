@@ -4,14 +4,24 @@
 \alias{bids_subject}
 \title{'BIDS' subject class}
 \usage{
-bids_subject(project = bids_project(), subject_code = character(0))
+bids_subject(project, subject_code, ..., strict = "raw")
 }
 \arguments{
-\item{project}{'BIDS' project instance, see \code{\link{bids_project}}}
+\item{project}{'BIDS' project instance, see \code{\link{bids_project}}, or
+a path to the 'BIDS' project}
 
 \item{subject_code}{character, subject code with or without the leading
 \code{'sub-'}. The subject code, after trimming the leading entity key,
 should not contain any additional dash (\code{'-'})}
+
+\item{...}{passed to the constructor of \code{\link{bids_project}}, when
+\code{project} is a character string}
+
+\item{strict}{whether to check if the subject folders exist, can be
+logical or characters; when \code{strict} is character strings, choices can
+be \code{'raw'} (checking raw-data directory) and/or \code{'source'} (
+for source-data directory); \code{strict=TRUE} is equivalent to checking
+both; default is \code{'raw'}. There is no checks on derivatives.}
 }
 \value{
 A 'BIDS' subject instance.
@@ -30,7 +40,8 @@ project <- bids_project(
   derivative_data_relpath = "derivatives"
 )
 
-subject <- bids_subject(project = project, subject_code = "ecog01")
+subject <- bids_subject(project = project, subject_code = "ecog01",
+                        strict = FALSE)
 
 storage_root <- subject$get_path("raw")
 

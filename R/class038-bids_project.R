@@ -81,10 +81,18 @@ bids_project <- new_bids_class(
 
 #' @name bids_subject
 #' @title 'BIDS' subject class
-#' @param project 'BIDS' project instance, see \code{\link{bids_project}}
+#' @param project 'BIDS' project instance, see \code{\link{bids_project}}, or
+#' a path to the 'BIDS' project
+#' @param ... passed to the constructor of \code{\link{bids_project}}, when
+#' \code{project} is a character string
 #' @param subject_code character, subject code with or without the leading
 #' \code{'sub-'}. The subject code, after trimming the leading entity key,
 #' should not contain any additional dash (\code{'-'})
+#' @param strict whether to check if the subject folders exist, can be
+#' logical or characters; when \code{strict} is character strings, choices can
+#' be \code{'raw'} (checking raw-data directory) and/or \code{'source'} (
+#' for source-data directory); \code{strict=TRUE} is equivalent to checking
+#' both; default is \code{'raw'}. There is no checks on derivatives.
 #' @returns A 'BIDS' subject instance.
 #'
 #' @examples
@@ -98,7 +106,8 @@ bids_project <- new_bids_class(
 #'   derivative_data_relpath = "derivatives"
 #' )
 #'
-#' subject <- bids_subject(project = project, subject_code = "ecog01")
+#' subject <- bids_subject(project = project, subject_code = "ecog01",
+#'                         strict = FALSE)
 #'
 #' storage_root <- subject$get_path("raw")
 #'
@@ -133,6 +142,37 @@ bids_subject <- new_bids_class(
       }
     )
   ),
+  constructor = function(project, subject_code, ..., strict = "raw") {
+    subject_code <- gsub("^sub-", "", as.character(subject_code), ignore.case = TRUE)
+
+    if(!S7::S7_inherits(project, bids_project)) {
+      project <- bids_project(path = project, ...)
+    }
+    if(isTRUE(strict)) {
+      strict <- c("raw", "source")
+    } else if (is.character(strict)) {
+      strict <- strict[strict %in% c("raw", "source")]
+    } else {
+      strict <- NULL
+    }
+    if(length(strict)) {
+      for(storage in strict) {
+        relpath <- S7::prop(project, sprintf("%s_data_relpath", storage))
+        if(!nzchar(relpath) || trimws(relpath) %in% c(".", "")) {
+          relpath <- NULL
+        }
+        storage_root <- path_join(c(project@path, relpath, sprintf("sub-%s", subject_code)))
+        if(!dir_exists(storage_root)) {
+          stop("Unable to find valid directory: ", storage_root)
+        }
+      }
+    }
+    S7::new_object(
+      S7::S7_object(),
+      project = project,
+      subject_code = subject_code
+    )
+  },
   methods = list(
     get_path = function(self, storage = c("raw", "source", "derivative"), derivative_prefix = NULL) {
       storage <- match.arg(storage)
@@ -209,7 +249,9 @@ bids_subject <- new_bids_class(
 
       associated_files <- unique(c(associated_files_0, unlist(associated_files_1)))
 
-      file_parsed <- lapply(associated_files, parse_path_bids_entity)
+      file_parsed <- lapply(associated_files, function(path) {
+        parse_path_bids_entity(path)
+      })
 
       entity_names <- lapply(file_parsed, function(item) {
         names(item@entities)

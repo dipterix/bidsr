@@ -115,6 +115,7 @@ register_bids_file_entiries(
 t1_definition <- bids_entity_file_registry_get("anat/t1w")
 
 filename <- t1_definition(
+  parent_directory = "anat",
   sub = "001",
   ses = "001",
   task = "001",
@@ -125,7 +126,7 @@ filename <- t1_definition(
 # use formatting
 format(filename)
 
-file.path("BIDS/directory/to/", filename)
+file.path("BIDS/directory/to", filename)
 
 # with descriptions
 filename$print(details = TRUE)

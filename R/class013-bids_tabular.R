@@ -13,14 +13,23 @@ as_bids_tabular_meta <- function(meta = NULL, ...) {
   if( !S7::S7_inherits(meta, bids_tabular_meta_sidecar) ) {
     if(isTRUE(is.character(meta))) {
       meta <- paste(meta, collapse = "\n")
-      # path or json
-      if(endsWith(tolower(meta), ".json")) {
-        meta <- from_json(file = meta)
-      } else if (startsWith(trimws(meta), "{")){
-        meta <- from_json(json_str = meta)
-      } else {
-        stop("Unable to parse meta: ", meta)
-      }
+      meta <- tryCatch(
+        {
+          # path or json
+          if(endsWith(tolower(meta), ".json")) {
+            meta <- from_json(file = meta)
+          } else if (startsWith(trimws(meta), "{")){
+            meta <- from_json(json_str = meta)
+          } else {
+            stop("Unable to parse meta: ", meta)
+          }
+          meta
+        },
+        error = function(e) {
+          warning(e)
+          list()
+        }
+      )
     }
     meta <- c(as.list(meta), more)
     meta <- bids_tabular_meta_sidecar(columns = meta)

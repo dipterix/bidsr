@@ -22,14 +22,35 @@ Parse 'BIDS' entities from file path
 \examples{
 
 
-path <- "anat/sub-001_t1w.nii.gz"
+path <- "anat/sub-01_chunk-001_t1w.nii.gz"
 
+# --- parse ------------------------------------------------
 parsed_filename <- parse_path_bids_entity(path)
 parsed_filename
 
+parsed_filename$get_entity("sub")
+
+# alternatively
 parsed_filename$entities$sub$value
 
-# get entity rules
+# data type is `anat` imaging
+parsed_filename$data_type
+
+# data is T1-weighted
+parsed_filename$suffix
+
+# --- usage ------------------------------------------------
+# use it as character
+file.path("/path/to/bids/dir/sub-01", parsed_filename)
+
+# modify
+parsed_filename$entities$task <- "special"
+
+# new file path: anat/sub-01_task-special_chunk-001_T1w.nii.gz
+parsed_filename
+
+# ---- schema -----------------------------------------------
+# get BIDS entity rules
 parsed_filename$get_entity_rules()
 
 # get class definition
