@@ -37,6 +37,7 @@
 #'            035: Sessions file
 #'                      sub-<label>/
 #'                        sub-<label>_sessions.tsv
+#'            038: Project & subject
 #'    class100-class299: (modality specific files)
 #'      Source: https://bids-specification.readthedocs.io/en/stable/,
 #'      see Section "Modality Specific Files"

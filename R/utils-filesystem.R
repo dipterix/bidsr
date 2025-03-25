@@ -106,6 +106,10 @@ dir_exists <- function(path) {
   fs::dir_exists(path)
 }
 
+is_file <- function(path) {
+  fs::is_file(path)
+}
+
 path_has_parent <- function(path, parent) {
   fs::path_has_parent(path = path, parent = parent)
 }
