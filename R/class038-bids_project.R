@@ -263,6 +263,7 @@ bids_subject <- new_bids_class(
         item <- file_parsed[[ii]]
         c(
           list(
+            parsed = I(list(item)),
             data_type = item@data_type,
             suffix = paste(item@suffix, collapse = "_"),
             extension = paste(item@extension, collapse = ".")
@@ -272,11 +273,6 @@ bids_subject <- new_bids_class(
             lapply(entity_names, function(nm) {
               item$get_entity(nm, value_only = TRUE, ifnotfound = NA)
             })
-          ),
-          list(
-            # identifier = item@identifier
-            path = path,
-            parsed = list(item)
           )
         )
       })
