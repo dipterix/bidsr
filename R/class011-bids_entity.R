@@ -167,13 +167,44 @@ bids_entity_label_prohibited <- new_bids_entity_class(
   value_class_name = "label"
 )
 
+get_index_format <- function(value) {
+  value <- paste(value, collapse = "")
+  if(!grepl(pattern = ".", value, fixed = TRUE) && startsWith(value, "0")) {
+    fmt <- sprintf("%%0%dd", nchar(value))
+  } else {
+    fmt <- "%d"
+  }
+  fmt
+}
+
+ensure_entity_index <- function(value) {
+  suppressWarnings({
+    vint <- as.integer(value)
+  })
+  if(is.numeric(value)) {
+    if( !all(vint == value) ) {
+      stop("Unable to set BIDS entity as index value. Values have decimal numbers that are none zero: ", value)
+    }
+  } else if(is.character(value)) {
+    if(any((!is.na(value) & is.na(vint)))) {
+      stop("Unable to set BIDS entity as index value. Value cannot be converted to integers: ", sQuote(value))
+    }
+  }
+  vint
+}
+
 #' @rdname bids_entity
 #' @export
 bids_entity_index_required <- new_bids_entity_class(
   value = bids_property_integerish(
     name = "value",
     type = "required",
-    validator = validator_nonnegative_intergerish
+    validator = validator_nonnegative_intergerish,
+    setter = function(self, value) {
+      self@index_format <- get_index_format(value)
+      self@value <- ensure_entity_index(value)
+      self
+    }
   ),
   value_class_name = "index"
 )
@@ -184,7 +215,12 @@ bids_entity_index_optional <- new_bids_entity_class(
   value = bids_property_integerish(
     name = "value",
     type = "optional",
-    validator = validator_nonnegative_intergerish
+    validator = validator_nonnegative_intergerish,
+    setter = function(self, value) {
+      self@index_format <- get_index_format(value)
+      self@value <- ensure_entity_index(value)
+      self
+    }
   ),
   value_class_name = "index"
 )
@@ -195,7 +231,12 @@ bids_entity_index_prohibited <- new_bids_entity_class(
   value = bids_property_integerish(
     name = "value",
     type = "prohibited",
-    validator = validator_nonnegative_intergerish
+    validator = validator_nonnegative_intergerish,
+    setter = function(self, value) {
+      self@index_format <- get_index_format(value)
+      self@value <- ensure_entity_index(value)
+      self
+    }
   ),
   value_class_name = "index"
 )

@@ -125,3 +125,25 @@ path_join <- function(parts) {
 is_absolute_path <- function(path) {
   fs::is_absolute_path(path)
 }
+
+list_files_only <- function(path, all = FALSE, recursive = FALSE, full_names = FALSE, pattern = NULL, ignore_cases = FALSE) {
+  files <- list.files(
+    path = path,
+    all.files = all,
+    recursive = recursive,
+    include.dirs = FALSE,
+    full.names = FALSE,
+    pattern = pattern,
+    ignore.case = ignore_cases,
+    no.. = TRUE
+  )
+  path_full <- file_path(path, files)
+  sel <- is_file(path_full)
+  if(full_names) {
+    re <- path_full[sel]
+  } else {
+    re <- files[sel]
+  }
+  re
+}
+
