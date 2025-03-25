@@ -32,6 +32,10 @@ project <- bids_project(
 
 subject <- bids_subject(project = project, subject_code = "ecog01")
 
-subject$query_modality("ieeg")
+storage_root <- subject$get_path("raw")
+
+if( dir.exists(storage_root) ) {
+  subject$query_modality("ieeg")
+}
 
 }

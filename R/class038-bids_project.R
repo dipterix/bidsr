@@ -100,7 +100,11 @@ bids_project <- new_bids_class(
 #'
 #' subject <- bids_subject(project = project, subject_code = "ecog01")
 #'
-#' subject$query_modality("ieeg")
+#' storage_root <- subject$get_path("raw")
+#'
+#' if( dir.exists(storage_root) ) {
+#'   subject$query_modality("ieeg")
+#' }
 #'
 #' @export
 bids_subject <- new_bids_class(
@@ -130,6 +134,22 @@ bids_subject <- new_bids_class(
     )
   ),
   methods = list(
+    get_path = function(self, storage = c("raw", "source", "derivative"), derivative_prefix = NULL) {
+      storage <- match.arg(storage)
+      relpath <- S7::prop(self@project, sprintf("%s_data_relpath", storage))
+
+      if(storage == "derivative") {
+        additional_prefix <- as.character(derivative_prefix)
+        additional_prefix <- additional_prefix[!is.na(additional_prefix)]
+      } else {
+        additional_prefix <- NULL
+      }
+      if(!nzchar(relpath) || trimws(relpath) %in% c(".", "")) {
+        relpath <- NULL
+      }
+      storage_root <- path_join(c(self$project$path, relpath, additional_prefix, sprintf("sub-%s", self$subject_code)))
+      storage_root
+    },
     query_modality = function(
       self, modality, storage = c("raw", "source", "derivative"),
       ..., derivative_prefix = NULL) {
@@ -148,18 +168,7 @@ bids_subject <- new_bids_class(
       if(!isTRUE(nzchar(modality))) {
         stop("BIDS modality cannot be empty.")
       }
-      relpath <- S7::prop(self@project, sprintf("%s_data_relpath", storage))
-
-      if(storage == "derivative") {
-        additional_prefix <- as.character(derivative_prefix)
-        additional_prefix <- additional_prefix[!is.na(additional_prefix)]
-      } else {
-        additional_prefix <- NULL
-      }
-      if(!nzchar(relpath) || trimws(relpath) %in% c(".", "")) {
-        relpath <- NULL
-      }
-      storage_root <- path_join(c(self$project$path, relpath, additional_prefix, sprintf("sub-%s", self$subject_code)))
+      storage_root <- self$get_path(storage = storage, derivative_prefix = derivative_prefix)
 
       if(!dir_exists(storage_root)) {
         stop(sprintf("Cannot find directory for subject [sub-%s]: %s", self$subject_code, storage_root))
