@@ -309,6 +309,25 @@ parse_path_bids_entity <- function(path, auto_new = TRUE) {
   }
   file_name <- basename(path)
   parsed <- strsplit(file_name, "_")[[1]]
+  # check if connector exists
+  parsed_rev <- rev(parsed)
+  has_dash_rev <- vapply(parsed_rev, function(xp) {
+    grepl("-", xp, fixed = TRUE)
+  }, FALSE)
+
+  file_ending <- NULL
+  for(ii in seq_along(parsed_rev)) {
+    if( ii == 1 || !has_dash_rev[[ii]] ) {
+      file_ending <- c(parsed_rev[[ii]], file_ending)
+    } else if(has_dash_rev[[ii]]) {
+      break
+    }
+  }
+  parsed <- c(
+    parsed[seq_len( length(parsed) - length(file_ending) )],
+    paste(file_ending, collapse = "_")
+  )
+
   n_parsed <- length(parsed)
   postfix <- parsed[[n_parsed]]
 
