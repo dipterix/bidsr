@@ -214,62 +214,23 @@ support list, path to the <code>'json'</code> file, <code>'json'</code> string, 
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># ---- Read from file ---------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="va">example_descr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="st">"examples"</span>, <span class="st">"ieeg_epilepsy_ecog"</span>, <span class="st">"dataset_description.json"</span>,</span></span>
-<span class="r-in"><span>  package <span class="op">=</span> <span class="st">"bidsr"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">as_bids_dataset_description</span><span class="op">(</span><span class="va">example_descr</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">x</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "Name": "Brainstorm Tutorial ECoG/sEEG",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "BIDSVersion": "1.7.0",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "DatasetLinks": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "freesurfer": "derivatives/freesurfer"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   },</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "DatasetType": "raw",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "License": "Property of the Epilepsy Centre, University Hospital Freiburg, Germany",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "Authors": [</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Francois Tadel",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Marcel Heers",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Andreas Schulze-Bonhage"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ],</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "ReferencesAndLinks": "https://neuroimage.usc.edu/brainstorm/Tutorials/ECoG",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "GeneratedBy": [</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-in"><span><span class="co"># Run `download_bids_examples()` first</span></span></span>
+<span class="r-in"><span><span class="va">examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="download_bids_examples.html">download_bids_examples</a></span><span class="op">(</span>test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isFALSE</a></span><span class="op">(</span><span class="va">examples</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">example_descr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">examples</span>, <span class="st">"ieeg_epilepsy_ecog"</span>, <span class="st">"dataset_description.json"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># ---- Formatting --------------------------------------------------</span></span></span>
-<span class="r-in"><span><span class="co"># convert to R list (use recursive to expand field `GeneratedBy`)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $Name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Brainstorm Tutorial ECoG/sEEG"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $BIDSVersion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1.7.0"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $DatasetLinks</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $DatasetLinks$freesurfer</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "derivatives/freesurfer"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $DatasetType</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "raw"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $License</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Property of the Epilepsy Centre, University Hospital Freiburg, Germany"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $Authors</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Francois Tadel"          "Marcel Heers"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Andreas Schulze-Bonhage"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ReferencesAndLinks</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "https://neuroimage.usc.edu/brainstorm/Tutorials/ECoG"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">as_bids_dataset_description</span><span class="op">(</span><span class="va">example_descr</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">x</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># JSON string</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\n  \"Name\": \"Brainstorm Tutorial ECoG/sEEG\",\n  \"BIDSVersion\": \"1.7.0\",\n  \"DatasetLinks\": {\n    \"freesurfer\": \"derivatives/freesurfer\"\n  },\n  \"DatasetType\": \"raw\",\n  \"License\": \"Property of the Epilepsy Centre, University Hospital Freiburg, Germany\",\n  \"Authors\": [\n    \"Francois Tadel\",\n    \"Marcel Heers\",\n    \"Andreas Schulze-Bonhage\"\n  ],\n  \"ReferencesAndLinks\": \"https://neuroimage.usc.edu/brainstorm/Tutorials/ECoG\",\n  \"GeneratedBy\": [\n\n  ]\n}"</span>
+<span class="r-in"><span>  <span class="co"># ---- Formatting --------------------------------------------------</span></span></span>
+<span class="r-in"><span>  <span class="co"># convert to R list (use recursive to expand field `GeneratedBy`)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">x</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># JSON string</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

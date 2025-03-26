@@ -134,107 +134,38 @@ The original specification is at
 <span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;char&gt;       &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        sub-001 homo sapiens</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># read tabular as bids_tabular_participants</span></span></span>
-<span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"ieeg_epilepsy_ecog"</span>,</span></span>
-<span class="r-in"><span>                    <span class="st">"participants.tsv"</span>, package <span class="op">=</span> <span class="st">"bidsr"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">file</span>, cls <span class="op">=</span> <span class="va">bids_tabular_participants</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;BIDS Tabular&gt;[bids_tabular_participants]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $meta:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "age": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "LongName": "age",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Description": "age of the participant",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Units": "years"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   },</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "sex": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "LongName": "sex",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Description": "sex of the participant",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Levels": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       "m": "male",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       "f": "female"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   },</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "participant_id": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "LongName": "Participant ID",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Description": "A participant identifier of the form sub-&lt;label&gt;, matching a participant entity found in the dataset",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "TermURL": "https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#participants-file"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   },</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "species": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "LongName": "Species",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Description": "The species column SHOULD be a binomial species name from the NCBI Taxonomy (for example, homo sapiens, mus musculus, rattus norvegicus). For backwards compatibility, if species is absent, the participant is assumed to be homo sapiens.",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "TermURL": "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   },</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "handedness": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "LongName": "Subject handedness",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Description": "String value indicating one of \"left\", \"right\", \"ambidextrous\"",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Levels": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       "left": "left",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       "right": "right",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       "ambidextrous": "ambidextrous"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     },</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "TermURL": "https://bids-specification.readthedocs.io/en/stable/glossary.html#objects.columns.handedness"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   },</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "strain": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "LongName": "Strain",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Description": "For species different from homo sapiens, string value indicating the strain of the species, for example: C57BL/6J"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   },</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "strain_rrid": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "LongName": "Strain RRID",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Description": "For species different from homo sapiens, research resource identifier (RRID) of the strain of the species",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "TermURL": "https://rrid.site/data/source/nlx_154697-1/search"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $content:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    participant_id   age    sex      species</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;char&gt; &lt;int&gt; &lt;char&gt;       &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     sub-ecog01    38   male homo sapiens</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># convert existing tabular</span></span></span>
-<span class="r-in"><span><span class="va">tabular</span> <span class="op">&lt;-</span> <span class="fu"><a href="bids_tabular.html">bids_tabular</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    participant_id <span class="op">=</span> <span class="st">"sub-001"</span></span></span>
+<span class="r-in"><span><span class="co"># Run `download_bids_examples()` first</span></span></span>
+<span class="r-in"><span><span class="va">examples</span> <span class="op">&lt;-</span> <span class="fu"><a href="download_bids_examples.html">download_bids_examples</a></span><span class="op">(</span>test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isFALSE</a></span><span class="op">(</span><span class="va">examples</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">examples</span>, <span class="st">"ieeg_epilepsy_ecog"</span>, <span class="st">"participants.tsv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># read tabular as bids_tabular_participants</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">file</span>, cls <span class="op">=</span> <span class="va">bids_tabular_participants</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># convert existing tabular</span></span></span>
+<span class="r-in"><span>  <span class="va">tabular</span> <span class="op">&lt;-</span> <span class="fu"><a href="bids_tabular.html">bids_tabular</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      participant_id <span class="op">=</span> <span class="st">"sub-001"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tabular</span> <span class="op">&lt;-</span> <span class="fu"><a href="bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">tabular</span>, cls <span class="op">=</span> <span class="va">bids_tabular_participants</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">tabular</span> <span class="op">&lt;-</span> <span class="fu"><a href="bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">tabular</span>, cls <span class="op">=</span> <span class="va">bids_tabular_participants</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># save to tsv</span></span></span>
-<span class="r-in"><span><span class="va">tsv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"participants.tsv"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">paths</span> <span class="op">&lt;-</span> <span class="va">tabular</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="va">tsv</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">paths</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $table_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/RtmpS3Y2gt/participants.tsv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $sidecar_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/RtmpS3Y2gt/participants.json</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span>  <span class="co"># save to tsv</span></span></span>
+<span class="r-in"><span>  <span class="va">tsv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"participants.tsv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">paths</span> <span class="op">&lt;-</span> <span class="va">tabular</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span><span class="va">tsv</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">paths</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># use base R to read</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">tsv</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, na.strings <span class="op">=</span> <span class="st">"n/a"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   participant_id      species</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        sub-001 homo sapiens</span>
+<span class="r-in"><span>  <span class="co"># use base R to read</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="va">tsv</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, na.strings <span class="op">=</span> <span class="st">"n/a"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># get sidecar</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">sidecar_path</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "participant_id": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "LongName": "Participant ID",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Description": "A participant identifier of the form sub-&lt;label&gt;, matching a participant entity found in the dataset",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "TermURL": "https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#participants-file"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   },</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "species": {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "LongName": "Species",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Description": "The species column SHOULD be a binomial species name from the NCBI Taxonomy (for example, homo sapiens, mus musculus, rattus norvegicus). For backwards compatibility, if species is absent, the participant is assumed to be homo sapiens.",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "TermURL": "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span>  <span class="co"># get sidecar</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">sidecar_path</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tsv</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">sidecar_path</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tsv</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">sidecar_path</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
