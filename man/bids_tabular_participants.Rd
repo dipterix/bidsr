@@ -32,34 +32,37 @@ tabular <- bids_tabular_participants(
 )
 tabular
 
-# read tabular as bids_tabular_participants
-file <- system.file("examples", "ieeg_epilepsy_ecog",
-                    "participants.tsv", package = "bidsr")
-as_bids_tabular(file, cls = bids_tabular_participants)
 
-# convert existing tabular
-tabular <- bids_tabular(
-  data.frame(
-    participant_id = "sub-001"
+# Run `download_bids_examples()` first
+examples <- download_bids_examples(test = TRUE)
+if(!isFALSE(examples)) {
+
+  file <- file.path(examples, "ieeg_epilepsy_ecog", "participants.tsv")
+
+  # read tabular as bids_tabular_participants
+  as_bids_tabular(file, cls = bids_tabular_participants)
+
+  # convert existing tabular
+  tabular <- bids_tabular(
+    data.frame(
+      participant_id = "sub-001"
+    )
   )
-)
-tabular <- as_bids_tabular(tabular, cls = bids_tabular_participants)
+  tabular <- as_bids_tabular(tabular, cls = bids_tabular_participants)
 
-# save to tsv
-tsv <- file.path(tempdir(), "participants.tsv")
-paths <- tabular$save(tsv)
-print(paths)
+  # save to tsv
+  tsv <- file.path(tempdir(), "participants.tsv")
+  paths <- tabular$save(tsv)
+  print(paths)
 
-# use base R to read
-read.table(tsv, header = TRUE, na.strings = "n/a")
+  # use base R to read
+  read.table(tsv, header = TRUE, na.strings = "n/a")
 
-# get sidecar
-cat(readLines(paths$sidecar_path), sep = "\n")
+  # get sidecar
+  cat(readLines(paths$sidecar_path), sep = "\n")
 
-unlink(tsv)
-unlink(paths$sidecar_path)
-
-
-
+  unlink(tsv)
+  unlink(paths$sidecar_path)
+}
 
 }

@@ -4,10 +4,17 @@
 \alias{download_bids_examples}
 \title{Download 'BIDS' example data-sets}
 \usage{
-download_bids_examples()
+download_bids_examples(test = FALSE)
+}
+\arguments{
+\item{test}{logical; default is \code{FALSE}, which downloads the example
+repository if the files are missing; an alternative choice is \code{TRUE},
+which will return \code{FALSE} if the files are missing}
 }
 \value{
-A local path to the example repository
+A local path to the example repository exists or when
+\code{test=FALSE}; or simply \code{FALSE} if the repository is missing and
+\code{test=TRUE}.
 }
 \description{
 See \url{https://github.com/bids-standard/bids-examples} for the full
@@ -15,10 +22,6 @@ repository.
 }
 \examples{
 
-if(interactive()) {
-
-  download_bids_examples()
-
-}
+download_bids_examples(test = TRUE)
 
 }

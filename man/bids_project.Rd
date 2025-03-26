@@ -32,14 +32,21 @@ A 'BIDS' project instance.
 \examples{
 
 
-example_path <- system.file(
-  "examples", "ieeg_epilepsy_ecog", package = "bidsr")
+# Run `download_bids_examples()` first
+examples <- download_bids_examples(test = TRUE)
+if(!isFALSE(examples)) {
 
-project <- bids_project(
-  path = example_path,
-  raw_data_relpath = ".",
-  derivative_data_relpath = "derivatives"
-)
+  project_path <- file.path(examples, "ieeg_epilepsy_ecog")
+
+  project <- bids_project(
+    path = project_path,
+    raw_data_relpath = ".",
+    derivative_data_relpath = "derivatives"
+  )
+
+  project
+
+}
 
 
 

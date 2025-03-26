@@ -137,18 +137,22 @@ dataset_description <- bids_dataset_description(
 
 
 # ---- Read from file ---------------------------------------------
-example_descr <- system.file(
-  "examples", "ieeg_epilepsy_ecog", "dataset_description.json",
-  package = "bidsr")
 
-x <- as_bids_dataset_description(example_descr)
-x
+# Run `download_bids_examples()` first
+examples <- download_bids_examples(test = TRUE)
+if(!isFALSE(examples)) {
+  example_descr <- file.path(
+    examples, "ieeg_epilepsy_ecog", "dataset_description.json")
 
-# ---- Formatting --------------------------------------------------
-# convert to R list (use recursive to expand field `GeneratedBy`)
-as.list(x, recursive = TRUE)
+  x <- as_bids_dataset_description(example_descr)
+  x
 
-# JSON string
-format(x)
+  # ---- Formatting --------------------------------------------------
+  # convert to R list (use recursive to expand field `GeneratedBy`)
+  as.list(x, recursive = TRUE)
+
+  # JSON string
+  format(x)
+}
 
 }
