@@ -46,13 +46,13 @@ bids_dataset_generated_by <- new_bids_class(
     Description = bids_property_character(name = "Description", type = "optional"),
     CodeURL = bids_property_character(name = "CodeURL", type = "optional"),
     Container = bids_property_named_list(name = "Container")
-  ),
-  methods = list(
-    format = function(self, ..., indent = json_indent()) {
-      to_json(as.list(self, recursive = TRUE), indent = indent)
-    }
   )
 )
+
+## `format`
+S7::method(format.generic, bids_dataset_generated_by) <- function(x, ..., indent = json_indent()) {
+  to_json(as.list(x, recursive = TRUE), indent = indent)
+}
 
 #' Class definition of 'BIDS' data-set description
 #' @description
@@ -251,15 +251,6 @@ bids_dataset_description <- new_bids_class(
 
   ),
 
-  methods = list(
-    format = function(self, ..., indent = json_indent()) {
-      li <- as.list(self, recursive = TRUE)
-      li$GeneratedBy <- lapply(li$GeneratedBy, as.list)
-      to_json(x = li, indent = indent)
-    }
-
-  ),
-
   validator = function(self) {
 
     if( !identical(self@DatasetType, "raw") ) {
@@ -274,6 +265,17 @@ bids_dataset_description <- new_bids_class(
 
 )
 
+
+## `format`
+S7::method(format.generic, bids_dataset_description) <- function(x, ..., indent = json_indent()) {
+  li <- as.list(x, recursive = TRUE)
+  li$GeneratedBy <- lapply(li$GeneratedBy, as.list)
+  to_json(x = li, indent = indent)
+}
+
+
+
+
 bids_dataset_description_from_list <- function(x) {
   args <- drop_nulls(x)
   if(length(args$parent_directory) != 1 || is.na(args$parent_directory) || !nzchar(args$parent_directory) || args$parent_directory %in% c("/")) {
@@ -284,15 +286,6 @@ bids_dataset_description_from_list <- function(x) {
 }
 
 
-#' @rdname bids_dataset_description
-#' @export
-as_bids_dataset_description <- S7::new_generic(
-  name = "as_bids_dataset_description",
-  dispatch_args = "x",
-  fun = function(x, parent_directory, ...) {
-    S7::S7_dispatch()
-  }
-)
 
 S7::method(as_bids_dataset_description, bids_dataset_description) <- function(x, parent_directory, ...) {
   x

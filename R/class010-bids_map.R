@@ -199,13 +199,26 @@ S7::method(names.generic, bids_map) <- function(x) {
 }
 
 # `[[`
-S7::method(extract_bracket.generic, bids_map) <- function(x, i, ..., impl = FALSE) {
+S7::method(extract_bracket.generic, list(x = bids_map, name = S7::class_any)) <- function(x, i, ..., impl = FALSE) {
   S7::check_is_S7(x, bids_map)
   get_bids_map_value(x = x, name = i, root = x, search_depth = x@search_depth, impl = impl)
 }
 
 # `[[<-`
-S7::method(extract_set_bracket.generic, bids_map) <- function(x, i, value) {
+# S7::method(
+#   extract_set_bracket.generic,
+#   list(
+#     x = bids_map,
+#     name = S7::class_any,
+#     value = S7::class_any
+#   )
+# ) <- function(x, i, value) {
+#   x@impl$set(i, value)
+#   x
+# }
+
+#' @export
+`[[<-.bidsr::bids_map` <- function(x, i, value) {
   x@impl$set(i, value)
   x
 }

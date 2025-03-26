@@ -73,7 +73,7 @@ print(file1)
 file.path("root/to/path", file1)
 
 # get entity values
-file1$get_entity("task")
+file1$get_bids_entity("task")
 
 # parent directory
 file1$parent_directory

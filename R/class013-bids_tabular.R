@@ -87,6 +87,8 @@ as_bids_tabular_table <- function(x, meta, ..., cls = NULL) {
 #' content to be saved
 #' @param lower_case_column_names if \code{TRUE}, the column names will be
 #' converted to lower case; default is \code{TRUE}
+#' @param path path to save the file; the file is always saved as
+#' tabular-separated value ('TSV') format
 #' @returns A component in \code{bids_tabular}.
 #'
 #' @examples
@@ -120,7 +122,7 @@ as_bids_tabular_table <- function(x, meta, ..., cls = NULL) {
 #'
 #' # save to tsv
 #' tsv <- tempfile(fileext = ".tsv")
-#' paths <- tabular$save(tsv)
+#' paths <- save_bids_tabular(tabular, tsv)
 #' print(paths)
 #'
 #' # use base R to read
@@ -151,11 +153,6 @@ bids_tabular_column_descriptor <- new_bids_class(
     HED = bids_property_collapsed_character(name = "HED", type = "optional"),
     .more = bids_property_named_list(name = ".more")
   ),
-  methods = list(
-    format = function(self, ..., indent = json_indent()) {
-      to_json(as.list(self, recursive = TRUE), indent = indent)
-    }
-  ),
   constructor = function(..., .list = list()) {
     props <- c(list(...), .list)
     object <- S7::new_object(
@@ -182,12 +179,14 @@ bids_tabular_column_descriptor <- new_bids_class(
   }
 )
 
+## `names`
 S7::method(names.generic, bids_tabular_column_descriptor) <- function(x) {
   nms <- c(S7::prop_names(x), names(x@.more))
   nms <- nms[!startsWith(".")]
   nms
 }
 
+## `as.list`
 S7::method(as.list.generic, bids_tabular_column_descriptor) <- function(x, all.names = FALSE, sorted = FALSE, ...) {
   nms <- S7::prop_names(x)
   nms <- nms[!startsWith(nms, ".")]
@@ -209,6 +208,10 @@ S7::method(as.list.generic, bids_tabular_column_descriptor) <- function(x, all.n
   re
 }
 
+## `format`
+S7::method(format.generic, bids_tabular_column_descriptor) <- function(x, ..., indent = json_indent()) {
+  to_json(as.list(x, recursive = TRUE), indent = indent)
+}
 
 #' @rdname bids_tabular
 #' @export
@@ -216,28 +219,27 @@ bids_tabular_meta_sidecar <- new_bids_class(
   name = "bids_tabular_meta_sidecar",
   properties = list(
     columns = bids_property_tabular_column_descriptor_list(name = "columns")
-  ),
-  methods = list(
-    format = function(self, name_list = key_missing, compact = TRUE, ..., indent = json_indent()) {
-      li <- as.list(self, recursive = TRUE)$columns
-
-      if(!identical(name_list, key_missing)) {
-        li <- li[unlist(name_list)]
-      }
-      if(compact) {
-        li <- li[vapply(li, length, 0L) > 0]
-      }
-
-      if(length(li)) {
-        return(to_json(li, indent = indent))
-      } else {
-        return("{}")
-      }
-    }
   )
 )
 
 
+## `format`
+S7::method(format.generic, bids_tabular_meta_sidecar) <- function(x, name_list = key_missing, compact = TRUE, ..., indent = json_indent()) {
+  li <- as.list(x, recursive = TRUE)$columns
+
+  if(!identical(name_list, key_missing)) {
+    li <- li[unlist(name_list)]
+  }
+  if(compact) {
+    li <- li[vapply(li, length, 0L) > 0]
+  }
+
+  if(length(li)) {
+    return(to_json(li, indent = indent))
+  } else {
+    return("{}")
+  }
+}
 
 
 #' @rdname bids_tabular
@@ -251,52 +253,53 @@ bids_tabular <- new_bids_class(
     content = bids_property_tabular_content(name = "content"),
     meta = bids_property_tabular_meta(name = "meta")
   ),
-  constructor = bids_tabular_constuctor,
-  methods = list(
-    print = function(self, nrows = 10, ...) {
-      class_name <- attr(S7::S7_class(self), "name")
-      if(length(class_name)) {
-        class_name <- sprintf("[%s]", class_name[[1]])
-      } else {
-        class_name <- "bids_tabular"
-      }
-      cat(sprintf("<BIDS Tabular>%s\n$meta:\n", class_name))
-      print(self@meta)
-      cat("\n$content:\n")
-      print(self@content, nrows = nrows)
-    },
-    save = function(self, path, meta = TRUE, compact_meta = TRUE, ...) {
-      if(!grepl("\\.(tsv|tsv\\.gz)", tolower(path))) {
-        path <- paste0(path, ".tsv")
-      }
-
-      if(is.function(self$.prepare_save)) {
-        content <- self$.prepare_save(...)
-      } else {
-        content <- self$content
-      }
-
-      write_tsv(x = content, file = path)
-      path <- path_abs(path)
-      sidecar_path <- NA
-      if(meta) {
-        sidecar_path <- gsub("\\.[ct](sv|sv\\.gz)", ".json", x = path, ignore.case = TRUE)
-
-        writeLines(text = self$meta$format(compact = TRUE, name_list = names(content)),
-                   con = sidecar_path)
-        sidecar_path <- path_abs(sidecar_path)
-      }
-      invisible(list(
-        table_path = path,
-        sidecar_path = sidecar_path
-      ))
-    }
-  )
+  constructor = bids_tabular_constuctor
 )
 
-#' @rdname bids_tabular
-#' @export
-as_bids_tabular <- S7::new_generic("as_bids_tabular", "x")
+## `save_bids_tabular`
+S7::method(save_bids_tabular, bids_tabular) <- function(x, path, meta = TRUE, compact_meta = TRUE, ...) {
+  if(!grepl("\\.(tsv|tsv\\.gz)", tolower(path))) {
+    path <- paste0(path, ".tsv")
+  }
+
+  if(is.function(x$.prepare_save)) {
+    content <- x$.prepare_save(...)
+  } else {
+    content <- x@content
+  }
+
+  write_tsv(x = content, file = path)
+  path <- path_abs(path)
+  sidecar_path <- NA
+  if(meta) {
+    sidecar_path <- gsub("\\.[ct](sv|sv\\.gz)", ".json", x = path, ignore.case = TRUE)
+    text <- format(x@meta, compact = compact_meta, name_list = names(content))
+    writeLines(text = text, con = sidecar_path)
+    sidecar_path <- path_abs(sidecar_path)
+  }
+
+  invisible(list(
+    table_path = path,
+    sidecar_path = sidecar_path
+  ))
+}
+
+## `print`
+S7::method(print.generic, bids_tabular) <- function(x, nrows = 10, ...) {
+  class_name <- attr(S7::S7_class(x), "name")
+  if(length(class_name)) {
+    class_name <- sprintf("[%s]", class_name[[1]])
+  } else {
+    class_name <- "bids_tabular"
+  }
+  cat(sprintf("<BIDS Tabular>%s\n$meta:\n", class_name))
+  print(x@meta)
+  cat("\n$content:\n")
+  print(x@content, nrows = nrows)
+  invisible(x)
+}
+
+
 
 S7::method(as_bids_tabular, bids_tabular) <- function(x, ..., cls = NULL) {
   if(

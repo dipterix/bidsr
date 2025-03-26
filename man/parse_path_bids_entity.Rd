@@ -28,7 +28,7 @@ path <- "anat/sub-01_chunk-001_t1w.nii.gz"
 parsed_filename <- parse_path_bids_entity(path)
 parsed_filename
 
-parsed_filename$get_entity("sub")
+parsed_filename$get_bids_entity("sub")
 
 # alternatively
 parsed_filename$entities$sub$value
@@ -51,13 +51,10 @@ parsed_filename
 
 # ---- schema -----------------------------------------------
 # get BIDS entity rules
-parsed_filename$get_entity_rules()
+parsed_filename$get_bids_entity("task")
 
-# get class definition
-definition <- S7::S7_class(parsed_filename)
-
-# get entity rules from class
-definition$get_entity_rules()
+# get entity rules
+parsed_filename$get_bids_entity_rules()
 
 
 }

@@ -104,7 +104,7 @@ preset_scans_meta <- local({
 #'
 #' # save to tsv
 #' tsv <- file.path(tempdir(), "scans.tsv")
-#' paths <- tabular$save(tsv)
+#' paths <- save_bids_tabular(tabular, tsv)
 #'
 #' print(paths)
 #'

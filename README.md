@@ -139,6 +139,7 @@ ieeg_table
 subset_result <- subset(ieeg_table, space == "ACPC" & suffix == "electrodes")
 path_parsed <- subset_result$parsed[[1]]
 print(path_parsed)
+#> sub-bp/ses-01/ieeg/sub-bp_ses-01_space-ACPC_electrodes.tsv
 
 electrode_path <- file.path(project, path_parsed)
 as_bids_tabular(electrode_path)
@@ -172,7 +173,7 @@ class(path_parsed)
 #> [3] "bidsr::bids_class_base"                 
 #> [4] "S7_object"
 
-path_parsed$get_entity("space")
+path_parsed$get_bids_entity("space")
 #> [1] "ACPC"
 
 ## List all available entities
@@ -194,7 +195,7 @@ path_parsed$entities
 ## If supported by schema, the `BIDS` entity rules for the 
 ## file can be queried via
 
-path_parsed$get_entity_rules()
+path_parsed$get_bids_entity_rules()
 #> $sub
 #> [1] "required" "label"   
 #> 

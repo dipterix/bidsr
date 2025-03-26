@@ -98,7 +98,7 @@ preset_sessions_meta <- local({
 #'
 #' # save to tsv
 #' tsv <- file.path(tempdir(), "sessions.tsv")
-#' paths <- tabular$save(tsv)
+#' paths <- save_bids_tabular(tabular, tsv)
 #'
 #' print(paths)
 #'

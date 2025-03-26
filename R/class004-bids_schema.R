@@ -52,14 +52,13 @@ bids_schema <- new_bids_class(
       meta = schema_raw$meta
         #do.call(bids_schema_meta, schema_raw$meta)
     )
-  },
-  methods = list(
-    format = function(self, ...) {
-      sprintf("<BIDS schema> (schema: %s, BIDS specification: %s)", self@schema_version, self@bids_version)
-    }
-  )
+  }
 )
 
+## `format`
+S7::method(format.generic, bids_schema) <- function(x, ...) {
+  sprintf("<BIDS schema> (schema: %s, BIDS specification: %s)", x@schema_version, x@bids_version)
+}
 
 get_bids_schema <- function(keys, simplify = TRUE, bids_version = current_bids_version()) {
   # schema_raw <- unlist(load_schema_file(bids_version = bids_version))

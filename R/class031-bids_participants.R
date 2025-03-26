@@ -96,7 +96,7 @@ preset_participants_meta <- local({
 #'
 #'   # save to tsv
 #'   tsv <- file.path(tempdir(), "participants.tsv")
-#'   paths <- tabular$save(tsv)
+#'   paths <- save_bids_tabular(tabular, tsv)
 #'   print(paths)
 #'
 #'   # use base R to read

@@ -84,7 +84,7 @@ preset_samples_meta <- local({
 #'
 #' # save to tsv
 #' tsv <- file.path(tempdir(), "samples.tsv")
-#' paths <- tabular$save(tsv)
+#' paths <- save_bids_tabular(tabular, tsv)
 #' print(paths)
 #'
 #' # use base R to read

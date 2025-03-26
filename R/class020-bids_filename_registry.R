@@ -67,44 +67,64 @@ bids_entity_file <- new_bids_class(
     })
   ),
   methods = list(
-    get_entity_rules = function(cls) { list() },
-    get_entity = function(self, key, value_only = TRUE, ifnotfound = NULL) {
-      entity <- self$entities[[key]]
-      if(length(entity)) {
-        if(value_only) {
-          re <- entity$value
-          if(length(re)) {
-            return(re)
-          }
-          return(ifnotfound)
-        }
-        return(entity)
-      }
-      return(ifnotfound)
+    get_bids_entity = function(self, key, value_only = TRUE, ifnotfound = NULL) {
+      force(key)
+      get_bids_entity(self, key = key, value_only = value_only, ifnotfound = ifnotfound)
     },
-    format = function(self, ...) {
-      entity_str <- unlist(lapply(self$entities, format))
-      re <- paste(c(entity_str, self$suffix), collapse = "_")
-      extension <- self$extension
-      if(length(extension)) {
-        re <- sprintf("%s.%s", re, extension)
-      }
-      path_join(c(self@parent_directory, re))
-    },
-    print = function(self, details = FALSE, ...) {
-      fmt <- format(self)
-      if(details) {
-        descr <- trimws(paste(self@description, collapse = ""))
-        if(nzchar(descr)) {
-          descr <- sprintf("\n\t\u25b6 %s", descr)
-        }
-        cat(sprintf("[%s] %s%s", self@identifier, fmt, descr), ...)
-      } else {
-        cat(fmt)
-      }
+    get_bids_entity_rules = function(self) {
+      get_bids_entity_rules(self)
     }
   )
 )
+
+## `get_bids_entity_rules`
+S7::method(get_bids_entity_rules, bids_entity_file) <- function(x) {
+  cls <- S7::S7_class(x)
+  cls@properties$entities$entity_rules
+}
+
+## `get_bids_entity`
+S7::method(get_bids_entity, bids_entity_file) <- function(x, key, value_only = TRUE, ifnotfound = NULL) {
+  entities <- x@entities[[key]]
+  if(length(entities)) {
+    if(value_only) {
+      re <- entities$value
+      if(length(re)) {
+        return(re)
+      }
+      return(ifnotfound)
+    }
+    return(entities)
+  }
+  return(ifnotfound)
+}
+
+
+## `format`
+S7::method(format.generic, bids_entity_file) <- function(x, ...) {
+  entity_str <- unlist(lapply(x@entities, format))
+  re <- paste(c(entity_str, x@suffix), collapse = "_")
+  extension <- x@extension
+  if(length(extension)) {
+    re <- sprintf("%s.%s", re, extension)
+  }
+  path_join(c(x@parent_directory, re))
+}
+
+## `print`
+S7::method(print.generic, bids_entity_file) <- function(x, details = FALSE, ...) {
+  fmt <- format(x)
+  if(details) {
+    descr <- trimws(paste(x@description, collapse = ""))
+    if(nzchar(descr)) {
+      descr <- sprintf("\n\t\u25b6 %s", descr)
+    }
+    cat(sprintf("[%s] %s%s", x@identifier, fmt, descr), ...)
+  } else {
+    cat(fmt)
+  }
+  invisible(x)
+}
 
 is_child_bids_entity_file <- function(definition) {
   if(is.null(definition)) { return(FALSE) }
@@ -172,7 +192,7 @@ is_child_bids_entity_file <- function(definition) {
 #' file.path("root/to/path", file1)
 #'
 #' # get entity values
-#' file1$get_entity("task")
+#' file1$get_bids_entity("task")
 #'
 #' # parent directory
 #' file1$parent_directory
@@ -193,6 +213,12 @@ new_bids_entity_file_class <- function(name, data_type, suffix, entity_rules = l
   force(data_type)
   force(suffix)
   force(description)
+
+  data_type <- trimws(data_type)
+  if(length(data_type) != 1 || is.na(data_type) || grepl("[\r\b\t\n ]", data_type)) {
+    # trimws(data_type) %in% c("", ".") ||
+    stop("Unable to create new BIDS entity collection for datatype: ", sQuote(data_type))
+  }
 
   # find required entities
   nms <- names(entity_rules)
@@ -264,13 +290,9 @@ new_bids_entity_file_class <- function(name, data_type, suffix, entity_rules = l
         rules = entity_rules
       )
     ),
-    constructor = constructor,
-    methods = list(
-      get_entity_rules = function(cls) {
-        entity_rules
-      }
-    )
+    constructor = constructor
   )
+
   cls
 }
 
@@ -291,7 +313,7 @@ new_bids_entity_file_class <- function(name, data_type, suffix, entity_rules = l
 #' parsed_filename <- parse_path_bids_entity(path)
 #' parsed_filename
 #'
-#' parsed_filename$get_entity("sub")
+#' parsed_filename$get_bids_entity("sub")
 #'
 #' # alternatively
 #' parsed_filename$entities$sub$value
@@ -314,13 +336,10 @@ new_bids_entity_file_class <- function(name, data_type, suffix, entity_rules = l
 #'
 #' # ---- schema -----------------------------------------------
 #' # get BIDS entity rules
-#' parsed_filename$get_entity_rules()
+#' parsed_filename$get_bids_entity("task")
 #'
-#' # get class definition
-#' definition <- S7::S7_class(parsed_filename)
-#'
-#' # get entity rules from class
-#' definition$get_entity_rules()
+#' # get entity rules
+#' parsed_filename$get_bids_entity_rules()
 #'
 #'
 #' @export
@@ -492,7 +511,7 @@ parse_path_bids_entity <- function(path, auto_new = TRUE) {
 #' file.path("BIDS/directory/to", filename)
 #'
 #' # with descriptions
-#' filename$print(details = TRUE)
+#' print(filename, details = TRUE)
 #'
 #' # get subject value
 #' filename$entities$sub$value

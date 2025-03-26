@@ -60,10 +60,13 @@ description <- project$get_dataset_description()
 print(description)
 ```
 
-To obtain the values, use `$` operator (same as `.` in `Python`):
+To obtain the values, use `$` or `@` operator (same as `.` in `Python`):
 
 ```{r}
 description$BIDSVersion
+
+# or 
+description@BIDSVersion
 ```
 
 ### File `participants.tsv`
@@ -151,7 +154,7 @@ Object `path_parsed` is a file entity class, with the entities parsed
 ```{r}
 class(path_parsed)
 
-path_parsed$get_entity("space")
+path_parsed$get_bids_entity("space")
 
 path_parsed$entities
 ```
@@ -159,7 +162,7 @@ path_parsed$entities
 If supported by schema, the `BIDS` entity rules for the file can be queried via
 
 ```{r}
-path_parsed$get_entity_rules()
+path_parsed$get_bids_entity_rules()
 ```
 
 

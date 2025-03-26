@@ -11,19 +11,6 @@ bids_entity <- new_bids_class(
     index_format = bids_property_character(name = "index_format", type = "required", default = "%d")
 
   ),
-  methods = list(
-    format = function(self, ...) {
-      v <- self@value
-      if(length(v) && !is.na(v)) {
-        if(is.numeric(v)) {
-          v <- sprintf(self$index_format, v)
-        }
-        paste(c(self@key, v), collapse = "-")
-      } else {
-        character(0L)
-      }
-    }
-  ),
   validator = function(self) {
     if(anyNA(self$value)) {
       return("BIDS entity value cannot be NA. Use `character(0)` (label) or `integer(0)` (index) to mark as missing")
@@ -31,6 +18,22 @@ bids_entity <- new_bids_class(
     return()
   }
 )
+
+## `format`
+S7::method(format.generic, bids_schema) <- function(x, ...) {
+  v <- x@value
+  if(length(v) && !is.na(v)) {
+    if(is.numeric(v)) {
+      v <- sprintf(x@index_format, v)
+    }
+    paste(c(x@key, v), collapse = "-")
+  } else {
+    character(0L)
+  }
+}
+
+
+
 
 new_bids_entity_class <- function(value, type = BIDS_ENTITY_REQUIREMENT_OPTIONS, ..., value_class_name = class(value)) {
 
@@ -47,7 +50,7 @@ new_bids_entity_class <- function(value, type = BIDS_ENTITY_REQUIREMENT_OPTIONS,
 
   cls_name <- sprintf("bids_entity_%s_%s", value_class_name, type)
 
-  new_bids_class(
+  cls <- new_bids_class(
     name = cls_name,
     parent = bids_entity,
     properties = list(
@@ -57,19 +60,6 @@ new_bids_entity_class <- function(value, type = BIDS_ENTITY_REQUIREMENT_OPTIONS,
       # index_format = bids_property_character(name = "index_format", type = "required", default = "%d")
 
     ),
-    methods = list(
-      format = function(self, ...) {
-        v <- self@value
-        if(type != "prohibited" && length(v) && !is.na(v)) {
-          if(is.numeric(v)) {
-            v <- sprintf(self$index_format, v)
-          }
-          paste(c(self@key, v), collapse = "-")
-        } else {
-          character(0L)
-        }
-      }
-    )
     # validator = function(self) {
     #   if(anyNA(self$value)) {
     #     return("BIDS entity value cannot be NA. Use `character(0)` (label) or `integer(0)` (index) to mark as missing")
@@ -77,6 +67,20 @@ new_bids_entity_class <- function(value, type = BIDS_ENTITY_REQUIREMENT_OPTIONS,
     #   return()
     # }
   )
+
+  S7::method(format.generic, cls) <- function(x, ...) {
+    v <- x@value
+    if(type != "prohibited" && length(v) && !is.na(v)) {
+      if(is.numeric(v)) {
+        v <- sprintf(x@index_format, v)
+      }
+      paste(c(x@key, v), collapse = "-")
+    } else {
+      character(0L)
+    }
+  }
+
+  cls
 }
 
 #' @name bids_entity

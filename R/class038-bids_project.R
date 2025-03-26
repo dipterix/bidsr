@@ -111,32 +111,6 @@ bids_project <- new_bids_class(
     )
   },
   methods = list(
-    format = function(self, storage = c("root", "raw", "source", "derivative"), ...) {
-      storage <- match.arg(storage)
-      path <- switch(
-        storage,
-        "root" = self@path,
-        "raw" = path_join(c(self@path, self@raw_data_relpath)),
-        "source" = path_join(c(self@path, self@source_data_relpath)),
-        "derivative" = path_join(c(self@path, self@derivative_data_relpath))
-      )
-      path
-    },
-    print = function(self, ...) {
-      screen_width <- max(20L, min(getOption("width"), 80L))
-      cat(
-        sep = "\n",
-        c(
-          sprintf("<%s>[bids_project] at:", self@name),
-          sprintf("  %s", format(self)),
-          sprintf("  - raw-data path: %s", self@raw_data_relpath),
-          sprintf("  - source-data path: %s", self@source_data_relpath),
-          sprintf("  - derivative path: %s", self@derivative_data_relpath),
-          sprintf("+- Descriptions: %s", paste(rep("-", max(screen_width - 17L, 20L)), collapse = "")),
-          strwrap(self@README, prefix = "| ", width = max(screen_width - 2L, 20L))
-        )
-      )
-    },
     get_dataset_description = function(self, relpath = "dataset_description.json") {
       ds_path <- file_path(self, relpath)
       if(!file_exists(ds_path)) {
@@ -153,6 +127,37 @@ bids_project <- new_bids_class(
     }
   )
 )
+
+## `format` generic
+S7::method(format.generic, bids_project) <- function(x, storage = c("root", "raw", "source", "derivative"), ...) {
+  storage <- match.arg(storage)
+  path <- switch(
+    storage,
+    "root" = x@path,
+    "raw" = path_join(c(x@path, x@raw_data_relpath)),
+    "source" = path_join(c(x@path, x@source_data_relpath)),
+    "derivative" = path_join(c(x@path, x@derivative_data_relpath))
+  )
+  path
+}
+
+## `print` generic
+S7::method(print.generic, bids_project) <- function(x, width = getOption("width", 80L), ...) {
+  screen_width <- max(20L, min(width, 80L))
+  cat(
+    sep = "\n",
+    c(
+      sprintf("<%s>[bids_project] at:", x@name),
+      sprintf("  %s", format(x)),
+      sprintf("  - raw-data path: %s", x@raw_data_relpath),
+      sprintf("  - source-data path: %s", x@source_data_relpath),
+      sprintf("  - derivative path: %s", x@derivative_data_relpath),
+      sprintf("+- Descriptions: %s", paste(rep("-", screen_width - 17L), collapse = "")),
+      strwrap(x@README, prefix = "| ", width = screen_width - 2L)
+    )
+  )
+  invisible(x)
+}
 
 #' @name bids_subject
 #' @title 'BIDS' subject class
@@ -197,7 +202,6 @@ bids_project <- new_bids_class(
 #' @export
 bids_subject <- new_bids_class(
   name = "bids_subject",
-  # hidden_names = c(".prepare_save"),
   properties = list(
     project = bids_property(
       name = "project", class = bids_project
@@ -274,9 +278,6 @@ bids_subject <- new_bids_class(
 
       storage_root
     },
-    print = function(self, ...) {
-      cat(sprintf("<BIDS Subject> `sub-%s` (project `%s`)\n", self@subject_code, self@project@name))
-    },
     query_modality = function(
       self, data_type, storage = c("raw", "source", "derivative"),
       ..., derivative_prefix = NULL) {
@@ -345,17 +346,24 @@ bids_subject <- new_bids_class(
       associated_files <- unique(c(associated_files_0, associated_files_1, associated_files_2))
 
       file_parsed <- lapply(associated_files, function(path) {
-        parse_path_bids_entity(path)
+        tryCatch({
+          parsed <- parse_path_bids_entity(path)
+          if(length(names(parsed@entities))) {
+            return(parsed)
+          }
+        }, error = function(e) {
+        })
+        NULL
       })
+
+      has_entities <- !vapply(file_parsed, is.null, FALSE)
+      associated_files <- associated_files[has_entities]
+      file_parsed <- file_parsed[has_entities]
 
       entity_names <- lapply(file_parsed, function(item) {
         names(item@entities)
       })
-      has_entities <- vapply(entity_names, function(nms) { length(nms) > 0 }, FALSE)
       entity_names <- unique(unlist(entity_names))
-
-      associated_files <- associated_files[has_entities]
-      file_parsed <- file_parsed[has_entities]
 
       query_result <- lapply(seq_along(associated_files), function(ii) {
         path <- associated_files[[ii]]
@@ -371,7 +379,7 @@ bids_subject <- new_bids_class(
           structure(
             names = entity_names,
             lapply(entity_names, function(nm) {
-              item$get_entity(nm, value_only = TRUE, ifnotfound = NA)
+              get_bids_entity(item, nm, value_only = TRUE, ifnotfound = NA)
             })
           )
         )
@@ -386,3 +394,11 @@ bids_subject <- new_bids_class(
     }
   )
 )
+
+
+
+## `print` generic
+S7::method(print.generic, bids_subject) <- function(x, ...) {
+  cat(sprintf("<BIDS Subject> `sub-%s` (project `%s`)\n", x@subject_code, x@project@name))
+  invisible(x)
+}

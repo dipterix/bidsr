@@ -129,7 +129,7 @@ format(filename)
 file.path("BIDS/directory/to", filename)
 
 # with descriptions
-filename$print(details = TRUE)
+print(filename, details = TRUE)
 
 # get subject value
 filename$entities$sub$value

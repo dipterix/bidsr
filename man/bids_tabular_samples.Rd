@@ -47,7 +47,7 @@ tabular <- as_bids_tabular(tabular, cls = bids_tabular_samples)
 
 # save to tsv
 tsv <- file.path(tempdir(), "samples.tsv")
-paths <- tabular$save(tsv)
+paths <- save_bids_tabular(tabular, tsv)
 print(paths)
 
 # use base R to read
