@@ -189,8 +189,9 @@ new_bids_class <- function(
 
 }
 
-#' @export
-`format.bidsr::bids_class_base` <- function(x, indent = json_indent(), collapse = "\n", ...) {
+# format generic
+format.generic <- S7::new_external_generic("base", "format", "x")
+S7::method(format.generic, bids_class_base) <- function(x, indent = json_indent(), collapse = "\n", ...) {
   S7::check_is_S7(x)
   s <- character(0L)
   fun <- attr(x, ".bids_object_extra")$format
@@ -212,13 +213,15 @@ new_bids_class <- function(
   s
 }
 
-#' @export
-`as.character.bidsr::bids_class_base` <- function(x, indent = 0, ...) {
+# as.character generic
+as.character.generic <- S7::new_external_generic("base", "as.character", "x")
+S7::method(as.character.generic, bids_class_base) <- function(x, indent = 0, ...) {
   paste(format(x, indent = indent, ...), collapse = "\n")
 }
 
-#' @export
-`print.bidsr::bids_class_base` <- function(x, ...) {
+# print generic
+print.generic <- S7::new_external_generic("base", "print", "x")
+S7::method(print.generic, bids_class_base) <- function(x, ...) {
   S7::check_is_S7(x)
   if( S7::prop_exists(x, "print") ) {
     cat(paste(c(x@print, ""), collapse = "\n"))
@@ -233,6 +236,7 @@ new_bids_class <- function(
   invisible(x)
 }
 
+## names generic
 names.generic <- S7::new_external_generic("base", "names", "x")
 S7::method(names.generic, bids_class_base) <- function(x) {
   nms <- unique(c(S7::prop_names(x), names(attr(x, ".bids_object_extra"))))
@@ -240,8 +244,72 @@ S7::method(names.generic, bids_class_base) <- function(x) {
   nms
 }
 
-as.list.generic <- S7::new_external_generic("base", "as.list", "x")
+## `[[` operator
+extract_bids_class_base <- function(x, name) {
+  if(S7::prop_exists(x, name)) {
+    return(S7::prop(x, name))
+  }
+  # methods
+  extra_properties <- as.list(attr(x, ".bids_object_extra"))
+  re <- extra_properties[[ name ]]
 
+  if(is.function(re)) {
+    fmls <- formals(re)
+    first_formal <- names(fmls)[[1]]
+    fmls <- fmls[-1]
+    if(first_formal == "self") {
+      fun <- function(...) {
+        call <- match.call()
+        call[[1]] <- re
+        call$self <- x
+        env <- parent.frame()
+        eval(call, env)
+      }
+      formals(fun) <- fmls
+      return(fun)
+    } else {
+      fun <- function(...) {
+        call <- match.call()
+        call[[1]] <- re
+        call$cls <- S7::S7_class(x)
+        env <- parent.frame()
+        eval(call, env)
+      }
+      formals(fun) <- fmls
+      return(fun)
+    }
+  }
+
+  return(re)
+}
+extract_bracket.generic <- S7::new_external_generic("base", "[[", "x")
+S7::method(extract_bracket.generic, bids_class_base) <- extract_bids_class_base
+
+## `[[<-` operator
+extract_set_bids_class_base <- function(x, name, value) {
+  if(!S7::prop_exists(x, name)) {
+    cls <- class(x)[[1]]
+    if(name %in% names(attr(x, ".bids_object_extra"))) {
+      stop(sprintf("BIDS class `%s` property `%s` is read-only.", cls, name))
+    }
+    stop(sprintf("BIDS class `%s` does not have property `%s`.", cls, name))
+  }
+  S7::prop(x, name) <- value
+  x
+}
+extract_set_bracket.generic <- S7::new_external_generic("base", "[[<-", "x")
+S7::method(extract_set_bracket.generic, bids_class_base) <- extract_set_bids_class_base
+
+## `$` operator
+extract.generic <- S7::new_external_generic("base", "$", "x")
+S7::method(extract.generic, bids_class_base) <- extract_bids_class_base
+
+## `$<-` operator
+extract_set.generic <- S7::new_external_generic("base", "$<-", "x")
+S7::method(extract_set.generic, bids_class_base) <- extract_set_bids_class_base
+
+## `as.list` generic
+as.list.generic <- S7::new_external_generic("base", "as.list", "x")
 S7::method(as.list.generic, bids_class_base) <- function(x, all.names = FALSE, sorted = FALSE, recursive = FALSE, ...) {
   nms <- S7::prop_names(x)
   nms <- nms[!nms %in% c("format", "print", attr(x, ".bids_object_hidden_names"))]
@@ -287,75 +355,11 @@ S7::method(as.list.generic, bids_class_base) <- function(x, all.names = FALSE, s
   re
 }
 
-
-#' @export
-`as.data.frame.bidsr::bids_class_base` <- function(x, ...) {
+## as.data.frame generic
+as.data.frame.generic <- S7::new_external_generic("base", "as.data.frame", "x")
+S7::method(as.data.frame.generic, bids_class_base) <- function(x, ...) {
   li <- as.list(x, all.names = FALSE, recursive = FALSE, sorted = FALSE)
   as.data.frame(li)
-}
-
-#' @export
-`$.bidsr::bids_class_base` <- function(x, name) {
-  x[[name]]
-}
-
-#' @export
-`$<-.bidsr::bids_class_base` <- function(x, name, value) {
-  x[[name]] <- value
-  x
-}
-
-
-#' @export
-`[[.bidsr::bids_class_base` <- function(x, name) {
-  if(S7::prop_exists(x, name)) {
-    return(S7::prop(x, name))
-  }
-  # methods
-  extra_properties <- as.list(attr(x, ".bids_object_extra"))
-  re <- extra_properties[[ name ]]
-
-  if(is.function(re)) {
-    fmls <- formals(re)
-    first_formal <- names(fmls)[[1]]
-    fmls <- fmls[-1]
-    if(first_formal == "self") {
-      fun <- function(...) {
-        call <- match.call()
-        call[[1]] <- re
-        call$self <- x
-        env <- parent.frame()
-        eval(call, env)
-      }
-      formals(fun) <- fmls
-      return(fun)
-    } else {
-      fun <- function(...) {
-        call <- match.call()
-        call[[1]] <- re
-        call$cls <- S7::S7_class(x)
-        env <- parent.frame()
-        eval(call, env)
-      }
-      formals(fun) <- fmls
-      return(fun)
-    }
-  }
-
-  return(re)
-}
-
-#' @export
-`[[<-.bidsr::bids_class_base` <- function(x, name, value) {
-  if(!S7::prop_exists(x, name)) {
-    cls <- class(x)[[1]]
-    if(name %in% names(attr(x, ".bids_object_extra"))) {
-      stop(sprintf("BIDS class `%s` property `%s` is read-only.", cls, name))
-    }
-    stop(sprintf("BIDS class `%s` does not have property `%s`.", cls, name))
-  }
-  S7::prop(x, name) <- value
-  x
 }
 
 #' @export

@@ -12,6 +12,7 @@ Read, parse, modify the files to comply with brain imaging data structure ('BIDS
 Useful links:
 \itemize{
   \item \url{https://dipterix.org/bidsr/}
+  \item \url{https://github.com/dipterix/bidsr/}
 }
 
 }

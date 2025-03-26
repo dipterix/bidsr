@@ -192,26 +192,26 @@ listall_bids_map <- function(
   ))
 }
 
-#' @export
-`names.bidsr::bids_map` <- function(x) {
+# `names`
+S7::method(names.generic, bids_map) <- function(x) {
   S7::check_is_S7(x, bids_map)
   get_bids_map_keys(x, x, x@search_depth)
 }
 
-#' @export
-`[[.bidsr::bids_map` <- function(x, i, ..., impl = FALSE) {
+# `[[`
+S7::method(extract_bracket.generic, bids_map) <- function(x, i, ..., impl = FALSE) {
   S7::check_is_S7(x, bids_map)
   get_bids_map_value(x = x, name = i, root = x, search_depth = x@search_depth, impl = impl)
 }
 
-#' @export
-`[[<-.bidsr::bids_map` <- function(x, i, value) {
+# `[[<-`
+S7::method(extract_set_bracket.generic, bids_map) <- function(x, i, value) {
   x@impl$set(i, value)
   x
 }
 
-#' @export
-`as.list.bidsr::bids_map` <- function(
+# `as.list`
+S7::method(as.list.generic, bids_map) <- function(
     x, all.names = FALSE, sorted = FALSE, recursive = FALSE, ...) {
 
   if( recursive ) {

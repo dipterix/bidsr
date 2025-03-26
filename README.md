@@ -46,10 +46,17 @@ Current milestone:
   - [X] Analyze and list subject data by types
   - [ ] Find side-car and meta-data information using the `BIDS` inheritance principle
 
+Next milestone:
+
+* Provide read functions to handle common file formats
+  - [X] `JSON` format
+  - [X] `.tsv` or `.csv` format
+  - [ ] `.nii` format
+  - [ ] `.mat`, `.edf`, ... (electrophysiology)
+* [ ] Provide handler registry to access and process data files
+
 A tentative to-do list:    
 
-* [ ] Provide read functions to handle common file formats
-* [ ] Provide handler registry to access and process data files
 * [ ] Modify the path
 * [ ] Use `BIDS` schema to validation rules dynamically
 * [ ] Validate `BIDS` files
