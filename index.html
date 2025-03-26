@@ -108,10 +108,20 @@
 </ul>
 </li>
 </ul>
+<p>Next milestone:</p>
+<ul>
+<li>Provide read functions to handle common file formats
+<ul class="task-list">
+<li><label><input type="checkbox" checked><code>JSON</code> format</label></li>
+<li><label><input type="checkbox" checked><code>.tsv</code> or <code>.csv</code> format</label></li>
+<li><label><input type="checkbox"><code>.nii</code> format</label></li>
+<li><label><input type="checkbox"><code>.mat</code>, <code>.edf</code>, … (electrophysiology)</label></li>
+</ul>
+</li>
+<li><label><input type="checkbox">Provide handler registry to access and process data files</label></li>
+</ul>
 <p>A tentative to-do list:</p>
 <ul class="task-list">
-<li><label><input type="checkbox">Provide read functions to handle common file formats</label></li>
-<li><label><input type="checkbox">Provide handler registry to access and process data files</label></li>
 <li><label><input type="checkbox">Modify the path</label></li>
 <li><label><input type="checkbox">Use <code>BIDS</code> schema to validation rules dynamically</label></li>
 <li><label><input type="checkbox">Validate <code>BIDS</code> files</label></li>
@@ -190,6 +200,7 @@
 <span><span class="va">subset_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">ieeg_table</span>, <span class="va">space</span> <span class="op">==</span> <span class="st">"ACPC"</span> <span class="op">&amp;</span> <span class="va">suffix</span> <span class="op">==</span> <span class="st">"electrodes"</span><span class="op">)</span></span>
 <span><span class="va">path_parsed</span> <span class="op">&lt;-</span> <span class="va">subset_result</span><span class="op">$</span><span class="va">parsed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">path_parsed</span><span class="op">)</span></span>
+<span><span class="co">#&gt; sub-bp/ses-01/ieeg/sub-bp_ses-01_space-ACPC_electrodes.tsv</span></span>
 <span></span>
 <span><span class="va">electrode_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">project</span>, <span class="va">path_parsed</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">electrode_path</span><span class="op">)</span></span>
@@ -223,7 +234,7 @@
 <span><span class="co">#&gt; [3] "bidsr::bids_class_base"                 </span></span>
 <span><span class="co">#&gt; [4] "S7_object"</span></span>
 <span></span>
-<span><span class="va">path_parsed</span><span class="op">$</span><span class="fu">get_entity</span><span class="op">(</span><span class="st">"space"</span><span class="op">)</span></span>
+<span><span class="va">path_parsed</span><span class="op">$</span><span class="fu">get_bids_entity</span><span class="op">(</span><span class="st">"space"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "ACPC"</span></span>
 <span></span>
 <span><span class="co">## List all available entities</span></span>
@@ -245,7 +256,7 @@
 <span><span class="co">## If supported by schema, the `BIDS` entity rules for the </span></span>
 <span><span class="co">## file can be queried via</span></span>
 <span></span>
-<span><span class="va">path_parsed</span><span class="op">$</span><span class="fu">get_entity_rules</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">path_parsed</span><span class="op">$</span><span class="fu">get_bids_entity_rules</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $sub</span></span>
 <span><span class="co">#&gt; [1] "required" "label"   </span></span>
 <span><span class="co">#&gt; </span></span>

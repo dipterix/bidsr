@@ -241,13 +241,13 @@ number of total definitions registered.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use formatting</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "anat/sub-001_ses-001_task-001_acq-ecog_T1w.nii.gz"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> anat/sub-001_ses-001_task-001_acq-ecog_T1w.nii.gz</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"BIDS/directory/to"</span>, <span class="va">filename</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "BIDS/directory/to/anat/sub-001_ses-001_task-001_acq-ecog_T1w.nii.gz"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># with descriptions</span></span></span>
-<span class="r-in"><span><span class="va">filename</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span>details <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">filename</span>, details <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [anat/t1w] anat/sub-001_ses-001_task-001_acq-ecog_T1w.nii.gz</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	▶ T1-weighted image, Anatomical Magnetic Resonance Imaging</span>
 <span class="r-in"><span></span></span>
