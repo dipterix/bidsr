@@ -20,9 +20,11 @@ bids_project(
 \item{source_data_relpath}{source data-set path, relative (to the \code{path});}
 
 \item{derivative_data_relpath}{derivative data-set path, relative (to the \code{path});}
+
+\item{strict}{whether \code{path} needs to exist; default is \code{TRUE}}
 }
 \value{
-A 'BIDS' project instance
+A 'BIDS' project instance.
 }
 \description{
 'BIDS' project class

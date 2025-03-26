@@ -253,7 +253,7 @@ bids_tabular <- new_bids_class(
   ),
   constructor = bids_tabular_constuctor,
   methods = list(
-    print = function(self, ...) {
+    print = function(self, nrows = 10, ...) {
       class_name <- attr(S7::S7_class(self), "name")
       if(length(class_name)) {
         class_name <- sprintf("[%s]", class_name[[1]])
@@ -263,7 +263,7 @@ bids_tabular <- new_bids_class(
       cat(sprintf("<BIDS Tabular>%s\n$meta:\n", class_name))
       print(self@meta)
       cat("\n$content:\n")
-      print(self@content)
+      print(self@content, nrows = nrows)
     },
     save = function(self, path, meta = TRUE, compact_meta = TRUE, ...) {
       if(!grepl("\\.(tsv|tsv\\.gz)", tolower(path))) {

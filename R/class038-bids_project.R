@@ -4,7 +4,8 @@
 #' @param raw_data_relpath raw data-set path, relative (to the \code{path});
 #' @param source_data_relpath source data-set path, relative (to the \code{path});
 #' @param derivative_data_relpath derivative data-set path, relative (to the \code{path});
-#' @returns A 'BIDS' project instance
+#' @param strict whether \code{path} needs to exist; default is \code{TRUE}
+#' @returns A 'BIDS' project instance.
 #'
 #' @examples
 #'
@@ -241,7 +242,7 @@ bids_subject <- new_bids_class(
     )
   },
   methods = list(
-    get_path = function(self, storage = c("raw", "source", "derivative"), derivative_prefix = NULL) {
+    get_path = function(self, storage = c("raw", "source", "derivative"), derivative_prefix = NULL, relative_path = FALSE) {
       storage <- match.arg(storage)
       relpath <- S7::prop(self@project, sprintf("%s_data_relpath", storage))
 
@@ -254,14 +255,19 @@ bids_subject <- new_bids_class(
       if(!nzchar(relpath) || trimws(relpath) %in% c(".", "")) {
         relpath <- NULL
       }
-      storage_root <- path_join(c(self$project$path, relpath, additional_prefix, sprintf("sub-%s", self$subject_code)))
+      if(relative_path) {
+        storage_root <- path_join(c(relpath, additional_prefix, sprintf("sub-%s", self$subject_code)))
+      } else {
+        storage_root <- path_join(c(self$project$path, relpath, additional_prefix, sprintf("sub-%s", self$subject_code)))
+      }
+
       storage_root
     },
     print = function(self, ...) {
       cat(sprintf("<BIDS Subject> `sub-%s` (project `%s`)\n", self@subject_code, self@project@name))
     },
     query_modality = function(
-      self, modality, storage = c("raw", "source", "derivative"),
+      self, data_type, storage = c("raw", "source", "derivative"),
       ..., derivative_prefix = NULL) {
 
       storage <- match.arg(storage)
@@ -271,54 +277,61 @@ bids_subject <- new_bids_class(
       # self <- bids_subject(project = project, subject_code = "06")
       # storage <- "raw"
       # additional_prefix <- NULL
-      # modality <- "ieeg"
+      # data_type <- "ieeg"
       # ii <- 1
-      # self$query_modality(modality = "ieeg")
+      # self$query_modality(data_type = "ieeg")
 
-      if(!isTRUE(nzchar(modality))) {
-        stop("BIDS modality cannot be empty.")
+      if(!isTRUE(nzchar(data_type))) {
+        stop("BIDS `data_type` cannot be empty.")
       }
-      storage_root <- self$get_path(storage = storage, derivative_prefix = derivative_prefix)
+      project_root <- self@project@path
+      subject_root <- self$get_path(storage = storage, derivative_prefix = derivative_prefix, relative_path = TRUE)
+      subject_absroot <- file_path(project_root, subject_root)
 
-      if(!dir_exists(storage_root)) {
-        stop(sprintf("Cannot find directory for subject [sub-%s]: %s", self$subject_code, storage_root))
+      if(!dir_exists(subject_absroot)) {
+        stop(sprintf("Cannot find directory for subject [sub-%s]: %s", self$subject_code, subject_absroot))
       }
+      storage_root <- dirname(subject_root)
+      storage_absroot <- file_path(project_root, storage_root)
 
       # query files
       # according to
       # https://bids-specification.readthedocs.io/en/stable/common-principles.html#the-inheritance-principle
       # There are 4 common paths
 
-      modality_paths <- list.files(
-        path = storage_root,
-        all.files = FALSE, pattern = sprintf("^%s$", modality),
+      data_type_paths <- list.files(
+        path = subject_absroot,
+        all.files = FALSE, pattern = sprintf("^%s$", data_type),
         recursive = TRUE,
         include.dirs = TRUE,
         full.names = FALSE
       )
 
       # Example 1: immediately under subject folder
-      associated_files_0 <- list_files_only(path = dirname(storage_root), all = FALSE, full_names = FALSE)
-      associated_files_1 <- list_files_only(path = storage_root, all = FALSE, full_names = FALSE)
+      associated_files_0 <- list_files_only(path = storage_absroot, all = FALSE, full_names = FALSE)
+      associated_files_0 <- file_path(storage_root, associated_files_0)
+      associated_files_1 <- list_files_only(path = subject_absroot, all = FALSE, full_names = FALSE)
+      associated_files_1 <- file_path(subject_root, associated_files_0)
 
 
-      associated_files_2 <- lapply(modality_paths, function(modality_path) {
-        # modality_path <- modality_paths[[1]]
-        modality_pathsplit <- strsplit(modality_path, "[/|\\\\]")[[1]]
-        modality_root1 <- file_path(storage_root, modality_pathsplit[[1]])
-        associated_subfiles_1 <- file_path(modality_pathsplit[[1]], list_files_only(modality_root1))
+      associated_files_2 <- lapply(data_type_paths, function(data_type_path) {
+        # data_type_path <- data_type_paths[[1]]
+        data_type_pathsplit <- strsplit(data_type_path, "[/|\\\\]")[[1]]
+        data_type_root1 <- file_path(subject_absroot, data_type_pathsplit[[1]])
+        associated_subfiles_1 <- file_path(data_type_pathsplit[[1]], list_files_only(data_type_root1))
 
-        if(length(modality_pathsplit) > 1) {
-          modality_root2 <- file_path(storage_root, modality_path)
-          associated_subfiles_2 <- file_path(modality_path, list.files(modality_root2, all.files = FALSE, full.names = FALSE, recursive = FALSE, include.dirs = TRUE, no.. = TRUE))
+        if(length(data_type_pathsplit) > 1) {
+          data_type_root2 <- file_path(subject_absroot, data_type_path)
+          associated_subfiles_2 <- file_path(data_type_path, list.files(data_type_root2, all.files = FALSE, full.names = FALSE, recursive = FALSE, include.dirs = TRUE, no.. = TRUE))
         } else {
           associated_subfiles_2 <- NULL
         }
 
         c(associated_subfiles_1, associated_subfiles_2)
       })
+      associated_files_2 <- file_path(subject_root, unique(unlist(associated_files_2)))
 
-      associated_files <- unique(c(associated_files_0, associated_files_1, unlist(associated_files_2)))
+      associated_files <- unique(c(associated_files_0, associated_files_1, associated_files_2))
 
       file_parsed <- lapply(associated_files, function(path) {
         parse_path_bids_entity(path)
@@ -339,6 +352,7 @@ bids_subject <- new_bids_class(
         c(
           list(
             parsed = I(list(item)),
+            # path = file_path
             data_type = item@data_type,
             suffix = paste(item@suffix, collapse = "_"),
             extension = paste(item@extension, collapse = ".")
