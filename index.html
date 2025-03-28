@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,7 +104,7 @@
 <ul class="task-list">
 <li><label><input type="checkbox" checked>Get top-level files</label></li>
 <li><label><input type="checkbox" checked>Analyze and list subject data by types</label></li>
-<li><label><input type="checkbox">Find side-car and meta-data information using the <code>BIDS</code> inheritance principle</label></li>
+<li><label><input type="checkbox">Find side-car and meta-data information using the <code>BIDS</code> inheritance principle (test needed)</label></li>
 </ul>
 </li>
 </ul>
@@ -146,12 +146,13 @@
 <span></span>
 <span><span class="co">## The top-level `dataset_description.json` and `participants.tsv` </span></span>
 <span><span class="co">## can be parsed via</span></span>
-<span><span class="va">description</span> <span class="op">&lt;-</span> <span class="va">project</span><span class="op">$</span><span class="fu">get_dataset_description</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">participants</span> <span class="op">&lt;-</span> <span class="va">project</span><span class="op">$</span><span class="fu">get_participants</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">description</span> <span class="op">&lt;-</span> <span class="va">project</span><span class="op">$</span><span class="fu">get_bids_dataset_description</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">participants</span> <span class="op">&lt;-</span> <span class="va">project</span><span class="op">$</span><span class="fu">get_bids_participants</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co">## To obtain the values, use `$` operator (same as `.` in `Python`):</span></span>
 <span><span class="va">description</span><span class="op">$</span><span class="va">BIDSVersion</span></span>
+<span><span class="co">#&gt; [1] "1.0.2"</span></span>
 <span></span>
 <span></span>
 <span><span class="co">## Given a project path or instance, a `BIDS` subject can be instantiated via </span></span>
@@ -166,38 +167,41 @@
 <span><span class="co">## The official `BIDS` and its extensions support various of data types, </span></span>
 <span><span class="co">## such as `anat`, `func`, `meg`, `eeg`, `ieeg`, etc. </span></span>
 <span><span class="co">## use `query_modality` method to query the files</span></span>
-<span><span class="va">ieeg_table</span> <span class="op">&lt;-</span> <span class="va">subject</span><span class="op">$</span><span class="fu">query_modality</span><span class="op">(</span><span class="st">"ieeg"</span><span class="op">)</span></span>
-<span><span class="va">ieeg_table</span></span>
-<span><span class="co">#&gt;           parsed data_type      suffix extension    sub    ses    acq</span></span>
-<span><span class="co">#&gt;           &lt;AsIs&gt;    &lt;char&gt;      &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;lgcl&gt;</span></span>
-<span><span class="co">#&gt;  1: sub-bp/s....      ieeg coordsystem      json     bp     01     NA</span></span>
-<span><span class="co">#&gt;  2: sub-bp/s....      ieeg  electrodes       tsv     bp     01     NA</span></span>
-<span><span class="co">#&gt;  3: sub-bp/s....      ieeg coordsystem      json     bp     01     NA </span></span>
-<span><span class="co">#&gt;  4: sub-bp/s....      ieeg  electrodes       tsv     bp     01     NA </span></span>
-<span><span class="co">#&gt;  5: sub-bp/s....      ieeg    channels       tsv     bp     01     NA     </span></span>
-<span><span class="co">#&gt;  6: sub-bp/s....      ieeg      events       tsv     bp     01     NA    </span></span>
-<span><span class="co">#&gt;  7: sub-bp/s....      ieeg        ieeg       eeg     bp     01     NA    </span></span>
-<span><span class="co">#&gt;  8: sub-bp/s....      ieeg        ieeg      json     bp     01     NA    </span></span>
-<span><span class="co">#&gt;  9: sub-bp/s....      ieeg        ieeg      vhdr     bp     01     NA    </span></span>
-<span><span class="co">#&gt; 10: sub-bp/s....      ieeg        ieeg      vmrk     bp     01     NA    </span></span>
-<span><span class="co">#&gt;         space   task    run</span></span>
-<span><span class="co">#&gt;        &lt;char&gt; &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:      ACPC   &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  2:      ACPC   &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  3: Talairach   &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  4: Talairach   &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  5:      &lt;NA&gt;  motor      1</span></span>
-<span><span class="co">#&gt;  6:      &lt;NA&gt;  motor      1</span></span>
-<span><span class="co">#&gt;  7:      &lt;NA&gt;  motor      1</span></span>
-<span><span class="co">#&gt;  8:      &lt;NA&gt;  motor      1</span></span>
-<span><span class="co">#&gt;  9:      &lt;NA&gt;  motor      1</span></span>
-<span><span class="co">#&gt; 10:      &lt;NA&gt;  motor      1</span></span>
+<span><span class="va">ieeg_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/query_bids.html">query_bids</a></span><span class="op">(</span><span class="va">subject</span>, <span class="st">"ieeg"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ieeg_table</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          parsed data_type     suffix extension    sub    ses    acq     space</span></span>
+<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt;     &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;lgcl&gt;    &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA      ACPC</span></span>
+<span><span class="co">#&gt; 2: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA Talairach</span></span>
+<span><span class="co">#&gt; 3: sub-bp/s....      ieeg   channels       tsv     bp     01     NA      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4: sub-bp/s....      ieeg     events       tsv     bp     01     NA      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 5: sub-bp/s....      ieeg       ieeg       eeg     bp     01     NA      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6: sub-bp/s....      ieeg       ieeg      vhdr     bp     01     NA      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 7: sub-bp/s....      ieeg       ieeg      vmrk     bp     01     NA      &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;      task    run</span></span>
+<span><span class="co">#&gt;    &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:   &lt;NA&gt;   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2:   &lt;NA&gt;   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3:  motor      1</span></span>
+<span><span class="co">#&gt; 4:  motor      1</span></span>
+<span><span class="co">#&gt; 5:  motor     01</span></span>
+<span><span class="co">#&gt; 6:  motor     01</span></span>
+<span><span class="co">#&gt; 7:  motor     01</span></span>
 <span></span>
 <span></span>
 <span><span class="co">## The first column contains a list of file instances. Here's an </span></span>
 <span><span class="co">## example to read the `ACPC` electrode coordinates:</span></span>
 <span></span>
 <span><span class="va">subset_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">ieeg_table</span>, <span class="va">space</span> <span class="op">==</span> <span class="st">"ACPC"</span> <span class="op">&amp;</span> <span class="va">suffix</span> <span class="op">==</span> <span class="st">"electrodes"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">subset_result</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          parsed data_type     suffix extension    sub    ses    acq  space</span></span>
+<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt;     &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;lgcl&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA   ACPC</span></span>
+<span><span class="co">#&gt;      task    run</span></span>
+<span><span class="co">#&gt;    &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:   &lt;NA&gt;   &lt;NA&gt;</span></span>
+<span></span>
+<span><span class="co"># Get parsed 'BIDS' file object</span></span>
 <span><span class="va">path_parsed</span> <span class="op">&lt;-</span> <span class="va">subset_result</span><span class="op">$</span><span class="va">parsed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">path_parsed</span><span class="op">)</span></span>
 <span><span class="co">#&gt; sub-bp/ses-01/ieeg/sub-bp_ses-01_space-ACPC_electrodes.tsv</span></span>
@@ -227,7 +231,6 @@
 <span><span class="co">## `BIDS` entity</span></span>
 <span></span>
 <span><span class="co">## Object `path_parsed` is a file entity class, with the entities parsed</span></span>
-<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">path_parsed</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "bidsr::bids_entity_file_ieeg_electrodes"</span></span>
 <span><span class="co">#&gt; [2] "bidsr::bids_entity_file"                </span></span>
@@ -251,7 +254,6 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $space</span></span>
 <span><span class="co">#&gt; space-ACPC</span></span>
-<span></span>
 <span></span>
 <span><span class="co">## If supported by schema, the `BIDS` entity rules for the </span></span>
 <span><span class="co">## file can be queried via</span></span>

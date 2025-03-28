@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,81 +77,155 @@ data-sets</a>. Please copy-paste-run the following R commands:</p>
 <div class="section level2">
 <h2 id="overview-of-a-bids-project">Overview of a <code>BIDS</code> project<a class="anchor" aria-label="anchor" href="#overview-of-a-bids-project"></a>
 </h2>
-<p>Let’s inspect the project <code>ieeg_motorMiller2007</code> from the
-official <code>BIDS</code> example repository:</p>
+<p>Let’s inspect the project <code>ds000117</code> from the official
+<code>BIDS</code> example repository:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">project_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">example_root</span>, <span class="st">"ieeg_motorMiller2007"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">project_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">example_root</span>, <span class="st">"ds000117"</span><span class="op">)</span></span>
 <span><span class="va">project</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bids_project.html">bids_project</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">project</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;ieeg_motorMiller2007&gt;[bids_project] at:</span></span>
-<span><span class="co">#&gt;   /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ieeg_motorMiller2007</span></span>
+<span><span class="co">#&gt; &lt;ds000117&gt;[bids_project] at:</span></span>
+<span><span class="co">#&gt;   /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ds000117</span></span>
 <span><span class="co">#&gt;   - raw-data path: .</span></span>
 <span><span class="co">#&gt;   - source-data path: sourcedata</span></span>
 <span><span class="co">#&gt;   - derivative path: derivatives</span></span>
 <span><span class="co">#&gt; +- Descriptions: ---------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; | These are the cue-based hand &amp; tongue movement data described in the</span></span>
-<span><span class="co">#&gt; | Journal of Neuroscience 2007 Manuscript titled: “Spectral Changes in</span></span>
-<span><span class="co">#&gt; | Cortical Surface Potentials during Motor Movement”. The patients only</span></span>
-<span><span class="co">#&gt; | partially overlap with the patients from that study.</span></span>
+<span><span class="co">#&gt; | This dataset was obtained from the OpenNeuro project</span></span>
+<span><span class="co">#&gt; | (https://www.openneuro.org). Accession #: ds000117</span></span>
 <span><span class="co">#&gt; | </span></span>
-<span><span class="co">#&gt; | Please keep in mind that these anonymized data are from real patients who</span></span>
-<span><span class="co">#&gt; | donated time in a difficult period of their lives to advance our</span></span>
-<span><span class="co">#&gt; | understanding of the brain. Any publication involving these data MUST</span></span>
-<span><span class="co">#&gt; | include the following in the methods section of the manuscript, without</span></span>
-<span><span class="co">#&gt; | modification:</span></span>
+<span><span class="co">#&gt; | The same dataset is also available here:</span></span>
+<span><span class="co">#&gt; | ftp://ftp.mrc-cbu.cam.ac.uk/personal/rik.henson/wakemandg_hensonrn/, but in</span></span>
+<span><span class="co">#&gt; | a non-BIDS format (which may be easier to download by subject rather than</span></span>
+<span><span class="co">#&gt; | by modality)</span></span>
 <span><span class="co">#&gt; | </span></span>
-<span><span class="co">#&gt; | Ethics statement: All patients participated in a purely voluntary manner,</span></span>
-<span><span class="co">#&gt; | after providing informed written consent, under experimental protocols</span></span>
-<span><span class="co">#&gt; | approved by the Institutional Review Board of the University of Washington</span></span>
-<span><span class="co">#&gt; | (#12193). All patient data was anonymized according to IRB protocol, in</span></span>
-<span><span class="co">#&gt; | accordance with HIPAA mandate. It was made available through the XXXXName</span></span>
-<span><span class="co">#&gt; | of database/manuscriptXXX repository [insert citation here], freely</span></span>
-<span><span class="co">#&gt; | available at XXXURL. All patient data was anonymized according to IRB</span></span>
-<span><span class="co">#&gt; | protocol, in accordance with HIPAA mandate. These data originally appeared</span></span>
-<span><span class="co">#&gt; | in the manuscript “Spectral Changes in Cortical Surface Potentials during</span></span>
-<span><span class="co">#&gt; | Motor Movement” published in Journal of Neuroscience in 2007 [Insert</span></span>
-<span><span class="co">#&gt; | Embedded Citation for the Manuscript Here – e.g. Endnote, BibTex].</span></span>
+<span><span class="co">#&gt; | Note that it is a subset of the data available on OpenfMRI</span></span>
+<span><span class="co">#&gt; | (http://www.openfmri.org; Accession #: ds000117).</span></span>
 <span><span class="co">#&gt; | </span></span>
-<span><span class="co">#&gt; | Kai Miller, Stanford University, 2015 kai.miller@stanford.edu,</span></span>
-<span><span class="co">#&gt; | kjmiller@gmail.com</span></span></code></pre></div>
+<span><span class="co">#&gt; | Description: Multi-subject, multi-modal (sMRI+fMRI+MEG+EEG) neuroimaging</span></span>
+<span><span class="co">#&gt; | dataset on face processing</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Please cite the following reference if you use these data:</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Wakeman, D.G. &amp; Henson, R.N. (2015). A multi-subject, multi-modal human</span></span>
+<span><span class="co">#&gt; | neuroimaging dataset. Sci. Data 2:150001 doi: 10.1038/sdata.2015.1</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | The data have been used in several publications including, for example:</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Henson, R.N., Abdulrahman, H., Flandin, G. &amp; Litvak, V. (2019). Multimodal</span></span>
+<span><span class="co">#&gt; | integration of M/EEG and f/MRI data in SPM12. Frontiers in Neuroscience,</span></span>
+<span><span class="co">#&gt; | Methods, 13, 300.</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Henson, R.N., Wakeman, D.G., Litvak, V. &amp; Friston, K.J. (2011). A</span></span>
+<span><span class="co">#&gt; | Parametric Empirical Bayesian framework for the EEG/MEG inverse problem:</span></span>
+<span><span class="co">#&gt; | generative models for multisubject and multimodal integration. Frontiers in</span></span>
+<span><span class="co">#&gt; | Human Neuroscience, 5, 76, 1-16.</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Chapter 42 of the SPM12 manual</span></span>
+<span><span class="co">#&gt; | (http://www.fil.ion.ucl.ac.uk/spm/doc/manual.pdf)</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | (see</span></span>
+<span><span class="co">#&gt; | ftp://ftp.mrc-cbu.cam.ac.uk/personal/rik.henson/wakemandg_hensonrn/Publications</span></span>
+<span><span class="co">#&gt; | for full list), as well as the BioMag2010 data competition and the Kaggle</span></span>
+<span><span class="co">#&gt; | competition: https://www.kaggle.com/c/decoding-the-human-brain)</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | ==================================================================================</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | func/ ----- Unlike in v1-v3 of this dataset, the first two (dummy) volumes</span></span>
+<span><span class="co">#&gt; | have now been removed (as stated in *.json), so event onset times correctly</span></span>
+<span><span class="co">#&gt; | refer to t=0 at start of third volume</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Note that, owing to scanner error, Subject 10 only has 170 volumes in last</span></span>
+<span><span class="co">#&gt; | run (Run 9) (hence the BIDS warning of some onsets in events.tsv file being</span></span>
+<span><span class="co">#&gt; | later than the data)</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | meg/ ---- Three anatomical fiducials were digitized for aligning the MEG</span></span>
+<span><span class="co">#&gt; | with the MRI: the nasion (lowest depression between the eyes) and the left</span></span>
+<span><span class="co">#&gt; | and right ears (lowest depression between the tragus and the helix, above</span></span>
+<span><span class="co">#&gt; | the tragus). This procedure is illustrated here:</span></span>
+<span><span class="co">#&gt; | http://neuroimage.usc.edu/brainstorm/CoordinateSystems#Subject_Coordinate_System_.28SCS_.2F_CTF.29</span></span>
+<span><span class="co">#&gt; | and in task-facerecognition_fidinfo.pdf</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | The following triggers are included in the .fif files and are also used in</span></span>
+<span><span class="co">#&gt; | the “trigger” column of the meg and bold events files:</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Trigger Label Simplified Label</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | 5 Initial Famous Face FAMOUS 6 Immediate Repeat Famous Face FAMOUS 7</span></span>
+<span><span class="co">#&gt; | Delayed Repeat Famous Face FAMOUS 13 Initial Unfamiliar Face UNFAMILIAR 14</span></span>
+<span><span class="co">#&gt; | Immediate Repeat Unfamiliar Face UNFAMILIAR 15 Delayed Repeat Unfamiliar</span></span>
+<span><span class="co">#&gt; | Face UNFAMILIAR 17 Initial Scrambled Face SCRAMBLED 18 Immediate Repeat</span></span>
+<span><span class="co">#&gt; | Scrambled Face SCRAMBLED 19 Delayed Repeat Scrambled Face SCRAMBLED</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | stimuli/meg/ ------------ The .bmp files correspond to those described in</span></span>
+<span><span class="co">#&gt; | the text. There are 6 additional images in this directory, which were used</span></span>
+<span><span class="co">#&gt; | in the practice experiment to familiarize participants with the task (hence</span></span>
+<span><span class="co">#&gt; | some more BIDS validator warnings)</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | stimuli/mri/ ------------ The .bmp files correspond to those described in</span></span>
+<span><span class="co">#&gt; | the text.</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Defacing -------- Defacing of MPRAGE T1 images was performed by the</span></span>
+<span><span class="co">#&gt; | submitter. A subset of subjects have given consent for non-defaced versions</span></span>
+<span><span class="co">#&gt; | to be shared - in which case, please contact rik.henson@mrc-cbu.cam.ac.uk.</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Quality Control --------------- Mriqc was run on the dataset. Results are</span></span>
+<span><span class="co">#&gt; | located in derivatives/mriqc. Learn more about it here:</span></span>
+<span><span class="co">#&gt; | https://mriqc.readthedocs.io/en/latest/</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Known Issues ------------ N/A</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | Relationship of Subject Numbering relative to other versions of Dataset</span></span>
+<span><span class="co">#&gt; | ------------</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | There are multiple versions of the dataset available on the web (see notes</span></span>
+<span><span class="co">#&gt; | above), and these entailed a renumbering of the subjects for various</span></span>
+<span><span class="co">#&gt; | reasons. Here are all the versions and how to match subjects between them</span></span>
+<span><span class="co">#&gt; | (plus some rationale and history for different versions):</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | 1. Original Paper (N=19): Wakeman &amp; Henson (2015): doi:10.1038/sdata.2015.1</span></span>
+<span><span class="co">#&gt; | Number refers to order that tested (and some, eg 4, 7, 13 etc were excluded</span></span>
+<span><span class="co">#&gt; | for not completing both MRI and MEG sessions)</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | 2. openfMRI, renumbered from paper:</span></span>
+<span><span class="co">#&gt; | http://openfmri.org/s3-browser/?prefix=ds000117/ds000117_R0.1.1/uncompressed/</span></span>
+<span><span class="co">#&gt; | Numbers 1-19 just made contiguous</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | 3. FTP subset of N=16: ftp:</span></span>
+<span><span class="co">#&gt; | ftp://ftp.mrc-cbu.cam.ac.uk/personal/rik.henson/wakemandg_hensonrn/ This</span></span>
+<span><span class="co">#&gt; | set was used for SPM Courses Designed to illustrate multimodal integration,</span></span>
+<span><span class="co">#&gt; | so wanted good MRI+MEG+EEG data for all subjects Removed original</span></span>
+<span><span class="co">#&gt; | subject_01 and subject_06 because bad EEG data; subject_19 because poor EEG</span></span>
+<span><span class="co">#&gt; | and fMRI data (And renumbered subject_14 for some reason).</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | 4. Current OpenNeuro subset N=16 used for (BIDS):</span></span>
+<span><span class="co">#&gt; | https://openneuro.org/datasets/ds000117 OpenNeuro was rebranding of</span></span>
+<span><span class="co">#&gt; | openfMRI, and enforced BIDS format Since this version designed to</span></span>
+<span><span class="co">#&gt; | illustrate multi-modal BIDS, kept same numbering as FTP</span></span>
+<span><span class="co">#&gt; | </span></span>
+<span><span class="co">#&gt; | W&amp;H2015 openfMRI FTP openNeuro ======== ====== === ======= subject_01</span></span>
+<span><span class="co">#&gt; | sub001 subject_02 sub002 Sub01 sub-01 subject_03 sub003 Sub02 sub-02</span></span>
+<span><span class="co">#&gt; | subject_05 sub004 Sub03 sub-03 subject_06 sub005 subject_08 sub006 Sub05</span></span>
+<span><span class="co">#&gt; | sub-05 subject_09 sub007 Sub06 sub-06 subject_10 sub008 Sub07 sub-07</span></span>
+<span><span class="co">#&gt; | subject_11 sub009 Sub08 sub-08 subject_12 sub010 Sub09 sub-09 subject_14</span></span>
+<span><span class="co">#&gt; | sub011 Sub04 sub-04 subject_15 sub012 Sub10 sub-10 subject_16 sub013 Sub11</span></span>
+<span><span class="co">#&gt; | sub-11 subject_17 sub014 Sub12 sub-12 subject_18 sub015 Sub13 sub-13</span></span>
+<span><span class="co">#&gt; | subject_19 sub016 subject_23 sub017 Sub14 sub-14 subject_24 sub018 Sub15</span></span>
+<span><span class="co">#&gt; | sub-15 subject_25 sub019 Sub16 sub-16</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="file-dataset_description-json">File <code>dataset_description.json</code><a class="anchor" aria-label="anchor" href="#file-dataset_description-json"></a>
 </h3>
 <p>The top-level data description can be parsed via</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">description</span> <span class="op">&lt;-</span> <span class="va">project</span><span class="op">$</span><span class="fu">get_dataset_description</span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">description</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {</span></span>
-<span><span class="co">#&gt;   "Name": "Miller_et_al_2007_Jneurosci",</span></span>
-<span><span class="co">#&gt;   "BIDSVersion": "1.0.2",</span></span>
-<span><span class="co">#&gt;   "DatasetType": "raw",</span></span>
-<span><span class="co">#&gt;   "License": "This dataset is made available under the Public Domain Dedication and License \\nv1.0, whose full text can be found at \\nhttp://www.opendatacommons.org/licenses/pddl/1.0/. \\nWe hope that all users will follow the ODC Attribution/Share-Alike \\nCommunity Norms (http://www.opendatacommons.org/norms/odc-by-sa/); \\nin particular, while not legally required, we hope that all users \\nof the data have to include the ethics statement (see README) and acknowledge ... in any publications.",</span></span>
-<span><span class="co">#&gt;   "Authors": [</span></span>
-<span><span class="co">#&gt;     "Kai J. Miller",</span></span>
-<span><span class="co">#&gt;     "Dora Hermes"</span></span>
-<span><span class="co">#&gt;   ],</span></span>
-<span><span class="co">#&gt;   "Acknowledgements": "Kai J. Miller, Jeffrey G. Ojemann",</span></span>
-<span><span class="co">#&gt;   "HowToAcknowledge": "These are the cue-based hand &amp; tongue movementdata described in the Journal of Neuroscience 2007 Manuscript titled: Spectral Changes in Cortical Surface Potentials during Motor Movement.The patients only partially overlap with the patients from that study.These anonymized data are from real patients who donated time in a difficultperiod of their lives to advance our understanding of the brain. Anypublication involving these data MUST include the following in the methodssection of the manuscript, without modification: Ethics statement: All patients participated in a purely voluntary manner,after providing informed written consent, under experimental protocols approved by the Institutional Review Board of the University of Washington (#12193).All patient data was anonymized according to IRB protocol, in accordance with HIPAAmandate. It was made available through the XXXXName of database/manuscriptXXX repository [https://purl.stanford.edu/zk881ps0522], freely available at XXXURL. All patient datawas anonymized according to IRB protocol, in accordance with HIPAA mandate. These data originally appeared in the manuscript, Spectral Changes in Cortical Surface Potentials during Motor Movement, published in Journal of Neuroscience in 2007 [Insert Embedded Citation for the Manuscript Here, e.g. Endnote, BibTex].",</span></span>
-<span><span class="co">#&gt;   "Funding": "NSF 0642848",</span></span>
-<span><span class="co">#&gt;   "ReferencesAndLinks": [</span></span>
-<span><span class="co">#&gt;     "Miller et al., 2007 JNeurosci. Spectral Changes in Cortical Surface Potentials during Motor Movement.",</span></span>
-<span><span class="co">#&gt;     "link to original raw data: https://purl.stanford.edu/zk881ps0522"</span></span>
-<span><span class="co">#&gt;   ],</span></span>
-<span><span class="co">#&gt;   "GeneratedBy": [</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   ]</span></span>
-<span><span class="co">#&gt; }</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">description</span> <span class="op">&lt;-</span> <span class="va">project</span><span class="op">$</span><span class="fu">get_bids_dataset_description</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>To obtain the values, use <code>$</code> or <code>@</code> operator
 (same as <code>.</code> in <code>Python</code>):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">description</span><span class="op">$</span><span class="va">BIDSVersion</span></span>
-<span><span class="co">#&gt; [1] "1.0.2"</span></span>
+<span><span class="co">#&gt; [1] "1.8.0"</span></span>
 <span></span>
 <span><span class="co"># or </span></span>
 <span><span class="va">description</span><span class="op">@</span><span class="va">BIDSVersion</span></span>
-<span><span class="co">#&gt; [1] "1.0.2"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "1.8.0"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="file-participants-tsv">File <code>participants.tsv</code><a class="anchor" aria-label="anchor" href="#file-participants-tsv"></a>
@@ -160,30 +234,93 @@ official <code>BIDS</code> example repository:</p>
 all the subjects. This file can be queried via method
 <code>get_participants</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">participants</span> <span class="op">&lt;-</span> <span class="va">project</span><span class="op">$</span><span class="fu">get_participants</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">participants</span> <span class="op">&lt;-</span> <span class="va">project</span><span class="op">$</span><span class="fu">get_bids_participants</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, we can read any <code>tsv</code> file with
 <code>as_bids_tabular</code></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">participant_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">project</span>, <span class="st">"participants.tsv"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">participant_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;BIDS Tabular&gt;[bids_tabular]</span></span>
+<span><span class="fu"><a href="../reference/bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">participant_path</span>, cls <span class="op">=</span> <span class="va">bids_tabular_participants</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;BIDS Tabular&gt;[bids_tabular_participants]</span></span>
 <span><span class="co">#&gt; $meta:</span></span>
-<span><span class="co">#&gt; {}</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;   "age": {</span></span>
+<span><span class="co">#&gt;     "LongName": "age",</span></span>
+<span><span class="co">#&gt;     "Units": "year",</span></span>
+<span><span class="co">#&gt;     "TermURL": "http://purl.obolibrary.org/obo/PATO_0000011"</span></span>
+<span><span class="co">#&gt;   },</span></span>
+<span><span class="co">#&gt;   "sex": {</span></span>
+<span><span class="co">#&gt;     "LongName": "sex",</span></span>
+<span><span class="co">#&gt;     "Description": "String value indicating phenotypical sex.",</span></span>
+<span><span class="co">#&gt;     "Levels": {</span></span>
+<span><span class="co">#&gt;       "F": {</span></span>
+<span><span class="co">#&gt;         "Description": "Female",</span></span>
+<span><span class="co">#&gt;         "TermURL": "http://purl.obolibrary.org/obo/PATO_0000383"</span></span>
+<span><span class="co">#&gt;       },</span></span>
+<span><span class="co">#&gt;       "M": {</span></span>
+<span><span class="co">#&gt;         "Description": "Male",</span></span>
+<span><span class="co">#&gt;         "TermURL": "http://purl.obolibrary.org/obo/PATO_0000384"</span></span>
+<span><span class="co">#&gt;       }</span></span>
+<span><span class="co">#&gt;     },</span></span>
+<span><span class="co">#&gt;     "TermURL": "http://purl.obolibrary.org/obo/PATO_0001894"</span></span>
+<span><span class="co">#&gt;   },</span></span>
+<span><span class="co">#&gt;   "first_ses": {</span></span>
+<span><span class="co">#&gt;     "LongName": "first session",</span></span>
+<span><span class="co">#&gt;     "Description": "Indicates which session was the first session for this subject.",</span></span>
+<span><span class="co">#&gt;     "Levels": {</span></span>
+<span><span class="co">#&gt;       "meg": {</span></span>
+<span><span class="co">#&gt;         "Description": "meg was the first session"</span></span>
+<span><span class="co">#&gt;       },</span></span>
+<span><span class="co">#&gt;       "mri": {</span></span>
+<span><span class="co">#&gt;         "Description": "mri was the first session"</span></span>
+<span><span class="co">#&gt;       }</span></span>
+<span><span class="co">#&gt;     }</span></span>
+<span><span class="co">#&gt;   },</span></span>
+<span><span class="co">#&gt;   "participant_id": {</span></span>
+<span><span class="co">#&gt;     "LongName": "Participant ID",</span></span>
+<span><span class="co">#&gt;     "Description": "A participant identifier of the form sub-&lt;label&gt;, matching a participant entity found in the dataset",</span></span>
+<span><span class="co">#&gt;     "TermURL": "https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#participants-file"</span></span>
+<span><span class="co">#&gt;   },</span></span>
+<span><span class="co">#&gt;   "species": {</span></span>
+<span><span class="co">#&gt;     "LongName": "Species",</span></span>
+<span><span class="co">#&gt;     "Description": "The species column SHOULD be a binomial species name from the NCBI Taxonomy (for example, homo sapiens, mus musculus, rattus norvegicus). For backwards compatibility, if species is absent, the participant is assumed to be homo sapiens.",</span></span>
+<span><span class="co">#&gt;     "TermURL": "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi"</span></span>
+<span><span class="co">#&gt;   },</span></span>
+<span><span class="co">#&gt;   "handedness": {</span></span>
+<span><span class="co">#&gt;     "LongName": "Subject handedness",</span></span>
+<span><span class="co">#&gt;     "Description": "String value indicating one of \"left\", \"right\", \"ambidextrous\"",</span></span>
+<span><span class="co">#&gt;     "Levels": {</span></span>
+<span><span class="co">#&gt;       "left": "left",</span></span>
+<span><span class="co">#&gt;       "right": "right",</span></span>
+<span><span class="co">#&gt;       "ambidextrous": "ambidextrous"</span></span>
+<span><span class="co">#&gt;     },</span></span>
+<span><span class="co">#&gt;     "TermURL": "https://bids-specification.readthedocs.io/en/stable/glossary.html#objects.columns.handedness"</span></span>
+<span><span class="co">#&gt;   },</span></span>
+<span><span class="co">#&gt;   "strain": {</span></span>
+<span><span class="co">#&gt;     "LongName": "Strain",</span></span>
+<span><span class="co">#&gt;     "Description": "For species different from homo sapiens, string value indicating the strain of the species, for example: C57BL/6J"</span></span>
+<span><span class="co">#&gt;   },</span></span>
+<span><span class="co">#&gt;   "strain_rrid": {</span></span>
+<span><span class="co">#&gt;     "LongName": "Strain RRID",</span></span>
+<span><span class="co">#&gt;     "Description": "For species different from homo sapiens, research resource identifier (RRID) of the strain of the species",</span></span>
+<span><span class="co">#&gt;     "TermURL": "https://rrid.site/data/source/nlx_154697-1/search"</span></span>
+<span><span class="co">#&gt;   }</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $content:</span></span>
-<span><span class="co">#&gt;     participant_id</span></span>
-<span><span class="co">#&gt;             &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:         sub-bp</span></span>
-<span><span class="co">#&gt;  2:         sub-ca</span></span>
-<span><span class="co">#&gt;  3:         sub-cc</span></span>
-<span><span class="co">#&gt;  4:         sub-de</span></span>
-<span><span class="co">#&gt;  5:         sub-fp</span></span>
-<span><span class="co">#&gt; ---               </span></span>
-<span><span class="co">#&gt; 12:         sub-rh</span></span>
-<span><span class="co">#&gt; 13:         sub-rr</span></span>
-<span><span class="co">#&gt; 14:         sub-ug</span></span>
-<span><span class="co">#&gt; 15:         sub-wc</span></span>
-<span><span class="co">#&gt; 16:         sub-zt</span></span></code></pre></div>
+<span><span class="co">#&gt;     participant_id   age    sex first_ses      species</span></span>
+<span><span class="co">#&gt;             &lt;char&gt; &lt;int&gt; &lt;char&gt;    &lt;char&gt;       &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  1:         sub-01    31   male       meg homo sapiens</span></span>
+<span><span class="co">#&gt;  2:         sub-02    25   male       meg homo sapiens</span></span>
+<span><span class="co">#&gt;  3:         sub-03    30   male       meg homo sapiens</span></span>
+<span><span class="co">#&gt;  4:         sub-04    26 female       meg homo sapiens</span></span>
+<span><span class="co">#&gt;  5:         sub-05    23 female       meg homo sapiens</span></span>
+<span><span class="co">#&gt; ---                                                   </span></span>
+<span><span class="co">#&gt; 13:         sub-13    25 female       meg homo sapiens</span></span>
+<span><span class="co">#&gt; 14:         sub-14    24 female       mri homo sapiens</span></span>
+<span><span class="co">#&gt; 15:         sub-15    30   male       mri homo sapiens</span></span>
+<span><span class="co">#&gt; 16:         sub-16    25   male       mri homo sapiens</span></span>
+<span><span class="co">#&gt; 17:  sub-emptyroom    NA   &lt;NA&gt;      &lt;NA&gt; homo sapiens</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -194,40 +331,42 @@ instantiated via</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subject</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bids_subject.html">bids_subject</a></span><span class="op">(</span></span>
 <span>  project <span class="op">=</span> <span class="va">project</span>, </span>
-<span>  subject_code <span class="op">=</span> <span class="st">"sub-bp"</span></span>
+<span>  subject_code <span class="op">=</span> <span class="st">"sub-06"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;BIDS Subject&gt; `sub-bp` (project `ieeg_motorMiller2007`)</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;BIDS Subject&gt; `sub-06` (project `ds000117`)</span></span></code></pre></div>
 <p>All <code>BIDS</code> subjects have entity key <code>sub-</code> that
-marks the subject code, for example, <code>sub-bp</code> means subject
-<code>bp</code>, hence the entity key <code>sub-</code> can be omitted,
+marks the subject code, for example, <code>sub-06</code> means subject
+<code>06</code>, hence the entity key <code>sub-</code> can be omitted,
 and <code>bidsr</code> accepts input such as
-<code>subject_code = "bp"</code>.</p>
+<code>subject_code = "06"</code>.</p>
 <p>If <code>project</code> is not instantiated, its path is also
 acceptable, check this alternative:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subject</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bids_subject.html">bids_subject</a></span><span class="op">(</span></span>
 <span>  project <span class="op">=</span> <span class="va">project_path</span>, </span>
-<span>  subject_code <span class="op">=</span> <span class="st">"bp"</span></span>
+<span>  subject_code <span class="op">=</span> <span class="st">"06"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="raw-source-or-derivative-data">Raw, source, or derivative data<a class="anchor" aria-label="anchor" href="#raw-source-or-derivative-data"></a>
 </h3>
 <p><code>BIDS</code> mainly focuses on regulating the raw data, however,
 it also supports formatting source data and derivatives. The
-corresponding paths can be queried via <code>get_path</code> method. To
-query the root path for raw/source data,</p>
+corresponding paths can be queried via <code>resolve_bids_path</code>
+method. To resolve the root path for raw/source data,</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">subject</span><span class="op">$</span><span class="fu">get_path</span><span class="op">(</span><span class="st">"raw"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ieeg_motorMiller2007/sub-bp</span></span>
-<span><span class="va">subject</span><span class="op">$</span><span class="fu">get_path</span><span class="op">(</span><span class="st">"source"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ieeg_motorMiller2007/sourcedata/sub-bp</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># resolve subject path (raw data by default)</span></span>
+<span><span class="fu"><a href="../reference/resolve_bids_path.html">resolve_bids_path</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span></span>
+<span><span class="co">#&gt; /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ds000117/./sub-06</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/resolve_bids_path.html">resolve_bids_path</a></span><span class="op">(</span><span class="va">subject</span>, storage <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ds000117/sourcedata/sub-06</span></span></code></pre></div>
 <p>For derivatives, please specify the derivative names, for
 example:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">subject</span><span class="op">$</span><span class="fu">get_path</span><span class="op">(</span><span class="st">"derivative"</span>, derivative_prefix <span class="op">=</span> <span class="st">"freesurfer"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ieeg_motorMiller2007/derivatives/freesurfer/sub-bp</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/resolve_bids_path.html">resolve_bids_path</a></span><span class="op">(</span><span class="va">subject</span>, storage <span class="op">=</span> <span class="st">"derivative"</span>, prefix <span class="op">=</span> <span class="st">"freesurfer"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ds000117/derivatives/freesurfer/sub-06</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="query-subject-files-by-types">Query subject files by types<a class="anchor" aria-label="anchor" href="#query-subject-files-by-types"></a>
@@ -235,117 +374,173 @@ example:</p>
 <p>The official <code>BIDS</code> and its extensions support various of
 data types, such as <code>anat</code>, <code>func</code>,
 <code>meg</code>, <code>eeg</code>, <code>ieeg</code>, etc.</p>
-<p>To query the data files by type, use <code>query_modality</code>
-method:</p>
+<p>To query the data files by type, use <code>query_bids</code> method.
+The following example shows all the <code>anat</code> data path, and its
+potential meta files</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ieeg_table</span> <span class="op">&lt;-</span> <span class="va">subject</span><span class="op">$</span><span class="fu">query_modality</span><span class="op">(</span><span class="st">"ieeg"</span><span class="op">)</span></span>
-<span><span class="va">ieeg_table</span></span>
-<span><span class="co">#&gt;           parsed data_type      suffix extension    sub    ses    acq     space</span></span>
-<span><span class="co">#&gt;           &lt;AsIs&gt;    &lt;char&gt;      &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;lgcl&gt;    &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1: sub-bp/s....      ieeg coordsystem      json     bp     01     NA      ACPC</span></span>
-<span><span class="co">#&gt;  2: sub-bp/s....      ieeg  electrodes       tsv     bp     01     NA      ACPC</span></span>
-<span><span class="co">#&gt;  3: sub-bp/s....      ieeg coordsystem      json     bp     01     NA Talairach</span></span>
-<span><span class="co">#&gt;  4: sub-bp/s....      ieeg  electrodes       tsv     bp     01     NA Talairach</span></span>
-<span><span class="co">#&gt;  5: sub-bp/s....      ieeg    channels       tsv     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  6: sub-bp/s....      ieeg      events       tsv     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  7: sub-bp/s....      ieeg        ieeg       eeg     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  8: sub-bp/s....      ieeg        ieeg      json     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  9: sub-bp/s....      ieeg        ieeg      vhdr     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 10: sub-bp/s....      ieeg        ieeg      vmrk     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;       task    run</span></span>
-<span><span class="co">#&gt;     &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:   &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  2:   &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  3:   &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  4:   &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  5:  motor      1</span></span>
-<span><span class="co">#&gt;  6:  motor      1</span></span>
-<span><span class="co">#&gt;  7:  motor     01</span></span>
-<span><span class="co">#&gt;  8:  motor     01</span></span>
-<span><span class="co">#&gt;  9:  motor     01</span></span>
-<span><span class="co">#&gt; 10:  motor     01</span></span></code></pre></div>
-<p>The first column contains a list of file instances. Here’s an example
-to read the <code>ACPC</code> electrode coordinates:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/query_bids.html">query_bids</a></span><span class="op">(</span><span class="va">subject</span>, <span class="st">"anat"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          parsed data_type suffix extension    sub    ses   task    acq     ce</span></span>
+<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;lgcl&gt; &lt;char&gt; &lt;lgcl&gt;</span></span>
+<span><span class="co">#&gt; 1: sub-06/s....      anat    T1w    nii.gz     06    mri     NA mprage     NA</span></span>
+<span><span class="co">#&gt;       dir    mod   part  chunk</span></span>
+<span><span class="co">#&gt;    &lt;lgcl&gt; &lt;lgcl&gt; &lt;lgcl&gt; &lt;lgcl&gt;</span></span>
+<span><span class="co">#&gt; 1:     NA     NA     NA     NA</span></span></code></pre></div>
+<p>To use fine-grained search parameters, replace <code>'anat'</code>
+with a list of search parameters.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">subset_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">ieeg_table</span>, <span class="va">space</span> <span class="op">==</span> <span class="st">"ACPC"</span> <span class="op">&amp;</span> <span class="va">suffix</span> <span class="op">==</span> <span class="st">"electrodes"</span><span class="op">)</span></span>
-<span><span class="va">path_parsed</span> <span class="op">&lt;-</span> <span class="va">subset_result</span><span class="op">$</span><span class="va">parsed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">path_parsed</span><span class="op">)</span></span>
-<span><span class="co">#&gt; sub-bp/ses-01/ieeg/sub-bp_ses-01_space-ACPC_electrodes.tsv</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/query_bids.html">query_bids</a></span><span class="op">(</span><span class="va">subject</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="co"># dataset to filter, choices are raw, source, or derivative</span></span>
+<span>  storage <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span>  </span>
+<span>  <span class="co"># include JSON sidecars; default is `FALSE`  </span></span>
+<span>  sidecars <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  </span>
+<span>  <span class="co"># set to `NULL` to include all data types</span></span>
+<span>  data_types <span class="op">=</span> <span class="st">"anat"</span>,</span>
+<span>  </span>
+<span>  <span class="co"># filter all suffixes</span></span>
+<span>  suffixes <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          parsed data_type suffix extension    sub    ses   task    acq     ce</span></span>
+<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;lgcl&gt; &lt;char&gt; &lt;lgcl&gt;</span></span>
+<span><span class="co">#&gt; 1: sub-06/s....      anat    T1w    nii.gz     06    mri     NA mprage     NA</span></span>
+<span><span class="co">#&gt;       dir    mod   part  chunk</span></span>
+<span><span class="co">#&gt;    &lt;lgcl&gt; &lt;lgcl&gt; &lt;lgcl&gt; &lt;lgcl&gt;</span></span>
+<span><span class="co">#&gt; 1:     NA     NA     NA     NA</span></span></code></pre></div>
+<p>Here is another example that filters derivative data that is
+<code>BIDS</code> compliant.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/query_bids.html">query_bids</a></span><span class="op">(</span><span class="va">subject</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="co"># filter derivatives</span></span>
+<span>  storage <span class="op">=</span> <span class="st">"derivative"</span>,</span>
+<span>  </span>
+<span>  <span class="co"># filter `derivatives/meg_derivatives` folder</span></span>
+<span>  prefix <span class="op">=</span> <span class="st">"meg_derivatives"</span>,</span>
 <span></span>
-<span><span class="va">electrode_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">project</span>, <span class="va">path_parsed</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">electrode_path</span><span class="op">)</span></span>
+<span>  <span class="co"># include JSON sidecars</span></span>
+<span>  sidecars <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  </span>
+<span>  <span class="co"># set to `NULL` to include all data types</span></span>
+<span>  data_types <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  </span>
+<span>  <span class="co"># only keep files with *_meg/log.* suffixes</span></span>
+<span>  suffixes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"meg"</span>, <span class="st">"log"</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           parsed data_type suffix extension    sub    ses            task</span></span>
+<span><span class="co">#&gt;           &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt;          &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  1: derivati....      root    meg      json     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  2: derivati....       meg    meg      json     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  3: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  4: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  5: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  6: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  7: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  8: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  9: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 10: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 11: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 12: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 13: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 14: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;       proc    run</span></span>
+<span><span class="co">#&gt;     &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  1:    sss   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;  2:    sss   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;  3:    sss     01</span></span>
+<span><span class="co">#&gt;  4:    sss     01</span></span>
+<span><span class="co">#&gt;  5:    sss     02</span></span>
+<span><span class="co">#&gt;  6:    sss     02</span></span>
+<span><span class="co">#&gt;  7:    sss     03</span></span>
+<span><span class="co">#&gt;  8:    sss     03</span></span>
+<span><span class="co">#&gt;  9:    sss     04</span></span>
+<span><span class="co">#&gt; 10:    sss     04</span></span>
+<span><span class="co">#&gt; 11:    sss     05</span></span>
+<span><span class="co">#&gt; 12:    sss     05</span></span>
+<span><span class="co">#&gt; 13:    sss     06</span></span>
+<span><span class="co">#&gt; 14:    sss     06</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="filter-get-bids-entity">Filter &amp; get <code>BIDS</code> entity<a class="anchor" aria-label="anchor" href="#filter-get-bids-entity"></a>
+</h2>
+<p>Here is an example of filtering <code>func</code> event files with
+<code>BIDS</code> entity <code>run=02</code> The first column contains a
+list of file instances. Here’s an example to read the <code>ACPC</code>
+electrode coordinates:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">filter_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/query_bids.html">query_bids</a></span><span class="op">(</span><span class="va">subject</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  storage <span class="op">=</span> <span class="st">"raw"</span>,</span>
+<span>  sidecars <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  </span>
+<span>  data_types <span class="op">=</span> <span class="st">"func"</span>,</span>
+<span>  suffixes <span class="op">=</span> <span class="st">"events"</span>,</span>
+<span>  </span>
+<span>  <span class="co"># use R "formula" to filter entities</span></span>
+<span>  entity_filters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span></span>
+<span>    <span class="co"># entity_key ~ expression returning TRUE/FALSE</span></span>
+<span>    <span class="co"># When filtering the entities, `entity_key` will be</span></span>
+<span>    <span class="co"># replaced with its value</span></span>
+<span>    <span class="va">run</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">run</span><span class="op">)</span> <span class="op">==</span> <span class="fl">2</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">filter_result</span></span>
+<span><span class="co">#&gt;          parsed data_type suffix extension    sub    ses            task    run</span></span>
+<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt;          &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: sub-06/s....      func events       tsv     06    mri facerecognition     02</span></span></code></pre></div>
+<p>The first column <code>"filter_result"</code> is the parsed file
+object with entity information:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">event_file</span> <span class="op">&lt;-</span> <span class="va">filter_result</span><span class="op">$</span><span class="va">parsed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">event_file</span></span>
+<span><span class="co">#&gt; sub-06/ses-mri/func/sub-06_ses-mri_task-facerecognition_run-02_events.tsv</span></span></code></pre></div>
+<p>To get entity values, use <code>get_bids_entity</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_bids_entity.html">get_bids_entity</a></span><span class="op">(</span><span class="va">event_file</span>, <span class="st">"task"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "facerecognition"</span></span></code></pre></div>
+<p>If supported by schema, the <code>BIDS</code> entity rules for the
+file can be queried via <code>get_bids_entity_rules(event_file)</code>
+method</p>
+<p>Object <code>event_file</code> is relative to the project root, hence
+can be read by joining the project root path</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">event_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">project</span>, <span class="va">event_file</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># or </span></span>
+<span><span class="va">event_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/resolve_bids_path.html">resolve_bids_path</a></span><span class="op">(</span><span class="va">project</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">event_file</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">event_path</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;BIDS Tabular&gt;[bids_tabular]</span></span>
 <span><span class="co">#&gt; $meta:</span></span>
 <span><span class="co">#&gt; {}</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $content:</span></span>
-<span><span class="co">#&gt;      name         x           y          z  size    type manufacturer</span></span>
-<span><span class="co">#&gt;     &lt;int&gt;     &lt;num&gt;       &lt;num&gt;      &lt;num&gt; &lt;int&gt;  &lt;char&gt;       &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:     1 -38.23672  42.9909111  32.116130     4 surface       AdTech</span></span>
-<span><span class="co">#&gt;  2:     2 -44.21946  32.4059267  34.909389     4 surface       AdTech</span></span>
-<span><span class="co">#&gt;  3:     3 -45.31461  22.1149697  37.702649     4 surface       AdTech</span></span>
-<span><span class="co">#&gt;  4:     4 -48.16445  11.2359580  40.201882     4 surface       AdTech</span></span>
-<span><span class="co">#&gt;  5:     5 -54.12109   0.9450009  42.995141     4 surface       AdTech</span></span>
-<span><span class="co">#&gt; ---                                                                  </span></span>
-<span><span class="co">#&gt; 43:    43 -58.09218   5.5024247 -12.134986     4 surface       AdTech</span></span>
-<span><span class="co">#&gt; 44:    44 -62.06327  -5.0825597  -9.341726     4 surface       AdTech</span></span>
-<span><span class="co">#&gt; 45:    45 -65.52670 -15.6675440  -7.577562     4 surface       AdTech</span></span>
-<span><span class="co">#&gt; 46:    46 -65.38842 -27.2816241  -5.372357     4 surface       AdTech</span></span>
-<span><span class="co">#&gt; 47:    47 -63.00000 -38.6016769  -4.343261     4 surface       AdTech</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="bids-entity">
-<code>BIDS</code> entity<a class="anchor" aria-label="anchor" href="#bids-entity"></a>
-</h2>
-<p>Object <code>path_parsed</code> is a file entity class, with the
-entities parsed</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">path_parsed</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "bidsr::bids_entity_file_ieeg_electrodes"</span></span>
-<span><span class="co">#&gt; [2] "bidsr::bids_entity_file"                </span></span>
-<span><span class="co">#&gt; [3] "bidsr::bids_class_base"                 </span></span>
-<span><span class="co">#&gt; [4] "S7_object"</span></span>
-<span></span>
-<span><span class="va">path_parsed</span><span class="op">$</span><span class="fu">get_bids_entity</span><span class="op">(</span><span class="st">"space"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "ACPC"</span></span>
-<span></span>
-<span><span class="va">path_parsed</span><span class="op">$</span><span class="va">entities</span></span>
-<span><span class="co">#&gt; $sub</span></span>
-<span><span class="co">#&gt; sub-bp</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $ses</span></span>
-<span><span class="co">#&gt; ses-01</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $acq</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $space</span></span>
-<span><span class="co">#&gt; space-ACPC</span></span></code></pre></div>
-<p>If supported by schema, the <code>BIDS</code> entity rules for the
-file can be queried via</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">path_parsed</span><span class="op">$</span><span class="fu">get_bids_entity_rules</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $sub</span></span>
-<span><span class="co">#&gt; [1] "required" "label"   </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $ses</span></span>
-<span><span class="co">#&gt; [1] "optional" "label"   </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $task</span></span>
-<span><span class="co">#&gt; [1] "prohibited" "label"     </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $acq</span></span>
-<span><span class="co">#&gt; [1] "optional" "label"   </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $run</span></span>
-<span><span class="co">#&gt; [1] "prohibited" "index"     </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $space</span></span>
-<span><span class="co">#&gt; [1] "optional" "label"   </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $recording</span></span>
-<span><span class="co">#&gt; [1] "prohibited" "label"</span></span></code></pre></div>
+<span><span class="co">#&gt;        onset duration circle_duration  stim_type trigger button_pushed</span></span>
+<span><span class="co">#&gt;        &lt;num&gt;    &lt;num&gt;           &lt;num&gt;     &lt;char&gt;   &lt;int&gt;         &lt;int&gt;</span></span>
+<span><span class="co">#&gt;   1:   0.000    0.897           0.596 UNFAMILIAR      13             4</span></span>
+<span><span class="co">#&gt;   2:   3.207    0.895           0.549 UNFAMILIAR      14             4</span></span>
+<span><span class="co">#&gt;   3:   6.514    0.959           0.547  SCRAMBLED      17             7</span></span>
+<span><span class="co">#&gt;   4:   9.738    0.850           0.495  SCRAMBLED      18             7</span></span>
+<span><span class="co">#&gt;   5:  12.895    0.988           0.548     FAMOUS       5             4</span></span>
+<span><span class="co">#&gt;  ---                                                                  </span></span>
+<span><span class="co">#&gt;  96: 385.073    0.935           0.439 UNFAMILIAR      13             4</span></span>
+<span><span class="co">#&gt;  97: 388.331    0.944           0.551 UNFAMILIAR      13             4</span></span>
+<span><span class="co">#&gt;  98: 391.455    0.988           0.417     FAMOUS       5             7</span></span>
+<span><span class="co">#&gt;  99: 394.711    0.912           0.498     FAMOUS       6             7</span></span>
+<span><span class="co">#&gt; 100: 397.401    0.012           0.000       &lt;NA&gt;     999             0</span></span>
+<span><span class="co">#&gt;      response_time       stim_file</span></span>
+<span><span class="co">#&gt;              &lt;num&gt;          &lt;char&gt;</span></span>
+<span><span class="co">#&gt;   1:         0.849   func/u020.bmp</span></span>
+<span><span class="co">#&gt;   2:         0.729   func/u020.bmp</span></span>
+<span><span class="co">#&gt;   3:         1.197   func/s030.bmp</span></span>
+<span><span class="co">#&gt;   4:         0.695   func/s030.bmp</span></span>
+<span><span class="co">#&gt;   5:         1.075   func/f027.bmp</span></span>
+<span><span class="co">#&gt;  ---                              </span></span>
+<span><span class="co">#&gt;  96:         0.884   func/u031.bmp</span></span>
+<span><span class="co">#&gt;  97:         1.183   func/u029.bmp</span></span>
+<span><span class="co">#&gt;  98:         0.869   func/f021.bmp</span></span>
+<span><span class="co">#&gt;  99:         1.200   func/f021.bmp</span></span>
+<span><span class="co">#&gt; 100:         0.000 func/Circle.bmp</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
