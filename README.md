@@ -1,13 +1,19 @@
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # bidsr
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/dipterix/bidsr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dipterix/bidsr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-Brain Imaging Data Structure (`BIDS`) is a standard for organizing neuroimaging and behavioral data (see https://bids.neuroimaging.io/index.html). 
-Package `bidsr` aims at providing comprehensive tools to query and manipulate 'BIDS' data files. 
+Brain Imaging Data Structure (`BIDS`) is a standard for organizing
+neuroimaging and behavioral data (see
+<https://bids.neuroimaging.io/index.html>). Package `bidsr` aims at
+providing comprehensive tools to query and manipulate ‘BIDS’ data files.
 This package is experimental, please see [Road-map](#road-map) below.
 
 ## Installation
@@ -23,48 +29,50 @@ pak::pak("dipterix/bidsr")
 
 Current milestone:
 
-* Base classes
-  - [X] R `S7` base classes and properties
-  - [X] tabular data
-  - [X] `JSON` side-car
-  - [X] `BIDS` entity
-* Class definitions for common files
+- Base classes
+  - [x] R `S7` base classes and properties
+  - [x] tabular data
+  - [x] `JSON` side-car
+  - [x] `BIDS` entity
+- Class definitions for common files
   - Modality agnostic files:
-    * [X] `dataset_description.json`
-    * [X] `README`
-    * [ ] `CITATION.cff`, `CHANGES`, `LICENSE`
-    * [X] `participants.tsv`, `participants.json`
-    * [X] `samples.tsv`, `samples.json`
-    * [X] `phenotype/`
-    * [X] Scans file
-    * [X] Sessions file
+    - [x] `dataset_description.json`
+    - [x] `README`
+    - [ ] `CITATION.cff`, `CHANGES`, `LICENSE`
+    - [x] `participants.tsv`, `participants.json`
+    - [x] `samples.tsv`, `samples.json`
+    - [x] `phenotype/`
+    - [x] Scans file
+    - [x] Sessions file
   - Modality specific files:
-    * [X] Query files by data type for each subject
-    * [X] Use `BIDS` schema to generate file entity rules dynamically
-* Query `BIDS` files
-  - [X] Get top-level files
-  - [X] Analyze and list subject data by types
-  - [ ] Find side-car and meta-data information using the `BIDS` inheritance principle
+    - [x] Query files by data type for each subject
+    - [x] Use `BIDS` schema to generate file entity rules dynamically
+- Query `BIDS` files
+  - [x] Get top-level files
+  - [x] Analyze and list subject data by types
+  - [ ] Find side-car and meta-data information using the `BIDS`
+    inheritance principle (test needed)
 
 Next milestone:
 
-* Provide read functions to handle common file formats
-  - [X] `JSON` format
-  - [X] `.tsv` or `.csv` format
+- Provide read functions to handle common file formats
+  - [x] `JSON` format
+  - [x] `.tsv` or `.csv` format
   - [ ] `.nii` format
-  - [ ] `.mat`, `.edf`, ... (electrophysiology)
-* [ ] Provide handler registry to access and process data files
+  - [ ] `.mat`, `.edf`, … (electrophysiology)
+- [ ] Provide handler registry to access and process data files
 
-A tentative to-do list:    
+A tentative to-do list:
 
-* [ ] Modify the path
-* [ ] Use `BIDS` schema to validation rules dynamically
-* [ ] Validate `BIDS` files
+- [ ] Modify the path
+- [ ] Use `BIDS` schema to validation rules dynamically
+- [ ] Validate `BIDS` files
 
 ## Example
 
-This example demonstrates high-level tools to query a 'BIDS' project. 
-The code requires executing a built-in command to download ['BIDS' example data-sets](https://github.com/bids-standard/bids-examples). 
+This example demonstrates high-level tools to query a ‘BIDS’ project.
+The code requires executing a built-in command to download [‘BIDS’
+example data-sets](https://github.com/bids-standard/bids-examples).
 Please copy-paste-run the following R commands:
 
 ``` r
@@ -72,7 +80,8 @@ library(bidsr)
 example_root <- download_bids_examples()
 ```
 
-Let's inspect the project `ieeg_motorMiller2007` from the official `BIDS` example repository:
+Let’s inspect the project `ieeg_motorMiller2007` from the official
+`BIDS` example repository:
 
 ``` r
 ## Path to `ieeg_motorMiller2007`
@@ -85,12 +94,13 @@ project <- bids_project(path = project_path)
 
 ## The top-level `dataset_description.json` and `participants.tsv` 
 ## can be parsed via
-description <- project$get_dataset_description()
-participants <- project$get_participants()
+description <- project$get_bids_dataset_description()
+participants <- project$get_bids_participants()
 
 
 ## To obtain the values, use `$` operator (same as `.` in `Python`):
 description$BIDSVersion
+#> [1] "1.0.2"
 
 
 ## Given a project path or instance, a `BIDS` subject can be instantiated via 
@@ -105,38 +115,41 @@ subject <- bids_subject(project = project_path, subject_code = "bp")
 ## The official `BIDS` and its extensions support various of data types, 
 ## such as `anat`, `func`, `meg`, `eeg`, `ieeg`, etc. 
 ## use `query_modality` method to query the files
-ieeg_table <- subject$query_modality("ieeg")
-ieeg_table
-#>           parsed data_type      suffix extension    sub    ses    acq
-#>           <AsIs>    <char>      <char>    <char> <char> <char> <lgcl>
-#>  1: sub-bp/s....      ieeg coordsystem      json     bp     01     NA
-#>  2: sub-bp/s....      ieeg  electrodes       tsv     bp     01     NA
-#>  3: sub-bp/s....      ieeg coordsystem      json     bp     01     NA 
-#>  4: sub-bp/s....      ieeg  electrodes       tsv     bp     01     NA 
-#>  5: sub-bp/s....      ieeg    channels       tsv     bp     01     NA     
-#>  6: sub-bp/s....      ieeg      events       tsv     bp     01     NA    
-#>  7: sub-bp/s....      ieeg        ieeg       eeg     bp     01     NA    
-#>  8: sub-bp/s....      ieeg        ieeg      json     bp     01     NA    
-#>  9: sub-bp/s....      ieeg        ieeg      vhdr     bp     01     NA    
-#> 10: sub-bp/s....      ieeg        ieeg      vmrk     bp     01     NA    
-#>         space   task    run
-#>        <char> <char> <char>
-#>  1:      ACPC   <NA>   <NA>
-#>  2:      ACPC   <NA>   <NA>
-#>  3: Talairach   <NA>   <NA>
-#>  4: Talairach   <NA>   <NA>
-#>  5:      <NA>  motor      1
-#>  6:      <NA>  motor      1
-#>  7:      <NA>  motor      1
-#>  8:      <NA>  motor      1
-#>  9:      <NA>  motor      1
-#> 10:      <NA>  motor      1
+ieeg_table <- query_bids(subject, "ieeg")
+print(ieeg_table)
+#>          parsed data_type     suffix extension    sub    ses    acq     space
+#>          <AsIs>    <char>     <char>    <char> <char> <char> <lgcl>    <char>
+#> 1: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA      ACPC
+#> 2: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA Talairach
+#> 3: sub-bp/s....      ieeg   channels       tsv     bp     01     NA      <NA>
+#> 4: sub-bp/s....      ieeg     events       tsv     bp     01     NA      <NA>
+#> 5: sub-bp/s....      ieeg       ieeg       eeg     bp     01     NA      <NA>
+#> 6: sub-bp/s....      ieeg       ieeg      vhdr     bp     01     NA      <NA>
+#> 7: sub-bp/s....      ieeg       ieeg      vmrk     bp     01     NA      <NA>
+#>      task    run
+#>    <char> <char>
+#> 1:   <NA>   <NA>
+#> 2:   <NA>   <NA>
+#> 3:  motor      1
+#> 4:  motor      1
+#> 5:  motor     01
+#> 6:  motor     01
+#> 7:  motor     01
 
 
 ## The first column contains a list of file instances. Here's an 
 ## example to read the `ACPC` electrode coordinates:
 
 subset_result <- subset(ieeg_table, space == "ACPC" & suffix == "electrodes")
+print(subset_result)
+#>          parsed data_type     suffix extension    sub    ses    acq  space
+#>          <AsIs>    <char>     <char>    <char> <char> <char> <lgcl> <char>
+#> 1: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA   ACPC
+#>      task    run
+#>    <char> <char>
+#> 1:   <NA>   <NA>
+
+# Get parsed 'BIDS' file object
 path_parsed <- subset_result$parsed[[1]]
 print(path_parsed)
 #> sub-bp/ses-01/ieeg/sub-bp_ses-01_space-ACPC_electrodes.tsv
@@ -166,7 +179,6 @@ as_bids_tabular(electrode_path)
 ## `BIDS` entity
 
 ## Object `path_parsed` is a file entity class, with the entities parsed
-
 class(path_parsed)
 #> [1] "bidsr::bids_entity_file_ieeg_electrodes"
 #> [2] "bidsr::bids_entity_file"                
@@ -190,7 +202,6 @@ path_parsed$entities
 #> 
 #> $space
 #> space-ACPC
-
 
 ## If supported by schema, the `BIDS` entity rules for the 
 ## file can be queried via
@@ -217,7 +228,3 @@ path_parsed$get_bids_entity_rules()
 #> $recording
 #> [1] "prohibited" "label"
 ```
-
-
-
-

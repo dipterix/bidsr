@@ -435,20 +435,20 @@ Returns: a data table of files and entities related to the data type.
 
     if(length(suffixes) && !isTRUE(tolower(parsed@suffix) %in% suffixes)) { return(FALSE) }
 
-    if(length(entity_names)) {
-      meta_entity_names <- names(parsed@entities)
-      if(!all(meta_entity_names %in% entity_names)) { return(FALSE) }
-
-      for(enm in meta_entity_names) {
-        # also need to in the values
-        if( !isTRUE(parsed@entities[[enm]]@value %in% entity_values[[enm]]) ) { return( FALSE ) }
-      }
-    } else {
+    # if(length(entity_names)) {
+    #   meta_entity_names <- names(parsed@entities)
+    #   if(!all(meta_entity_names %in% entity_names)) { return(FALSE) }
+    #
+    #   for(enm in meta_entity_names) {
+    #     # also need to in the values
+    #     if( !isTRUE(parsed@entities[[enm]]@value %in% entity_values[[enm]]) ) { return( FALSE ) }
+    #   }
+    # } else {
       # no datafile is found, maybe user is looking for meta files???
       if(!test_bids_entities(parsed, .rules = entity_filters, envir = env)) {
         return(FALSE)
       }
-    }
+    # }
 
     return(TRUE)
   })
@@ -483,10 +483,10 @@ Returns: a data table of files and entities related to the data type.
   })
 
   query_result <- data.table::rbindlist(query_result)
-  structure(
+  return(structure(
     query_result,
     project_root = project_root,
     subject = x
-  )
+  ))
 }
 
