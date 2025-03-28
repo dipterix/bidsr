@@ -62,6 +62,8 @@ preset_participants_meta <- local({
 #' The original specification is at
 #' \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#participants-file}.
 #' @param content,meta see \code{\link{bids_tabular}}
+#' @param x R object such as file path, project instances, etc.
+#' @param ... passed to other methods or ignored
 #' @returns A \code{bids_tabular_participants} instance inheriting
 #' \code{\link{bids_tabular}}.
 #' @examples
@@ -158,3 +160,28 @@ bids_tabular_participants <- new_bids_tabular_class(
   meta_preset = preset_participants_meta(),
   prepare_save = NULL
 )
+
+## `get_bids_participants` generic
+S7::method(get_bids_participants, S7::class_character) <- function(x, ...) {
+  as_bids_tabular(x, cls = bids_tabular_participants)
+}
+
+S7::method(get_bids_participants, bids_tabular_participants) <- function(x, ...) {
+  x
+}
+
+
+S7::method(get_bids_participants, bids_tabular) <- function(x, ...) {
+  as_bids_tabular(x = x, cls = bids_tabular_participants)
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -60,7 +60,9 @@ as_bids_tabular_table <- function(x, meta, ..., cls = NULL) {
 #' @title Class definitions and utilities for 'BIDS' tabular
 #' @description
 #' Official specification link:
-#' \url{https://bids-specification.readthedocs.io/en/stable/common-principles.html#tabular-files}
+#' \url{https://bids-specification.readthedocs.io/en/stable/common-principles.html#tabular-files}.
+#' Function \code{save_tabular} is the high-level generic function that by
+#' default calls low-level function \code{save_bids_tabular_default} by default.
 #' @param content a data frame or table with column names non-blanks and
 #' possibly all in snake-cases (see specification); \code{bidsr} does not check
 #' on the column names for compatibility concerns. However users should respect
@@ -89,6 +91,11 @@ as_bids_tabular_table <- function(x, meta, ..., cls = NULL) {
 #' converted to lower case; default is \code{TRUE}
 #' @param path path to save the file; the file is always saved as
 #' tabular-separated value ('TSV') format
+#' @param compact_meta logical, whether the meta side-car ('JSON' file) should
+#' use compact format; default is true
+#' @param milliseconds,utc used to convert \code{\link[nanotime]{nanotime}}
+#' to 'BIDS' time-stamp format; default is to keep the milliseconds and use
+#' 'UTC' timezone.
 #' @returns A component in \code{bids_tabular}.
 #'
 #' @examples
@@ -257,15 +264,23 @@ bids_tabular <- new_bids_class(
 )
 
 ## `save_bids_tabular`
-S7::method(save_bids_tabular, bids_tabular) <- function(x, path, meta = TRUE, compact_meta = TRUE, ...) {
+#' @rdname bids_tabular
+#' @export
+save_bids_tabular_default <- function(x, path, meta = TRUE, compact_meta = TRUE, milliseconds = TRUE, utc = TRUE, ...) {
   if(!grepl("\\.(tsv|tsv\\.gz)", tolower(path))) {
     path <- paste0(path, ".tsv")
   }
 
-  if(is.function(x$.prepare_save)) {
-    content <- x$.prepare_save(...)
-  } else {
-    content <- x@content
+  content <- x@content
+
+  # convert nanotime to BIDS timestamp
+  if(nrow(content)) {
+    nms <- names(content)
+    for(nm in nms) {
+      if(isTRUE(inherits(content[[nm]], "nanotime"))) {
+        content[[nm]] <- nanotime_to_bids_datetime(content$acq_time, milliseconds = milliseconds, utc = utc)
+      }
+    }
   }
 
   write_tsv(x = content, file = path)
@@ -283,6 +298,9 @@ S7::method(save_bids_tabular, bids_tabular) <- function(x, path, meta = TRUE, co
     sidecar_path = sidecar_path
   ))
 }
+
+## save_bids_tabular
+S7::method(save_bids_tabular, bids_tabular) <- save_bids_tabular_default
 
 ## `print`
 S7::method(print.generic, bids_tabular) <- function(x, nrows = 10, ...) {

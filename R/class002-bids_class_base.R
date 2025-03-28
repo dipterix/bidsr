@@ -109,11 +109,6 @@ new_bids_class <- function(
     stop("`new_bids_class`: `methods` must be a named list.")
   }
 
-  nms2 <- names(methods)
-  nms2 <- nms2[!nms2 %in% c('get_bids_entity', 'get_bids_entity_rules')]
-  if(length(nms2)) {
-    message(name, ": ", paste(nms2, collapse = ", "))
-  }
   methods <- structure(
     names = names(methods),
     lapply(names(methods), function(nm) {
@@ -232,11 +227,12 @@ S7::method(print.generic, bids_class_base) <- function(x, ...) {
 }
 
 ## names generic
-S7::method(names.generic, bids_class_base) <- function(x) {
+names_bids_class_base <- function(x) {
   nms <- unique(c(S7::prop_names(x), names(attr(x, ".bids_object_extra"))))
   nms <- nms[!nms %in% attr(x, ".bids_object_hidden_names")]
   nms
 }
+S7::method(names.generic, bids_class_base) <- names_bids_class_base
 
 ## `[[` operator
 extract_bids_class_base <- function(x, name) {

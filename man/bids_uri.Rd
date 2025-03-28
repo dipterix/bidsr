@@ -31,7 +31,7 @@ uri
 
 
 # resolving a BIDS URI requires dataset_description.json
-data_description <- dataset_description <- as_bids_dataset_description(
+dataset_description <- get_bids_dataset_description(
   parent_directory = "/path/to/BIDS/folder",
   Name = "A dummy experiments",
   BIDSVersion = "1.6.0",
@@ -43,17 +43,21 @@ data_description <- dataset_description <- as_bids_dataset_description(
 )
 
 uri <- bids_uri("bids::sub-01/fmap/sub-01_dir-AP_epi.nii.gz")
-resolved <- uri$resolve(data_description)
+resolved <- resolve_bids_path(uri, dataset_description)
+
+# resolved absolute path
+print(resolved)
 
 # `raw_resolution` is relative to the parent directory where
 # `dataset_description.json` is stored
-resolved$raw_resolution
-resolved$absolute_path
+attr(resolved, "raw_resolution")
 
 uri <- bids_uri("bids:deriv1:sub-02/anat/sub-02_T1w.nii.gz")
-resolved <- uri$resolve(data_description)
-resolved$raw_resolution
-resolved$absolute_path
+resolved <- resolve_bids_path(uri, dataset_description)
+
+print(resolved)
+
+attr(resolved, "raw_resolution")
 
 
 }

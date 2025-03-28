@@ -156,7 +156,7 @@ S7::method(format.generic, bids_dataset_generated_by) <- function(x, ..., indent
 #'   example_descr <- file.path(
 #'     examples, "ieeg_epilepsy_ecog", "dataset_description.json")
 #'
-#'   x <- as_bids_dataset_description(example_descr)
+#'   x <- get_bids_dataset_description(example_descr)
 #'   x
 #'
 #'   # ---- Formatting --------------------------------------------------
@@ -287,15 +287,15 @@ bids_dataset_description_from_list <- function(x) {
 
 
 
-S7::method(as_bids_dataset_description, bids_dataset_description) <- function(x, parent_directory, ...) {
+S7::method(get_bids_dataset_description, bids_dataset_description) <- function(x, parent_directory, ...) {
   x
 }
 
-S7::method(as_bids_dataset_description, S7::class_missing) <- function(x, parent_directory, ...) {
+S7::method(get_bids_dataset_description, S7::class_missing) <- function(x, parent_directory, ...) {
   bids_dataset_description_from_list(list(..., parent_directory = parent_directory))
 }
 
-S7::method(as_bids_dataset_description, S7::class_list) <- function(x, parent_directory, ...) {
+S7::method(get_bids_dataset_description, S7::class_list) <- function(x, parent_directory, ...) {
   # In case this is a fastmap2, also do not alter `x`
   x <- as.list(x)
   if(length(x$parent_directory) != 1 || is.na(x$parent_directory) || !nzchar(x$parent_directory)) {
@@ -304,7 +304,7 @@ S7::method(as_bids_dataset_description, S7::class_list) <- function(x, parent_di
   bids_dataset_description_from_list(x)
 }
 
-S7::method(as_bids_dataset_description, S7::class_character) <- function(x, parent_directory, ...) {
+S7::method(get_bids_dataset_description, S7::class_character) <- function(x, parent_directory, ...) {
   if(length(x) == 1 && !is.na(x) && endsWith(tolower(x), ".json") && file_exists(x)) {
     # json path
     source_path <- path_abs(x)

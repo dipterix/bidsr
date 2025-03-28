@@ -65,15 +65,6 @@ bids_entity_file <- new_bids_class(
       # filename registry defines the possible filename so the key is data_type + suffix
       tolower(sprintf("%s/%s", self@data_type, self@suffix))
     })
-  ),
-  methods = list(
-    get_bids_entity = function(self, key, value_only = TRUE, ifnotfound = NULL) {
-      force(key)
-      get_bids_entity(self, key = key, value_only = value_only, ifnotfound = ifnotfound)
-    },
-    get_bids_entity_rules = function(self) {
-      get_bids_entity_rules(self)
-    }
   )
 )
 
@@ -100,6 +91,50 @@ S7::method(get_bids_entity, bids_entity_file) <- function(x, key, value_only = T
 }
 
 
+test_bids_entities <- function(x, ..., .rules = list(), envir = parent.frame()) {
+  rules <- c(list(...), as.list(.rules))
+
+  # DIPSAUS DEBUG START
+  # path <- "anat/sub-01_chunk-001_t1w.nii.gz"
+  # x <- parse_path_bids_entity(path)
+  # envir = parent.frame()
+  # rules <- list(sub ~ sub %in% "01")
+
+  for(fml in rules) {
+    if(!inherits(fml, "formula")) {
+      fml <- stats::as.formula(fml, env = envir)
+    }
+    fml_l <- as.list(fml)
+    if(length(fml_l) != 3) {
+      stop("Cannot resolve formula: `", deparse1(fml), "`")
+    }
+    entity_key <- as.character(fml_l[[2]])
+    entity_val <- x@entities[[entity_key]]
+    if(!is.null(entity_val) && S7::S7_inherits(entity_val, bids_entity)) {
+      entity_val <- entity_val@value
+    }
+
+    expr <- fml_l[[3]]
+
+    res <- tryCatch({
+      suppressWarnings({
+        res <- eval(expr, enclos = envir,
+                    envir = structure(names = entity_key, list(entity_val)))
+        res <- as.logical(res)
+        isTRUE(res)
+      })
+    }, error = function(e) {
+      FALSE
+    })
+
+    if(!res) {
+      return(FALSE)
+    }
+
+  }
+  return(TRUE)
+}
+
 ## `format`
 S7::method(format.generic, bids_entity_file) <- function(x, ...) {
   entity_str <- unlist(lapply(x@entities, format))
@@ -124,6 +159,33 @@ S7::method(print.generic, bids_entity_file) <- function(x, details = FALSE, ...)
     cat(fmt)
   }
   invisible(x)
+}
+
+## `names`
+S7::method(names.generic, bids_entity_file) <- function(x) {
+  unique(c(names_bids_class_base(x), "get_bids_entity", "get_bids_entity_rules"))
+}
+
+## `[[`
+S7::method(extract_bracket.generic, list(x = bids_entity_file, name = S7::class_any)) <- function(x, name, ...) {
+
+  switch (
+    name,
+    "get_bids_entity" = {
+      function(key, value_only = TRUE, ifnotfound = NULL) {
+        force(key)
+        get_bids_entity(x = x, key = key, value_only = value_only, ifnotfound = ifnotfound)
+      }
+    },
+    "get_bids_entity_rules" = {
+      function() {
+        get_bids_entity_rules(x = x)
+      }
+    },
+    {
+      extract_bids_class_base(x, name)
+    }
+  )
 }
 
 is_child_bids_entity_file <- function(definition) {

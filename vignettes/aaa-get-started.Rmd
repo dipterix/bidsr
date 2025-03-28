@@ -41,10 +41,10 @@ example_root <- download_bids_examples()
 
 ## Overview of a `BIDS` project
 
-Let's inspect the project `ieeg_motorMiller2007` from the official `BIDS` example repository:
+Let's inspect the project `ds000117` from the official `BIDS` example repository:
 
 ```{r}
-project_path <- file.path(example_root, "ieeg_motorMiller2007")
+project_path <- file.path(example_root, "ds000117")
 project <- bids_project(path = project_path)
 
 print(project)
@@ -55,9 +55,7 @@ print(project)
 The top-level data description can be parsed via
 
 ```{r}
-description <- project$get_dataset_description()
-
-print(description)
+description <- project$get_bids_dataset_description()
 ```
 
 To obtain the values, use `$` or `@` operator (same as `.` in `Python`):
@@ -74,14 +72,14 @@ description@BIDSVersion
 File `participants.tsv` is a top-level tabular that lists all the subjects. This file can be queried via method `get_participants`:
 
 ```{r}
-participants <- project$get_participants()
+participants <- project$get_bids_participants()
 ```
 
 Alternatively, we can read any `tsv` file with `as_bids_tabular`
 
 ```{r}
 participant_path <- file.path(project, "participants.tsv")
-as_bids_tabular(participant_path)
+as_bids_tabular(participant_path, cls = bids_tabular_participants)
 ```
 
 ## Instantiate a `BIDS` subject
@@ -91,36 +89,38 @@ Given a project path or instance, a `BIDS` subject can be instantiated via
 ```{r}
 subject <- bids_subject(
   project = project, 
-  subject_code = "sub-bp"
+  subject_code = "sub-06"
 )
 
 print(subject)
 ```
 
-All `BIDS` subjects have entity key `sub-` that marks the subject code, for example, `sub-bp` means subject `bp`, hence the entity key `sub-` can be omitted, and `bidsr` accepts input such as `subject_code = "bp"`. 
+All `BIDS` subjects have entity key `sub-` that marks the subject code, for example, `sub-06` means subject `06`, hence the entity key `sub-` can be omitted, and `bidsr` accepts input such as `subject_code = "06"`. 
 
 If `project` is not instantiated, its path is also acceptable, check this alternative:
 
 ```{r}
 subject <- bids_subject(
   project = project_path, 
-  subject_code = "bp"
+  subject_code = "06"
 )
 ```
 
 ### Raw, source, or derivative data
 
-`BIDS` mainly focuses on regulating the raw data, however, it also supports formatting source data and derivatives. The corresponding paths can be queried via `get_path` method. To query the root path for raw/source data,
+`BIDS` mainly focuses on regulating the raw data, however, it also supports formatting source data and derivatives. The corresponding paths can be queried via `resolve_bids_path` method. To resolve the root path for raw/source data,
 
 ```{r}
-subject$get_path("raw")
-subject$get_path("source")
+# resolve subject path (raw data by default)
+resolve_bids_path(subject)
+
+resolve_bids_path(subject, storage = "source")
 ```
 
 For derivatives, please specify the derivative names, for example:
 
 ```{r}
-subject$get_path("derivative", derivative_prefix = "freesurfer")
+resolve_bids_path(subject, storage = "derivative", prefix = "freesurfer")
 ```
 
 
@@ -128,42 +128,101 @@ subject$get_path("derivative", derivative_prefix = "freesurfer")
 
 The official `BIDS` and its extensions support various of data types, such as `anat`, `func`, `meg`, `eeg`, `ieeg`, etc.
 
-To query the data files by type, use `query_modality` method:
+To query the data files by type, use `query_bids` method. The following example shows all the `anat` data path, and its potential meta files
 
 ```{r}
-ieeg_table <- subject$query_modality("ieeg")
-ieeg_table
+query_bids(subject, "anat")
 ```
 
+
+To use fine-grained search parameters, replace `'anat'` with a list of search parameters. 
+
+```{r}
+query_bids(subject, list(
+  # dataset to filter, choices are raw, source, or derivative
+  storage = "raw",
+  
+  # include JSON sidecars; default is `FALSE`  
+  sidecars = FALSE,
+  
+  # set to `NULL` to include all data types
+  data_types = "anat",
+  
+  # filter all suffixes
+  suffixes = NULL
+))
+```
+
+Here is another example that filters derivative data that is `BIDS` compliant.
+
+```{r}
+query_bids(subject, list(
+  # filter derivatives
+  storage = "derivative",
+  
+  # filter `derivatives/meg_derivatives` folder
+  prefix = "meg_derivatives",
+
+  # include JSON sidecars
+  sidecars = TRUE,
+  
+  # set to `NULL` to include all data types
+  data_types = NULL,
+  
+  # only keep files with *_meg/log.* suffixes
+  suffixes = c("meg", "log")
+))
+```
+
+## Filter & get `BIDS` entity
+
+Here is an example of filtering `func` event files with `BIDS` entity `run=02`
 The first column contains a list of file instances. Here's an example to read the `ACPC` electrode coordinates:
 
 ```{r}
-subset_result <- subset(ieeg_table, space == "ACPC" & suffix == "electrodes")
-path_parsed <- subset_result$parsed[[1]]
-print(path_parsed)
+filter_result <- query_bids(subject, list(
+  storage = "raw",
+  sidecars = FALSE,
+  
+  data_types = "func",
+  suffixes = "events",
+  
+  # use R "formula" to filter entities
+  entity_filters = list(
 
-electrode_path <- file.path(project, path_parsed)
-as_bids_tabular(electrode_path)
+    # entity_key ~ expression returning TRUE/FALSE
+    # When filtering the entities, `entity_key` will be
+    # replaced with its value
+    run ~ as.integer(run) == 2
+  )
+))
+filter_result
 ```
 
-
-## `BIDS` entity
-
-Object `path_parsed` is a file entity class, with the entities parsed
+The first column `"filter_result"` is the parsed file object with entity information:
 
 ```{r}
-class(path_parsed)
-
-path_parsed$get_bids_entity("space")
-
-path_parsed$entities
+event_file <- filter_result$parsed[[1]]
+event_file
 ```
 
-If supported by schema, the `BIDS` entity rules for the file can be queried via
+To get entity values, use `get_bids_entity`:
 
 ```{r}
-path_parsed$get_bids_entity_rules()
+get_bids_entity(event_file, "task")
 ```
 
+If supported by schema, the `BIDS` entity rules for the file can be queried via `get_bids_entity_rules(event_file)` method
+
+Object `event_file` is relative to the project root, hence can be read by joining the project root path
+
+```{r}
+event_path <- file.path(project, event_file)
+
+# or 
+event_path <- resolve_bids_path(project, format(event_file))
+
+as_bids_tabular(event_path)
+```
 
 

@@ -148,12 +148,8 @@ bids_tabular_sessions <- new_bids_tabular_class(
     self@content <- value
     self
   },
-  meta_preset = preset_sessions_meta(),
-  prepare_save = function(self, milliseconds = TRUE, utc = TRUE, ...) {
-    content <- self@content
-    if( inherits(content$acq_time, "nanotime") ) {
-      content$acq_time <- nanotime_to_bids_datetime(content$acq_time, milliseconds = milliseconds, utc = utc)
-    }
-    content
-  }
+  meta_preset = preset_sessions_meta()
 )
+
+
+

@@ -1,88 +1,3 @@
-
-
-bids_entity <- new_bids_class(
-  name = "bids_entity",
-  abstract = TRUE,
-  properties = list(
-
-    # initialized = bids_required(class = S7::class_logical, default = FALSE),
-    key = bids_property_character(name = "key", type = "required", final = TRUE, validator = validator_nonempty_string),
-    value = bids_property(name = "value"),
-    index_format = bids_property_character(name = "index_format", type = "required", default = "%d")
-
-  ),
-  validator = function(self) {
-    if(anyNA(self$value)) {
-      return("BIDS entity value cannot be NA. Use `character(0)` (label) or `integer(0)` (index) to mark as missing")
-    }
-    return()
-  }
-)
-
-## `format`
-S7::method(format.generic, bids_schema) <- function(x, ...) {
-  v <- x@value
-  if(length(v) && !is.na(v)) {
-    if(is.numeric(v)) {
-      v <- sprintf(x@index_format, v)
-    }
-    paste(c(x@key, v), collapse = "-")
-  } else {
-    character(0L)
-  }
-}
-
-
-
-
-new_bids_entity_class <- function(value, type = BIDS_ENTITY_REQUIREMENT_OPTIONS, ..., value_class_name = class(value)) {
-
-  if(value_class_name %in% c("S7_union", "S7_property")) {
-    stop("`new_bids_entity_class`: Please specify `value_class_name`.")
-  }
-  if(inherits(value, "bids_property")) {
-    type <- match.arg(attr(value, "requirement"), BIDS_ENTITY_REQUIREMENT_OPTIONS)
-    value_prop <- value
-  } else {
-    type <- match.arg(type)
-    value_prop <- bids_property_internal(name = "value", type = type, class = value, ...)
-  }
-
-  cls_name <- sprintf("bids_entity_%s_%s", value_class_name, type)
-
-  cls <- new_bids_class(
-    name = cls_name,
-    parent = bids_entity,
-    properties = list(
-
-      # key = bids_property_character(name = "key", type = "required", final = TRUE, validator = validator_nonempty_string),
-      value = value_prop
-      # index_format = bids_property_character(name = "index_format", type = "required", default = "%d")
-
-    ),
-    # validator = function(self) {
-    #   if(anyNA(self$value)) {
-    #     return("BIDS entity value cannot be NA. Use `character(0)` (label) or `integer(0)` (index) to mark as missing")
-    #   }
-    #   return()
-    # }
-  )
-
-  S7::method(format.generic, cls) <- function(x, ...) {
-    v <- x@value
-    if(type != "prohibited" && length(v) && !is.na(v)) {
-      if(is.numeric(v)) {
-        v <- sprintf(x@index_format, v)
-      }
-      paste(c(x@key, v), collapse = "-")
-    } else {
-      character(0L)
-    }
-  }
-
-  cls
-}
-
 #' @name bids_entity
 #' @title Class definitions of 'BIDS' entity
 #' @description
@@ -146,6 +61,87 @@ new_bids_entity_class <- function(value, type = BIDS_ENTITY_REQUIREMENT_OPTIONS,
 #' }
 #'
 NULL
+
+bids_entity <- new_bids_class(
+  name = "bids_entity",
+  abstract = TRUE,
+  properties = list(
+
+    # initialized = bids_required(class = S7::class_logical, default = FALSE),
+    key = bids_property_character(name = "key", type = "required", final = TRUE, validator = validator_nonempty_string),
+    value = bids_property(name = "value"),
+    index_format = bids_property_character(name = "index_format", type = "required", default = "%d")
+
+  ),
+  validator = function(self) {
+    if(anyNA(self$value)) {
+      return("BIDS entity value cannot be NA. Use `character(0)` (label) or `integer(0)` (index) to mark as missing")
+    }
+    return()
+  }
+)
+
+## `format`
+S7::method(format.generic, bids_schema) <- function(x, ...) {
+  v <- x@value
+  if(length(v) && !is.na(v)) {
+    if(is.numeric(v)) {
+      v <- sprintf(x@index_format, v)
+    }
+    paste(c(x@key, v), collapse = "-")
+  } else {
+    character(0L)
+  }
+}
+
+new_bids_entity_class <- function(value, type = BIDS_ENTITY_REQUIREMENT_OPTIONS, ..., value_class_name = class(value)) {
+
+  if(value_class_name %in% c("S7_union", "S7_property")) {
+    stop("`new_bids_entity_class`: Please specify `value_class_name`.")
+  }
+  if(inherits(value, "bids_property")) {
+    type <- match.arg(attr(value, "requirement"), BIDS_ENTITY_REQUIREMENT_OPTIONS)
+    value_prop <- value
+  } else {
+    type <- match.arg(type)
+    value_prop <- bids_property_internal(name = "value", type = type, class = value, ...)
+  }
+
+  cls_name <- sprintf("bids_entity_%s_%s", value_class_name, type)
+
+  cls <- new_bids_class(
+    name = cls_name,
+    parent = bids_entity,
+    properties = list(
+
+      # key = bids_property_character(name = "key", type = "required", final = TRUE, validator = validator_nonempty_string),
+      value = value_prop
+      # index_format = bids_property_character(name = "index_format", type = "required", default = "%d")
+
+    ),
+    # validator = function(self) {
+    #   if(anyNA(self$value)) {
+    #     return("BIDS entity value cannot be NA. Use `character(0)` (label) or `integer(0)` (index) to mark as missing")
+    #   }
+    #   return()
+    # }
+  )
+
+  S7::method(format.generic, cls) <- function(x, ...) {
+    v <- x@value
+    if(type != "prohibited" && length(v) && !is.na(v)) {
+      if(is.numeric(v)) {
+        v <- sprintf(x@index_format, v)
+      }
+      paste(c(x@key, v), collapse = "-")
+    } else {
+      character(0L)
+    }
+  }
+
+  cls
+}
+
 
 #' @rdname bids_entity
 #' @export

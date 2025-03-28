@@ -55,6 +55,8 @@ preset_samples_meta <- local({
 #' The original specification is at
 #' \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#samples-file}.
 #' @param content,meta see \code{\link{bids_tabular}}
+#' @param x R object such as file path, project instances, etc.
+#' @param ... passed to other methods or ignored
 #' @returns A \code{bids_tabular_samples} instance inheriting
 #' \code{\link{bids_tabular}}.
 #' @examples
@@ -120,3 +122,16 @@ bids_tabular_samples <- new_bids_tabular_class(
   prepare_save = NULL
 )
 
+
+## `get_bids_samples` generic
+S7::method(get_bids_samples, S7::class_character) <- function(x, ...) {
+  as_bids_tabular(x, cls = bids_tabular_samples)
+}
+
+S7::method(get_bids_samples, bids_tabular_samples) <- function(x, ...) {
+  x
+}
+
+S7::method(get_bids_samples, bids_tabular) <- function(x, ...) {
+  as_bids_tabular(x = x, cls = bids_tabular_samples)
+}

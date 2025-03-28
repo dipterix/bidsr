@@ -85,6 +85,8 @@ preset_phenotype_meta <- local({
 #' The original specification is at
 #' \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#phenotypic-and-assessment-data}.
 #' @param content,meta see \code{\link{bids_tabular}}
+#' @param x R object such as file path, project instances, etc.
+#' @param ... passed to other methods or ignored
 #' @returns A \code{bids_tabular_phenotype} instance inheriting
 #' \code{\link{bids_tabular}}.
 #' @examples
@@ -128,3 +130,17 @@ bids_tabular_phenotype <- new_bids_tabular_class(
   meta_preset = preset_phenotype_meta(),
   prepare_save = NULL
 )
+
+
+## `get_bids_phenotype_data` generic
+S7::method(get_bids_phenotype_data, S7::class_character) <- function(x, ...) {
+  as_bids_tabular(x, cls = bids_tabular_phenotype)
+}
+
+S7::method(get_bids_phenotype_data, bids_tabular_phenotype) <- function(x, ...) {
+  x
+}
+
+S7::method(get_bids_phenotype_data, bids_tabular) <- function(x, ...) {
+  as_bids_tabular(x = x, cls = bids_tabular_phenotype)
+}

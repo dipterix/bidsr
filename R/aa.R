@@ -40,3 +40,16 @@ new_function <- function (
   body(f) <- body
   f
 }
+
+use_docstring <- function(check_param, docstring) {
+  tryCatch(
+    {
+      force(check_param)
+    },
+    error = function(e) {
+      docstring <- trimws(docstring)
+      e$message <- paste(c(e$message, "\n\n", docstring), collapse = "\n")
+      stop(e)
+    }
+  )
+}

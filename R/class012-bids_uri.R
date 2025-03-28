@@ -46,7 +46,7 @@ parse_bids_uri <- function(uri) {
 #'
 #'
 #' # resolving a BIDS URI requires dataset_description.json
-#' data_description <- dataset_description <- as_bids_dataset_description(
+#' dataset_description <- get_bids_dataset_description(
 #'   parent_directory = "/path/to/BIDS/folder",
 #'   Name = "A dummy experiments",
 #'   BIDSVersion = "1.6.0",
@@ -58,17 +58,21 @@ parse_bids_uri <- function(uri) {
 #' )
 #'
 #' uri <- bids_uri("bids::sub-01/fmap/sub-01_dir-AP_epi.nii.gz")
-#' resolved <- uri$resolve(data_description)
+#' resolved <- resolve_bids_path(uri, dataset_description)
+#'
+#' # resolved absolute path
+#' print(resolved)
 #'
 #' # `raw_resolution` is relative to the parent directory where
 #' # `dataset_description.json` is stored
-#' resolved$raw_resolution
-#' resolved$absolute_path
+#' attr(resolved, "raw_resolution")
 #'
 #' uri <- bids_uri("bids:deriv1:sub-02/anat/sub-02_T1w.nii.gz")
-#' resolved <- uri$resolve(data_description)
-#' resolved$raw_resolution
-#' resolved$absolute_path
+#' resolved <- resolve_bids_path(uri, dataset_description)
+#'
+#' print(resolved)
+#'
+#' attr(resolved, "raw_resolution")
 #'
 #'
 #' @export
@@ -105,42 +109,61 @@ bids_uri <- new_bids_class(
       }
     )
   ),
-  methods = list(
-    resolve = function(self, data_description, ...) {
-      # https://bids-specification.readthedocs.io/en/stable/common-principles.html#resolution-of-bids-uris
-      # As of 1.10.0, BIDS URIs cannot be interpreted outside a BIDS dataset, as they require a dataset_description.json file to resolve.
-      # a future version may specify an authority that would allow BIDS URIs to be resolved without reference to a local dataset_description.json.
-
-      # I'll leave a future me to handle the cases where dataset_description.json is not required
-      data_description <- as_bids_dataset_description(x = data_description, ...)
-
-      if(nzchar(self$dataset_name)) {
-        base_link <- data_description$DatasetLinks[[self$dataset_name]]
-        if(length(base_link) != 1) {
-          stop("The given `dataset_description.json` does not contain dataset name: ", sQuote(self$dataset_name), ".\n  Available `DatasetLinks` keys are: ",
-               paste(sQuote(names(data_description$DatasetLinks)), collapse = ", "), ".\n  based on: `", file_path(data_description$parent_directory, "dataset_description.json"), "`")
-        }
-
-        raw_resolution <- file_path(base_link, self$relative_path)
-      } else {
-        raw_resolution <- self$relative_path
-      }
-
-
-
-      # Currently we only provide the naive resolution
-
-      list(
-        # We may want to support DOI, RAVE, ... but currently there is no common rules on how URI should be resolved
-        # I guess this depends on different data archives
-        raw_resolution = raw_resolution,
-        absolute_path = path_abs(file_path(data_description$parent_directory, raw_resolution))
-      )
-    }
-  ),
   constructor = function(uri) {
     parsed <- parse_bids_uri(uri)
     S7::new_object(S7::S7_object(), dataset_name = parsed$dataset_name, relative_path = parsed$relative_path)
   }
 )
 
+
+S7::method(resolve_bids_path, bids_uri) <- function(x, dataset_description, ...) {
+
+  docstring <- "Usage -> bidsr::resolve_bids_path(x, dataset_description, ...)
+
+  x: BIDS URI object; see `?bids_uri`
+  dataset_description: BIDS tabular instance of nearest
+      `dataset_description.json`; see `?bids_dataset_description`
+
+Returns: a resolved absolute path.
+  "
+  use_docstring(dataset_description, docstring)
+
+
+  # https://bids-specification.readthedocs.io/en/stable/common-principles.html#resolution-of-bids-uris
+  # As of 1.10.0, BIDS URIs cannot be interpreted outside a BIDS dataset, as they require a dataset_description.json file to resolve.
+  # a future version may specify an authority that would allow BIDS URIs to be resolved without reference to a local dataset_description.json.
+
+  # I'll leave a future me to handle the cases where dataset_description.json is not required
+  dataset_description <- get_bids_dataset_description(x = dataset_description, ...)
+
+  if(nzchar(x@dataset_name)) {
+    base_link <- dataset_description@DatasetLinks[[x@dataset_name]]
+    if(length(base_link) != 1) {
+      stop(
+        "The given `dataset_description.json` does not contain dataset name: ", sQuote(x@dataset_name), ".\n",
+        "  Available `DatasetLinks` keys are: ", paste(sQuote(names(dataset_description@DatasetLinks)), collapse = ", "), ".\n",
+        "  based on: `", file_path(dataset_description@parent_directory, "dataset_description.json"),"`"
+      )
+    }
+
+    raw_resolution <- file_path(base_link, x@relative_path)
+  } else {
+    raw_resolution <- x@relative_path
+  }
+
+
+
+  # Currently we only provide the naive resolution
+
+  absolute_path <- path_abs(file_path(dataset_description@parent_directory, raw_resolution))
+
+
+  structure(
+    absolute_path,
+
+    # We may want to support DOI, RAVE, ... but currently there is no common rules on how URI should be resolved
+    # I guess this depends on different data archives?
+    # Leaving raw_resolution for future
+    raw_resolution = raw_resolution
+  )
+}
