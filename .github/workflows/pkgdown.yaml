@@ -14,10 +14,17 @@ permissions: read-all
 
 jobs:
   pkgdown:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.config.os }}
     # Only restrict concurrency for non-PR jobs
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          # - {os: macos-latest,   r: 'release'}
+          # - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest,   r: 'release'}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     permissions:
