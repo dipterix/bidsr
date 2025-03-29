@@ -4,16 +4,16 @@
 #' @param search_depth integer maximum search depths; default is \code{29};
 #' set options \code{'bidsr.map.search_depth'} or environment variable
 #' \code{'BIDS_MAP_MAX_DEPTH'} to change the default depth
-#' @returns A \code{'bids_map'} object.
+#' @returns A \code{'BIDSMap'} object.
 #' @examples
 #'
 #'
-#' root_map <- bids_map()
+#' root_map <- BIDSMap()
 #' root_map$key1 <- 1
 #' root_map$key2 <- 2
 #' names(root_map)
 #'
-#' child_map <- bids_map(parent = root_map)
+#' child_map <- BIDSMap(parent = root_map)
 #' child_map$key3 <- 3
 #' names(child_map)
 #' child_map$key1
@@ -27,7 +27,7 @@
 #' child_map$key2
 #'
 #' # nested maps
-#' grand_child <- bids_map(parent = child_map)
+#' grand_child <- BIDSMap(parent = child_map)
 #'
 #' # value comes from child map
 #' grand_child$key2
@@ -40,8 +40,8 @@
 #'
 #'
 #' @export
-bids_map <- new_bids_class(
-  name = "bids_map",
+BIDSMap <- new_bids_class(
+  name = "BIDSMap",
   properties = list(
     uuid = bids_property_character(name = "uuid", final = TRUE),
     impl = bids_property_list(name = "impl", final = TRUE),
@@ -52,7 +52,7 @@ bids_map <- new_bids_class(
           self@parent <- value
           return(self)
         }
-        S7::check_is_S7(value, bids_map)
+        S7::check_is_S7(value, BIDSMap)
         self@parent <- value
         self
       }
@@ -68,50 +68,7 @@ bids_map <- new_bids_class(
         }
         return()
       }
-    ),
-
-    format = bids_property_format(function(self) {
-
-      # if(is.null(self@parent)) {
-      #   parent <- NULL
-      # } else {
-      #   parent <- self@parent@uuid
-      # }
-      #
-      # rjson::toJSON(list(
-      #   uuid = self@uuid,
-      #   parent = parent,
-      #   search_depth = self@search_depth,
-      #   impl = as.list(self,
-      #                  all.names = TRUE,
-      #                  sorted = TRUE,
-      #                  recursive = FALSE)
-      # ), indent = json_indent())
-
-      impl <- self@impl
-      keys <- impl$keys()
-      if(length(keys)) {
-        keys_str <- sprintf("[%s]", paste(keys, collapse = ", "))
-      } else {
-        keys_str <- "  (empty)"
-      }
-      if(length(self@parent)) {
-        parent_uuid <- sprintf("\n  (parent: %s)", self@parent@uuid)
-      } else {
-        parent_uuid <- ""
-      }
-      inherit_keys <- names(self)
-      inherit_keys <- inherit_keys[!inherit_keys %in% keys]
-      if(length(inherit_keys)) {
-        inherit_keystr <- sprintf("\n  (Inherited) [%s]", paste(inherit_keys, collapse = ", "))
-      } else {
-        inherit_keystr <- ""
-      }
-      sprintf("<bidsr::map %s>%s\n%s%s",
-              self@uuid,
-              parent_uuid,
-              keys_str, inherit_keystr)
-    })
+    )
   ),
   constructor = function(
     parent = NULL,
@@ -126,6 +83,32 @@ bids_map <- new_bids_class(
     )
   }
 )
+
+S7::method(format.generic, BIDSMap) <- function(x, ...) {
+  impl <- x@impl
+  keys <- impl$keys()
+  if(length(keys)) {
+    keys_str <- sprintf("[%s]", paste(keys, collapse = ", "))
+  } else {
+    keys_str <- "  (empty)"
+  }
+  if(length(x@parent)) {
+    parent_uuid <- sprintf("\n  (parent: %s)", x@parent@uuid)
+  } else {
+    parent_uuid <- ""
+  }
+  inherit_keys <- names(x)
+  inherit_keys <- inherit_keys[!inherit_keys %in% keys]
+  if(length(inherit_keys)) {
+    inherit_keystr <- sprintf("\n  (Inherited) [%s]", paste(inherit_keys, collapse = ", "))
+  } else {
+    inherit_keystr <- ""
+  }
+  sprintf("<bidsr::map %s>%s\n%s%s",
+          x@uuid,
+          parent_uuid,
+          keys_str, inherit_keystr)
+}
 
 get_bids_map_keys <- function(x, root = x, search_depth = 0L) {
   nms <- x@impl$keys()
@@ -193,14 +176,14 @@ listall_bids_map <- function(
 }
 
 # `names`
-S7::method(names.generic, bids_map) <- function(x) {
-  S7::check_is_S7(x, bids_map)
+S7::method(names.generic, BIDSMap) <- function(x) {
+  S7::check_is_S7(x, BIDSMap)
   get_bids_map_keys(x, x, x@search_depth)
 }
 
 # `[[`
-S7::method(extract_bracket.generic, list(x = bids_map, name = S7::class_any)) <- function(x, name, ..., impl = FALSE) {
-  S7::check_is_S7(x, bids_map)
+S7::method(extract_bracket.generic, list(x = BIDSMap, name = S7::class_any)) <- function(x, name, ..., impl = FALSE) {
+  S7::check_is_S7(x, BIDSMap)
   get_bids_map_value(x = x, name = name, root = x, search_depth = x@search_depth, impl = impl)
 }
 
@@ -208,7 +191,7 @@ S7::method(extract_bracket.generic, list(x = bids_map, name = S7::class_any)) <-
 # S7::method(
 #   extract_set_bracket.generic,
 #   list(
-#     x = bids_map,
+#     x = BIDSMap,
 #     name = S7::class_any,
 #     value = S7::class_any
 #   )
@@ -218,13 +201,13 @@ S7::method(extract_bracket.generic, list(x = bids_map, name = S7::class_any)) <-
 # }
 
 #' @export
-`[[<-.bidsr::bids_map` <- function(x, i, value) {
+`[[<-.bidsr::BIDSMap` <- function(x, i, value) {
   x@impl$set(i, value)
   x
 }
 
 # `as.list`
-S7::method(as.list.generic, bids_map) <- function(
+S7::method(as.list.generic, BIDSMap) <- function(
     x, all.names = FALSE, sorted = FALSE, recursive = FALSE, ...) {
 
   if( recursive ) {

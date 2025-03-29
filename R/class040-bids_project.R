@@ -16,7 +16,7 @@
 #'
 #'   project_path <- file.path(examples, "ieeg_epilepsy_ecog")
 #'
-#'   project <- bids_project(
+#'   project <- BIDSProject(
 #'     path = project_path,
 #'     raw_data_relpath = ".",
 #'     derivative_data_relpath = "derivatives"
@@ -29,8 +29,8 @@
 #'
 #'
 #' @export
-bids_project <- new_bids_class(
-  name = "bids_project",
+BIDSProject <- new_bids_class(
+  name = "BIDSProject",
   properties = list(
     name = bids_property_character(
       name = "name",
@@ -112,6 +112,19 @@ bids_project <- new_bids_class(
   }
 )
 
+#' @rdname bids_project
+#' @export
+bids_project <- function (path, raw_data_relpath = ".", source_data_relpath = "sourcedata",
+                          derivative_data_relpath = "derivatives", strict = TRUE) {
+  BIDSProject(
+    path = path,
+    raw_data_relpath = raw_data_relpath,
+    source_data_relpath = source_data_relpath,
+    derivative_data_relpath = derivative_data_relpath,
+    strict = strict
+  )
+}
+
 # helper to get path to project
 path_to_project <- function(x, relpath, storage = "root", check = TRUE) {
   x_path <- format(x, storage = storage)
@@ -130,7 +143,7 @@ path_to_project <- function(x, relpath, storage = "root", check = TRUE) {
 }
 
 ## `format` generic
-S7::method(format.generic, bids_project) <- function(x, storage = c("root", "raw", "source", "derivative"), ...) {
+S7::method(format.generic, BIDSProject) <- function(x, storage = c("root", "raw", "source", "derivative"), ...) {
   storage <- match.arg(storage)
   path <- switch(
     storage,
@@ -143,12 +156,12 @@ S7::method(format.generic, bids_project) <- function(x, storage = c("root", "raw
 }
 
 ## `print` generic
-S7::method(print.generic, bids_project) <- function(x, width = getOption("width", 80L), ...) {
+S7::method(print.generic, BIDSProject) <- function(x, width = getOption("width", 80L), ...) {
   screen_width <- max(20L, min(width, 80L))
   cat(
     sep = "\n",
     c(
-      sprintf("<%s>[bids_project] at:", x@name),
+      sprintf("<%s>[BIDSProject] at:", x@name),
       sprintf("  %s", format(x)),
       sprintf("  - raw-data path: %s", x@raw_data_relpath),
       sprintf("  - source-data path: %s", x@source_data_relpath),
@@ -162,7 +175,7 @@ S7::method(print.generic, bids_project) <- function(x, width = getOption("width"
 
 ## `[[` generic
 TOP_LEVEL_GETTERS <- c("get_bids_dataset_description", "get_bids_participants", "get_bids_samples", "get_bids_phenotype_data")
-S7::method(extract_bracket.generic, list(x = bids_project, name = S7::class_any)) <- function(x, name, ...) {
+S7::method(extract_bracket.generic, list(x = BIDSProject, name = S7::class_any)) <- function(x, name, ...) {
   if(name %in% TOP_LEVEL_GETTERS) {
     re <- switch (
       name,
@@ -189,7 +202,7 @@ S7::method(extract_bracket.generic, list(x = bids_project, name = S7::class_any)
 }
 
 ## `names` generic
-S7::method(names.generic, bids_project) <- function(x) {
+S7::method(names.generic, BIDSProject) <- function(x) {
   return(unique(
     c(
       names_bids_class_base(x),
@@ -199,7 +212,7 @@ S7::method(names.generic, bids_project) <- function(x) {
 }
 
 ## `resolve_bids_path` generic
-S7::method(resolve_bids_path, bids_project) <- function(x, ..., storage = c("root", "raw", "source", "derivative"), relative_to_project = FALSE) {
+S7::method(resolve_bids_path, BIDSProject) <- function(x, ..., storage = c("root", "raw", "source", "derivative"), relative_to_project = FALSE) {
 
   docstring <- 'Usage -> bidsr::resolve_bids_path(
     x, ...,
@@ -207,7 +220,7 @@ S7::method(resolve_bids_path, bids_project) <- function(x, ..., storage = c("roo
     relative_to_project = FALSE
 )
 
-  x: BIDS project object; see `?bids_project`;
+  x: BIDS project object; see `?BIDSProject`;
 
   storage: which storage to return, choices are
     - "root": project root
@@ -255,7 +268,7 @@ Returns: a resolved path.
 # ---- get top-level files
 
 ## `get_bids_dataset_description` generic
-S7::method(get_bids_dataset_description, bids_project) <- function(
+S7::method(get_bids_dataset_description, BIDSProject) <- function(
     x, parent_directory, storage = c("root", "raw", "source", "derivative"), test = FALSE, ...) {
 
   storage <- match.arg(storage)
@@ -277,7 +290,7 @@ S7::method(get_bids_dataset_description, bids_project) <- function(
 }
 
 ## `get_bids_participants` generic
-S7::method(get_bids_participants, bids_project) <- function(
+S7::method(get_bids_participants, BIDSProject) <- function(
     x, parent_directory = NULL, storage = c("root", "raw", "source", "derivative"), test = FALSE, ...) {
   storage <- match.arg(storage)
   ds_path <- path_to_project(
@@ -295,7 +308,7 @@ S7::method(get_bids_participants, bids_project) <- function(
 }
 
 ## `get_bids_samples` generic
-S7::method(get_bids_samples, bids_project) <- function(
+S7::method(get_bids_samples, BIDSProject) <- function(
     x, parent_directory = NULL, storage = c("root", "raw", "source", "derivative"), test = FALSE, ...) {
   storage <- match.arg(storage)
   ds_path <- path_to_project(
@@ -313,7 +326,7 @@ S7::method(get_bids_samples, bids_project) <- function(
 }
 
 ## `get_bids_phenotype_data` generic
-S7::method(get_bids_phenotype_data, bids_project) <- function(
+S7::method(get_bids_phenotype_data, BIDSProject) <- function(
     x, measurement_tool_name, parent_directory = "phenotype",
     storage = c("root", "raw", "source", "derivative"), test = FALSE, ...) {
 

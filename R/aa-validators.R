@@ -1,5 +1,5 @@
-union_validators <- function(..., .list = NULL) {
-  validators <- c(list(...), .list)
+union_validators <- function(..., .list = list()) {
+  validators <- drop_nulls(c(list(...), .list))
   function(value) {
     for(is_valid in validators) {
       if(is.function(is_valid)) {

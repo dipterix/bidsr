@@ -23,7 +23,7 @@ speed to next time; default is true}
 \item{bids_version}{'BIDS' version to query the entity rules}
 }
 \value{
-A \code{'bids_entity_file'} instance.
+A \code{'BIDSEntityFile'} instance.
 }
 \description{
 Parse 'BIDS' entities from file path

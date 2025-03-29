@@ -10,7 +10,7 @@ bids_tabular_constuctor <- function(content, meta = NULL) {
 
 as_bids_tabular_meta <- function(meta = NULL, ...) {
   more <- list(...)
-  if( !S7::S7_inherits(meta, bids_tabular_meta_sidecar) ) {
+  if( !S7::S7_inherits(meta, BIDSTabularMetaSidecar) ) {
     if(isTRUE(is.character(meta))) {
       meta <- paste(meta, collapse = "\n")
       meta <- tryCatch(
@@ -32,7 +32,7 @@ as_bids_tabular_meta <- function(meta = NULL, ...) {
       )
     }
     meta <- c(as.list(meta), more)
-    meta <- bids_tabular_meta_sidecar(columns = meta)
+    meta <- BIDSTabularMetaSidecar(columns = meta)
   } else {
     if(length(more)) {
       meta$columns[names(more)] <- more
@@ -50,13 +50,13 @@ as_bids_tabular_table <- function(x, meta, ..., cls = NULL) {
   if(all(inherits(cls, c("bids_tabular_definition", "S7_class"), which = TRUE) > 0)) {
     re <- cls(content = x, meta = meta)
   } else {
-    re <- bids_tabular(content = x, meta = meta)
+    re <- BIDSTabular(content = x, meta = meta)
   }
   re
 }
 
 
-#' @name bids_tabular
+#' @name BIDSTabular
 #' @title Class definitions and utilities for 'BIDS' tabular
 #' @description
 #' Official specification link:
@@ -67,25 +67,25 @@ as_bids_tabular_table <- function(x, meta, ..., cls = NULL) {
 #' possibly all in snake-cases (see specification); \code{bidsr} does not check
 #' on the column names for compatibility concerns. However users should respect
 #' the specification and use the recommended conventions
-#' @param meta instance of \code{bids_tabular_meta_sidecar}, a class containing
+#' @param meta instance of \code{BIDSTabularMetaSidecar}, a class containing
 #' a list of descriptors for each column (see argument \code{columns})
 #' @param columns a named list, where each key correspond to a table column
 #' name, and each item is a named list of descriptors, or a
-#' \code{bids_tabular_column_descriptor} instance
-#' @param ...,.list for \code{bids_tabular_column_descriptor}, this is
+#' \code{BIDSTabularColumnDescriptor} instance
+#' @param ...,.list for \code{BIDSTabularColumnDescriptor}, this is
 #' a list of key-value properties; for \code{as_bids_tabular}, this is passed
-#' to \code{bids_tabular_meta_sidecar}
+#' to \code{BIDSTabularMetaSidecar}
 #' @param x R object that can be converted (e.g. list, table), or a path
 #' to a tabular file.
 #' @param table_name name of the table, used to generate a new class;
-#' the class name will be \code{bids_tabular_<table_name>}
-#' @param parent parent class of the new class; default is \code{bids_tabular}
+#' the class name will be \code{BIDSTabular_<table_name>}
+#' @param parent parent class of the new class; default is \code{BIDSTabular}
 #' @param content_setter a \code{setter} function to set the content; see
 #' \code{\link{bids_property}}
 #' @param meta_preset a \code{preset} function to set the meta; see
-#' \code{bids_tabular_meta_sidecar}
+#' \code{BIDSTabularMetaSidecar}
 #' @param prepare_save a function to prepare the content before saving; should
-#' take the \code{bids_tabular} object as the first argument, and return the
+#' take the \code{BIDSTabular} object as the first argument, and return the
 #' content to be saved
 #' @param lower_case_column_names if \code{TRUE}, the column names will be
 #' converted to lower case; default is \code{TRUE}
@@ -96,7 +96,7 @@ as_bids_tabular_table <- function(x, meta, ..., cls = NULL) {
 #' @param milliseconds,utc used to convert \code{\link[nanotime]{nanotime}}
 #' to 'BIDS' time-stamp format; default is to keep the milliseconds and use
 #' 'UTC' timezone.
-#' @returns A component in \code{bids_tabular}.
+#' @returns A component in \code{BIDSTabular}.
 #'
 #' @examples
 #'
@@ -145,10 +145,10 @@ as_bids_tabular_table <- function(x, meta, ..., cls = NULL) {
 #'
 NULL
 
-#' @rdname bids_tabular
+#' @rdname BIDSTabular
 #' @export
-bids_tabular_column_descriptor <- new_bids_class(
-  name = "bids_tabular_column_descriptor",
+BIDSTabularColumnDescriptor <- new_bids_class(
+  name = "BIDSTabularColumnDescriptor",
   hidden_names = ".more",
   properties = list(
     LongName = bids_property_collapsed_character(name = "LongName", type = "optional"),
@@ -187,14 +187,14 @@ bids_tabular_column_descriptor <- new_bids_class(
 )
 
 ## `names`
-S7::method(names.generic, bids_tabular_column_descriptor) <- function(x) {
+S7::method(names.generic, BIDSTabularColumnDescriptor) <- function(x) {
   nms <- c(S7::prop_names(x), names(x@.more))
   nms <- nms[!startsWith(".")]
   nms
 }
 
 ## `as.list`
-S7::method(as.list.generic, bids_tabular_column_descriptor) <- function(x, all.names = FALSE, sorted = FALSE, ...) {
+S7::method(as.list.generic, BIDSTabularColumnDescriptor) <- function(x, all.names = FALSE, sorted = FALSE, ...) {
   nms <- S7::prop_names(x)
   nms <- nms[!startsWith(nms, ".")]
 
@@ -216,14 +216,14 @@ S7::method(as.list.generic, bids_tabular_column_descriptor) <- function(x, all.n
 }
 
 ## `format`
-S7::method(format.generic, bids_tabular_column_descriptor) <- function(x, ..., indent = json_indent()) {
+S7::method(format.generic, BIDSTabularColumnDescriptor) <- function(x, ..., indent = json_indent()) {
   to_json(as.list(x, recursive = TRUE), indent = indent)
 }
 
-#' @rdname bids_tabular
+#' @rdname BIDSTabular
 #' @export
-bids_tabular_meta_sidecar <- new_bids_class(
-  name = "bids_tabular_meta_sidecar",
+BIDSTabularMetaSidecar <- new_bids_class(
+  name = "BIDSTabularMetaSidecar",
   properties = list(
     columns = bids_property_tabular_column_descriptor_list(name = "columns")
   )
@@ -231,7 +231,7 @@ bids_tabular_meta_sidecar <- new_bids_class(
 
 
 ## `format`
-S7::method(format.generic, bids_tabular_meta_sidecar) <- function(x, name_list = key_missing, compact = TRUE, ..., indent = json_indent()) {
+S7::method(format.generic, BIDSTabularMetaSidecar) <- function(x, name_list = key_missing, compact = TRUE, ..., indent = json_indent()) {
   li <- as.list(x, recursive = TRUE)$columns
 
   if(!identical(name_list, key_missing)) {
@@ -249,10 +249,10 @@ S7::method(format.generic, bids_tabular_meta_sidecar) <- function(x, name_list =
 }
 
 
-#' @rdname bids_tabular
+#' @rdname BIDSTabular
 #' @export
-bids_tabular <- new_bids_class(
-  name = "bids_tabular",
+BIDSTabular <- new_bids_class(
+  name = "BIDSTabular",
   # function .prepare_save is called before saving
   #   to allow for any data manipulation
   hidden_names = c(".prepare_save"),
@@ -264,7 +264,7 @@ bids_tabular <- new_bids_class(
 )
 
 ## `save_bids_tabular`
-#' @rdname bids_tabular
+#' @rdname BIDSTabular
 #' @export
 save_bids_tabular_default <- function(x, path, meta = TRUE, compact_meta = TRUE, milliseconds = TRUE, utc = TRUE, ...) {
   if(!grepl("\\.(tsv|tsv\\.gz)", tolower(path))) {
@@ -300,15 +300,15 @@ save_bids_tabular_default <- function(x, path, meta = TRUE, compact_meta = TRUE,
 }
 
 ## save_bids_tabular
-S7::method(save_bids_tabular, bids_tabular) <- save_bids_tabular_default
+S7::method(save_bids_tabular, BIDSTabular) <- save_bids_tabular_default
 
 ## `print`
-S7::method(print.generic, bids_tabular) <- function(x, nrows = 10, ...) {
+S7::method(print.generic, BIDSTabular) <- function(x, nrows = 10, ...) {
   class_name <- attr(S7::S7_class(x), "name")
   if(length(class_name)) {
     class_name <- sprintf("[%s]", class_name[[1]])
   } else {
-    class_name <- "bids_tabular"
+    class_name <- "BIDSTabular"
   }
   cat(sprintf("<BIDS Tabular>%s\n$meta:\n", class_name))
   print(x@meta)
@@ -319,7 +319,7 @@ S7::method(print.generic, bids_tabular) <- function(x, nrows = 10, ...) {
 
 
 
-S7::method(as_bids_tabular, bids_tabular) <- function(x, ..., cls = NULL) {
+S7::method(as_bids_tabular, BIDSTabular) <- function(x, ..., cls = NULL) {
   if(
     all(inherits(cls, c("bids_tabular_definition", "S7_class"), which = TRUE) > 0) &&
     !identical(cls, S7::S7_class(x))
@@ -380,13 +380,13 @@ S7::method(as_bids_tabular, S7::class_character) <- function(x, meta = NULL, ...
 # generator
 
 
-#' @rdname bids_tabular
+#' @rdname BIDSTabular
 new_bids_tabular_class <- function(
-    table_name, parent = bids_tabular,
+    table_name, parent = BIDSTabular,
     content_setter = NULL, meta_preset = NULL, prepare_save = NULL,
     lower_case_column_names = FALSE) {
 
-  class_name <- sprintf("bids_tabular_%s", table_name)
+  class_name <- sprintf("BIDSTabular_%s", table_name)
 
   if(is.function(prepare_save)) {
     methods <- list(

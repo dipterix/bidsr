@@ -6,7 +6,7 @@
 \usage{
 new_bids_class(
   name,
-  parent = bids_class_base,
+  parent = BIDSClassBase,
   abstract = FALSE,
   hidden_names = NULL,
   properties = NULL,
@@ -50,14 +50,41 @@ of the parent class (if used). The subsequent arguments are used to set
 the properties.}
 }
 \description{
-By default, all generated classes inherit \code{\link{bids_class_base}},
+By default, all generated classes inherit \code{\link{BIDSClassBase}},
 which provides \code{S3} generics
 }
 \examples{
 
+# ---- Basic usage --------------------------------------------
+
+Range <- new_bids_class(
+  "Range",
+  properties = list(
+    start = bids_property_numeric("start", "required"),
+    end = bids_property_numeric("end", "optional")
+  ),
+  validator = function(self) {
+    if(length(self@end) && self@end < self@start) {
+      "@end must be great than or equal to @start"
+    }
+  }
+)
+
+
+r <- Range(start = 10)
+r
+# get and set properties with @ or $
+r$start
+r$end <- 40
+r$end
+
+try(Range(start = c(10, 15), end = 20))
+try(Range(start = 15, end = 10))
+
+
 
 # ---- hide properties and attributes -------------------------
-cls <- new_bids_class(
+MyClass <- new_bids_class(
   name = "my_class",
   properties = list(
     str = bids_property_character(
@@ -76,7 +103,7 @@ cls <- new_bids_class(
   hidden_names = c("hidden_method", "hidden_prop")
 )
 
-x <- cls(str = "a")
+x <- MyClass(str = "a")
 x
 
 # hidden names will not be displayed

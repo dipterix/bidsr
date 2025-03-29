@@ -15,10 +15,10 @@
 #' relevant attributes of software container image used to produce the data.
 #' Valid keys in this object include type, tag 'URL' with string values.
 #' Package \code{'bidsr'} does not check what's inside of this entry.
-#' @returns Instantiated object of class \code{bids_dataset_generated_by}
+#' @returns Instantiated object of class \code{BIDSDatasetGeneratedBy}
 #' @examples
 #'
-#' x <- bids_dataset_generated_by(
+#' x <- BIDSDatasetGeneratedBy(
 #'   Name = "RAVE Team",
 #'   Version = "0.0.1",
 #'   Container = list(
@@ -38,8 +38,8 @@
 #' format(x)
 #'
 #' @export
-bids_dataset_generated_by <- new_bids_class(
-  name = "bids_dataset_generated_by",
+BIDSDatasetGeneratedBy <- new_bids_class(
+  name = "BIDSDatasetGeneratedBy",
   properties = list(
     Name = bids_property_character(name = "Name", type = "required", validator = validator_nonempty_string),
     Version = bids_property_character(name = "Version", type = "optional"),
@@ -50,7 +50,7 @@ bids_dataset_generated_by <- new_bids_class(
 )
 
 ## `format`
-S7::method(format.generic, bids_dataset_generated_by) <- function(x, ..., indent = json_indent()) {
+S7::method(format.generic, BIDSDatasetGeneratedBy) <- function(x, ..., indent = json_indent()) {
   to_json(as.list(x, recursive = TRUE), indent = indent)
 }
 
@@ -82,7 +82,7 @@ S7::method(format.generic, bids_dataset_generated_by) <- function(x, ..., indent
 #' @param Authors (recommended strings) Vector of individuals who contributed
 #' to the creation/curation of the data-set
 #' @param GeneratedBy (recommended) will be converted to
-#' \code{\link{bids_dataset_generated_by}}
+#' \code{\link{BIDSDatasetGeneratedBy}}
 #' @param SourceDatasets Used to specify the locations and relevant
 #' attributes of all source data-sets. Valid keys in each object include
 #' \code{"URL"}, \code{"DOI"}, and \code{"Version"} with string values;
@@ -107,7 +107,7 @@ S7::method(format.generic, bids_dataset_generated_by) <- function(x, ..., indent
 #' @examples
 #'
 #' # ---- Manually enter entries ----------------------------------------
-#' dataset_description <- bids_dataset_description(
+#' dataset_description <- BIDSDatasetDescription(
 #'   # a parent directory is mandatory as it defines what data
 #'   # dataset_description.json applies to
 #'
@@ -168,8 +168,8 @@ S7::method(format.generic, bids_dataset_generated_by) <- function(x, ..., indent
 #' }
 #'
 #' @export
-bids_dataset_description <- new_bids_class(
-  name = "bids_dataset_description",
+BIDSDatasetDescription <- new_bids_class(
+  name = "BIDSDatasetDescription",
   properties = list(
     # --- Required ---
     Name = bids_property_character(name = "Name", type = "required", validator = validator_nonempty_string),
@@ -212,8 +212,8 @@ bids_dataset_description <- new_bids_class(
         self@GeneratedBy <- structure(
           names = NULL,
           lapply(value, function(x) {
-            if(!S7::S7_inherits(x, class = bids_dataset_generated_by)) {
-              x <- do.call(bids_dataset_generated_by, as.list(x))
+            if(!S7::S7_inherits(x, class = BIDSDatasetGeneratedBy)) {
+              x <- do.call(BIDSDatasetGeneratedBy, as.list(x))
             }
             x
           })
@@ -267,7 +267,7 @@ bids_dataset_description <- new_bids_class(
 
 
 ## `format`
-S7::method(format.generic, bids_dataset_description) <- function(x, ..., indent = json_indent()) {
+S7::method(format.generic, BIDSDatasetDescription) <- function(x, ..., indent = json_indent()) {
   li <- as.list(x, recursive = TRUE)
   li$GeneratedBy <- lapply(li$GeneratedBy, as.list)
   to_json(x = li, indent = indent)
@@ -281,13 +281,13 @@ bids_dataset_description_from_list <- function(x) {
   if(length(args$parent_directory) != 1 || is.na(args$parent_directory) || !nzchar(args$parent_directory) || args$parent_directory %in% c("/")) {
     stop("Please provide a path to the `parent_directory` that contains BIDS dataset_description.json")
   }
-  re <- do.call(bids_dataset_description, args)
+  re <- do.call(BIDSDatasetDescription, args)
   re
 }
 
 
 
-S7::method(get_bids_dataset_description, bids_dataset_description) <- function(x, parent_directory, ...) {
+S7::method(get_bids_dataset_description, BIDSDatasetDescription) <- function(x, parent_directory, ...) {
   x
 }
 

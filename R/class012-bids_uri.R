@@ -3,7 +3,7 @@
 # pattern <- "(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
 
 parse_bids_uri <- function(uri) {
-  if(S7::S7_inherits(uri, bids_uri)) {
+  if(S7::S7_inherits(uri, BIDSURI)) {
     return(uri)
   }
 
@@ -28,12 +28,12 @@ parse_bids_uri <- function(uri) {
 
 #' 'BIDS' uniform resource indicator ('URI') class definition
 #' @param uri 'URI' string or another 'BIDS-URI' object
-#' @returns A \code{bids_uri} instance.
+#' @returns A \code{BIDSURI} instance.
 #'
 #' @examples
 #'
 #' # basic properties
-#' uri <- bids_uri("bids::sub-01/fmap/sub-01_dir-AP_epi.nii.gz")
+#' uri <- BIDSURI("bids::sub-01/fmap/sub-01_dir-AP_epi.nii.gz")
 #' uri
 #' uri$relative_path
 #' uri$dataset_name
@@ -57,7 +57,7 @@ parse_bids_uri <- function(uri) {
 #'   )
 #' )
 #'
-#' uri <- bids_uri("bids::sub-01/fmap/sub-01_dir-AP_epi.nii.gz")
+#' uri <- BIDSURI("bids::sub-01/fmap/sub-01_dir-AP_epi.nii.gz")
 #' resolved <- resolve_bids_path(uri, dataset_description)
 #'
 #' # resolved absolute path
@@ -67,7 +67,7 @@ parse_bids_uri <- function(uri) {
 #' # `dataset_description.json` is stored
 #' attr(resolved, "raw_resolution")
 #'
-#' uri <- bids_uri("bids:deriv1:sub-02/anat/sub-02_T1w.nii.gz")
+#' uri <- BIDSURI("bids:deriv1:sub-02/anat/sub-02_T1w.nii.gz")
 #' resolved <- resolve_bids_path(uri, dataset_description)
 #'
 #' print(resolved)
@@ -76,8 +76,8 @@ parse_bids_uri <- function(uri) {
 #'
 #'
 #' @export
-bids_uri <- new_bids_class(
-  name = "bids_uri",
+BIDSURI <- new_bids_class(
+  name = "BIDSURI",
   properties = list(
     dataset_name = bids_property_character(name = "dataset_name", type = "required"),
     relative_path = bids_property_character(
@@ -116,13 +116,13 @@ bids_uri <- new_bids_class(
 )
 
 
-S7::method(resolve_bids_path, bids_uri) <- function(x, dataset_description, ...) {
+S7::method(resolve_bids_path, BIDSURI) <- function(x, dataset_description, ...) {
 
   docstring <- "Usage -> bidsr::resolve_bids_path(x, dataset_description, ...)
 
-  x: BIDS URI object; see `?bids_uri`
+  x: BIDS URI object; see `?BIDSURI`
   dataset_description: BIDS tabular instance of nearest
-      `dataset_description.json`; see `?bids_dataset_description`
+      `dataset_description.json`; see `?BIDSDatasetDescription`
 
 Returns: a resolved absolute path.
   "

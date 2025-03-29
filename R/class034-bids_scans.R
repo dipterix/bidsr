@@ -40,12 +40,12 @@ preset_scans_meta <- local({
   meta <- NULL
   function(...) {
     if(is.null(meta)) {
-      meta <<- bids_tabular_meta_sidecar(columns = list(
-        filename = bids_tabular_column_descriptor(
+      meta <<- BIDSTabularMetaSidecar(columns = list(
+        filename = BIDSTabularColumnDescriptor(
           LongName    = "Filename",
           Description = "[Required, string] Relative paths to files. There MUST be exactly one row for each file. Values in filename MUST be unique. This column must appear first in the file."
         ),
-        acq_time = bids_tabular_column_descriptor(
+        acq_time = BIDSTabularColumnDescriptor(
           LongName    = "Acquisition Time",
           Description = "[Optional, string] Acquisition time refers to when the first data point in each run was acquired. Furthermore, if this header is provided, the acquisition times of all files from the same recording MUST be identical. Datetime format and their deidentification are described in Units. This column may appear anywhere in the file.",
           TermURL     = "https://bids-specification.readthedocs.io/en/stable/common-principles.html#units"
@@ -61,18 +61,18 @@ preset_scans_meta <- local({
 #' @title 'BIDS' scans table class
 #' @description
 #' A tabular containing a list of scans and their metadata.
-#' The class is a child class of \code{\link{bids_tabular}}, hence see
+#' The class is a child class of \code{\link{BIDSTabular}}, hence see
 #' the methods there.
 #' The original specification is at
 #' \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#scans-file}.
-#' @param content,meta see \code{\link{bids_tabular}}
-#' @returns A \code{bids_tabular_scans} instance inheriting
-#' \code{\link{bids_tabular}}.
+#' @param content,meta see \code{\link{BIDSTabular}}
+#' @returns A \code{BIDSTabularScans} instance inheriting
+#' \code{\link{BIDSTabular}}.
 #' @examples
 #'
 #'
 #' # basic
-#' tabular <- bids_tabular_scans(
+#' tabular <- BIDSTabularScans(
 #'   data.frame(
 #'     filename = c(
 #'       "func/sub-control01_task-nback_bold.nii.gz",
@@ -93,13 +93,13 @@ preset_scans_meta <- local({
 #'
 #'
 #' # convert existing tabular
-#' tabular <- bids_tabular(
+#' tabular <- BIDSTabular(
 #'   data.frame(
 #'     filename = "func/sub-control01_task-nback_bold.nii.gz",
 #'     acq_time = "1877-06-15T13:45:30"
 #'   )
 #' )
-#' tabular <- as_bids_tabular(tabular, cls = bids_tabular_scans)
+#' tabular <- as_bids_tabular(tabular, cls = BIDSTabularScans)
 #' tabular
 #'
 #' # save to tsv
@@ -123,7 +123,7 @@ preset_scans_meta <- local({
 #'
 #'
 #' @export
-bids_tabular_scans <- new_bids_tabular_class(
+BIDSTabularScans <- new_bids_tabular_class(
   table_name = "scans",
   lower_case_column_names = TRUE,
   content_setter = function(self, value) {

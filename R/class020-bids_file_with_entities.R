@@ -1,7 +1,7 @@
 
 
-bids_entity_file <- new_bids_class(
-  name = "bids_entity_file",
+BIDSEntityFile <- new_bids_class(
+  name = "BIDSEntityFile",
   abstract = TRUE,
   properties = list(
     parent_directory = bids_property_character(name = "parent_directory", type = "required", validator = validator_nonempty_string),
@@ -29,13 +29,13 @@ bids_entity_file <- new_bids_class(
 )
 
 ## `get_bids_entity_rules`
-S7::method(get_bids_entity_rules, bids_entity_file) <- function(x) {
+S7::method(get_bids_entity_rules, BIDSEntityFile) <- function(x) {
   cls <- S7::S7_class(x)
   cls@properties$entities$entity_rules
 }
 
 ## `get_bids_entity`
-S7::method(get_bids_entity, bids_entity_file) <- function(x, key, value_only = TRUE, ifnotfound = NULL) {
+S7::method(get_bids_entity, BIDSEntityFile) <- function(x, key, value_only = TRUE, ifnotfound = NULL) {
   entities <- x@entities[[key]]
   if(length(entities)) {
     if(value_only) {
@@ -52,7 +52,7 @@ S7::method(get_bids_entity, bids_entity_file) <- function(x, key, value_only = T
 
 
 ## `format`
-S7::method(format.generic, bids_entity_file) <- function(x, ...) {
+S7::method(format.generic, BIDSEntityFile) <- function(x, ...) {
   entity_str <- unlist(lapply(x@entities, format))
   re <- paste(c(entity_str, x@suffix), collapse = "_")
   extension <- x@extension
@@ -63,7 +63,7 @@ S7::method(format.generic, bids_entity_file) <- function(x, ...) {
 }
 
 ## `print`
-S7::method(print.generic, bids_entity_file) <- function(x, details = FALSE, ...) {
+S7::method(print.generic, BIDSEntityFile) <- function(x, details = FALSE, ...) {
   fmt <- format(x)
   if(details) {
     descr <- trimws(paste(x@description, collapse = ""))
@@ -78,12 +78,12 @@ S7::method(print.generic, bids_entity_file) <- function(x, details = FALSE, ...)
 }
 
 ## `names`
-S7::method(names.generic, bids_entity_file) <- function(x) {
+S7::method(names.generic, BIDSEntityFile) <- function(x) {
   unique(c(names_bids_class_base(x), "get_bids_entity", "get_bids_entity_rules"))
 }
 
 ## `[[`
-S7::method(extract_bracket.generic, list(x = bids_entity_file, name = S7::class_any)) <- function(x, name, ...) {
+S7::method(extract_bracket.generic, list(x = BIDSEntityFile, name = S7::class_any)) <- function(x, name, ...) {
 
   switch (
     name,
@@ -124,7 +124,7 @@ test_bids_entities <- function(x, ..., .rules = list(), envir = parent.frame()) 
     }
     entity_key <- as.character(fml_l[[2]])
     entity_val <- x@entities[[entity_key]]
-    if(!is.null(entity_val) && S7::S7_inherits(entity_val, bids_entity)) {
+    if(!is.null(entity_val) && S7::S7_inherits(entity_val, BIDSEntity)) {
       entity_val <- entity_val@value
     }
 
@@ -154,7 +154,7 @@ is_child_bids_entity_file <- function(definition) {
   if(is.null(definition)) { return(FALSE) }
   if(!inherits(definition, "S7_class")) { return(FALSE) }
   if(!identical(attr(definition, "package"), "bidsr")) { return(FALSE) }
-  if(identical(attr(definition, "name"), "bids_entity_file")) { return(TRUE) }
+  if(identical(attr(definition, "name"), "BIDSEntityFile")) { return(TRUE) }
   tryCatch({
     is_child_bids_entity_file(definition@parent)
   }, error = function(e) { FALSE })
@@ -190,7 +190,7 @@ is_child_bids_entity_file <- function(definition) {
 #'
 #' # ---- Basic usage ----------------------------------------
 #' behavior_event_file_def <- new_bids_entity_file_class(
-#'   name = "bids_entity_file_beh_events",
+#'   name = "BIDSEntityFile_beh_events",
 #'   data_type = "beh",
 #'   suffix = "events"
 #' )
@@ -230,7 +230,7 @@ is_child_bids_entity_file <- function(definition) {
 #' # ---- Using BIDS schema key for specific version ------------------------
 #' bids_version <- "1.10.1"
 #' behavior_event_file_def <- new_bids_entity_file_class(
-#'   name = "bids_entity_file_beh_events",
+#'   name = "BIDSEntityFile_beh_events",
 #'   data_type = "beh",
 #'   suffix = "events",
 #'   schema_key = "rules.files.raw.task.events",
@@ -351,7 +351,7 @@ new_bids_entity_file_class <- function(name, data_type, suffix, schema_key = NA,
 
   cls <- new_bids_class(
     name = name,
-    parent = bids_entity_file,
+    parent = BIDSEntityFile,
     properties = list(
       entities = bids_property_entity_list(
         name = "entities",

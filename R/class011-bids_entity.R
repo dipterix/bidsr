@@ -1,4 +1,4 @@
-#' @name bids_entity
+#' @name BIDSEntity
 #' @title Class definitions of 'BIDS' entity
 #' @description
 #' A 'BIDS' entity is an attribute that can be associated with a file,
@@ -62,8 +62,8 @@
 #'
 NULL
 
-bids_entity <- new_bids_class(
-  name = "bids_entity",
+BIDSEntity <- new_bids_class(
+  name = "BIDSEntity",
   abstract = TRUE,
   properties = list(
 
@@ -82,7 +82,7 @@ bids_entity <- new_bids_class(
 )
 
 ## `format`
-S7::method(format.generic, bids_entity) <- function(x, ...) {
+S7::method(format.generic, BIDSEntity) <- function(x, ...) {
   v <- x@value
   if(length(v) && !is.na(v)) {
     if(is.numeric(v)) {
@@ -107,11 +107,11 @@ new_bids_entity_class <- function(value, type = BIDS_ENTITY_REQUIREMENT_OPTIONS,
     value_prop <- bids_property_internal(name = "value", type = type, class = value, ...)
   }
 
-  cls_name <- sprintf("bids_entity_%s_%s", value_class_name, type)
+  cls_name <- sprintf("BIDSEntity_%s_%s", value_class_name, type)
 
   cls <- new_bids_class(
     name = cls_name,
-    parent = bids_entity,
+    parent = BIDSEntity,
     properties = list(
 
       # key = bids_property_character(name = "key", type = "required", final = TRUE, validator = validator_nonempty_string),
@@ -143,25 +143,25 @@ new_bids_entity_class <- function(value, type = BIDS_ENTITY_REQUIREMENT_OPTIONS,
 }
 
 
-#' @rdname bids_entity
+#' @rdname BIDSEntity
 #' @export
-bids_entity_label_required <- new_bids_entity_class(
+BIDSEntity_label_required <- new_bids_entity_class(
   value = S7::class_character,
   type = "required",
   value_class_name = "label"
 )
 
-#' @rdname bids_entity
+#' @rdname BIDSEntity
 #' @export
-bids_entity_label_optional <- new_bids_entity_class(
+BIDSEntity_label_optional <- new_bids_entity_class(
   value = S7::class_character,
   type = "optional",
   value_class_name = "label"
 )
 
-#' @rdname bids_entity
+#' @rdname BIDSEntity
 #' @export
-bids_entity_label_prohibited <- new_bids_entity_class(
+BIDSEntity_label_prohibited <- new_bids_entity_class(
   value = S7::class_character,
   type = "prohibited",
   value_class_name = "label"
@@ -193,9 +193,9 @@ ensure_entity_index <- function(value) {
   vint
 }
 
-#' @rdname bids_entity
+#' @rdname BIDSEntity
 #' @export
-bids_entity_index_required <- new_bids_entity_class(
+BIDSEntity_index_required <- new_bids_entity_class(
   value = bids_property_integerish(
     name = "value",
     type = "required",
@@ -209,9 +209,9 @@ bids_entity_index_required <- new_bids_entity_class(
   value_class_name = "index"
 )
 
-#' @rdname bids_entity
+#' @rdname BIDSEntity
 #' @export
-bids_entity_index_optional <- new_bids_entity_class(
+BIDSEntity_index_optional <- new_bids_entity_class(
   value = bids_property_integerish(
     name = "value",
     type = "optional",
@@ -225,9 +225,9 @@ bids_entity_index_optional <- new_bids_entity_class(
   value_class_name = "index"
 )
 
-#' @rdname bids_entity
+#' @rdname BIDSEntity
 #' @export
-bids_entity_index_prohibited <- new_bids_entity_class(
+BIDSEntity_index_prohibited <- new_bids_entity_class(
   value = bids_property_integerish(
     name = "value",
     type = "prohibited",
@@ -241,9 +241,9 @@ bids_entity_index_prohibited <- new_bids_entity_class(
   value_class_name = "index"
 )
 
-#' @rdname bids_entity
+#' @rdname BIDSEntity
 #' @export
-bids_entity_any_required <- new_bids_entity_class(
+BIDSEntity_any_required <- new_bids_entity_class(
   value = S7::new_union(S7::class_character, S7::class_numeric),
   type = "required",
   value_class_name = "any",
@@ -256,49 +256,51 @@ bids_entity_any_required <- new_bids_entity_class(
   }
 )
 
-#' @rdname bids_entity
+#' @rdname BIDSEntity
 #' @export
-bids_entity_any_optional <- new_bids_entity_class(
+BIDSEntity_any_optional <- new_bids_entity_class(
   value = S7::new_union(S7::class_character, S7::class_numeric),
   type = "optional",
   value_class_name = "any",
   validator = function(value) {
-    if(is.character(value)) {
-      return(validator_nonempty_string(value))
-    } else {
-      return(validator_nonnegative_intergerish(value))
+    if(length(value)) {
+      if (is.character(value)) {
+        return(validator_nonempty_string(value))
+      } else {
+        return(validator_nonnegative_intergerish(value))
+      }
     }
+    return(NULL)
   }
 )
 
-#' @rdname bids_entity
+#' @rdname BIDSEntity
 #' @export
-bids_entity_any_prohibited <- new_bids_entity_class(
+BIDSEntity_any_prohibited <- new_bids_entity_class(
   value = S7::new_union(S7::class_character, S7::class_numeric),
   type = "prohibited",
   value_class_name = "any",
   validator = function(value) {
-    if(is.character(value)) {
-      return(validator_nonempty_string(value))
-    } else {
-      return(validator_nonnegative_intergerish(value))
+    if(length(value) > 0) {
+      return("Entity is prohibited, invalid value: ", paste(value, collapse = ", "))
     }
+    return()
   }
 )
 
 
 
-# e <-  bids_entity(key = "sub", type = "label", requirement = "optional")
+# e <-  BIDSEntity(key = "sub", type = "label", requirement = "optional")
 
 # ---- utilities ------------------------------------------------
 
 get_entity_rule <- function(object) {
   cls_name <- class(object)
-  cls_name <- cls_name[startsWith(cls_name, "bidsr::bids_entity_")]
+  cls_name <- cls_name[startsWith(cls_name, "bidsr::BIDSEntity_")]
   if(!length(cls_name)) {
     return(c("any", "optional"))
   }
-  entity_rule <- gsub("^bidsr::bids_entity_", "", cls_name[[1]])
+  entity_rule <- gsub("^bidsr::BIDSEntity_", "", cls_name[[1]])
   entity_rule <- tolower(strsplit(entity_rule, "_")[[1]])
 
   if(entity_rule[[1]] %in% BIDS_ENTITY_VALUE_TYPES) {
@@ -325,7 +327,7 @@ guess_entity_class <- function(key, object = NULL, rules = list()) {
   if(length(req_t)) {
     rule0[[2]] <- req_t[[1]]
   }
-  cls_name <- sprintf("bids_entity_%s_%s", rule0[[1]], rule0[[2]])
+  cls_name <- sprintf("BIDSEntity_%s_%s", rule0[[1]], rule0[[2]])
   cls <- get(cls_name, envir = asNamespace("bidsr"))
   return(cls)
 }

@@ -36,17 +36,17 @@ preset_sessions_meta <- local({
   meta <- NULL
   function(...) {
     if(is.null(meta)) {
-      meta <<- bids_tabular_meta_sidecar(columns = list(
-        session_id = bids_tabular_column_descriptor(
+      meta <<- BIDSTabularMetaSidecar(columns = list(
+        session_id = BIDSTabularColumnDescriptor(
           LongName    = "Session ID",
           Description = "[Required, string] A session identifier of the form ses-<label>, matching a session found in the dataset. There MUST be exactly one row for each session. Values in session_id MUST be unique. This column must appear first in the file."
         ),
-        acq_time = bids_tabular_column_descriptor(
+        acq_time = BIDSTabularColumnDescriptor(
           LongName    = "Acquisition Time",
           Description = "[Optional, string] Acquisition time refers to when the first data point of the first run was acquired. Datetime format and their deidentification are described in Units. This column may appear anywhere in the file.",
           TermURL     = "https://bids-specification.readthedocs.io/en/stable/common-principles.html#units"
         ),
-        pathology = bids_tabular_column_descriptor(
+        pathology = BIDSTabularColumnDescriptor(
           LongName    = "Pathology",
           Description = "[Recommended, string or number] String value describing the pathology of the sample or type of control. When different from healthy, pathology SHOULD be specified. The pathology may be specified in either samples.tsv or sessions.tsv, depending on whether the pathology changes over time. This column may appear anywhere in the file."
         ),
@@ -60,19 +60,19 @@ preset_sessions_meta <- local({
 #' @title 'BIDS' sessions table class
 #' @description
 #' A tabular containing a list of sessions and their metadata.
-#' The class is a child class of \code{\link{bids_tabular}}, hence see
+#' The class is a child class of \code{\link{BIDSTabular}}, hence see
 #' the methods there.
 #' The original specification is at
 #' \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#sessions-file}.
-#' @param content,meta see \code{\link{bids_tabular}}
-#' @returns A \code{bids_tabular_sessions} instance inheriting
-#' \code{\link{bids_tabular}}.
+#' @param content,meta see \code{\link{BIDSTabular}}
+#' @returns A \code{BIDSTabularSessions} instance inheriting
+#' \code{\link{BIDSTabular}}.
 #' @examples
 #'
 #'
 #'
 #' # basic
-#' tabular <- bids_tabular_sessions(data.frame(
+#' tabular <- BIDSTabularSessions(data.frame(
 #'   session_id = c("ses-predrug", "ses-postdrug", "ses-followup"),
 #'   acq_time = c(
 #'     "2009-06-15T13:45:30",
@@ -85,14 +85,14 @@ preset_sessions_meta <- local({
 #'
 #'
 #' # convert existing tabular
-#' tabular <- bids_tabular(
+#' tabular <- BIDSTabular(
 #'   data.frame(
 #'     acq_time = "2009-06-15T13:45:30",
 #'     session_id = "ses-predrug",
 #'     systolic_blood_pressure = 120
 #'   )
 #' )
-#' tabular <- as_bids_tabular(tabular, cls = bids_tabular_sessions)
+#' tabular <- as_bids_tabular(tabular, cls = BIDSTabularSessions)
 #' tabular
 #'
 #'
@@ -117,7 +117,7 @@ preset_sessions_meta <- local({
 #'
 #'
 #' @export
-bids_tabular_sessions <- new_bids_tabular_class(
+BIDSTabularSessions <- new_bids_tabular_class(
   table_name = "sessions",
   lower_case_column_names = TRUE,
   content_setter = function(self, value) {

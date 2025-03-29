@@ -1,8 +1,8 @@
 #' @name bids_subject
 #' @title 'BIDS' subject class
-#' @param project 'BIDS' project instance, see \code{\link{bids_project}}, or
+#' @param project 'BIDS' project instance, see \code{\link{BIDSProject}}, or
 #' a path to the 'BIDS' project
-#' @param ... passed to the constructor of \code{\link{bids_project}}, when
+#' @param ... passed to the constructor of \code{\link{BIDSProject}}, when
 #' \code{project} is a character string
 #' @param subject_code character, subject code with or without the leading
 #' \code{'sub-'}. The subject code, after trimming the leading entity key,
@@ -22,14 +22,14 @@
 #'
 #'   project_path <- file.path(examples, "ieeg_epilepsy_ecog")
 #'
-#'   project <- bids_project(
+#'   project <- BIDSProject(
 #'     path = project_path,
 #'     raw_data_relpath = ".",
 #'     derivative_data_relpath = "derivatives"
 #'   )
 #'
 #'
-#'   subject <- bids_subject(project = project, subject_code = "ecog01",
+#'   subject <- BIDSSubject(project = project, subject_code = "ecog01",
 #'                           strict = FALSE)
 #'
 #'   storage_root <- resolve_bids_path(subject, storage = "raw")
@@ -39,11 +39,11 @@
 #' }
 #'
 #' @export
-bids_subject <- new_bids_class(
-  name = "bids_subject",
+BIDSSubject <- new_bids_class(
+  name = "BIDSSubject",
   properties = list(
     project = bids_property(
-      name = "project", class = bids_project
+      name = "project", class = BIDSProject
     ),
     subject_code = bids_property_character(
       name = "subject_code",
@@ -67,8 +67,8 @@ bids_subject <- new_bids_class(
   constructor = function(project, subject_code, ..., strict = "raw") {
     subject_code <- gsub("^sub-", "", as.character(subject_code), ignore.case = TRUE)
 
-    if(!S7::S7_inherits(project, bids_project)) {
-      project <- bids_project(path = project, ...)
+    if(!S7::S7_inherits(project, BIDSProject)) {
+      project <- BIDSProject(path = project, ...)
     }
     if(isTRUE(strict)) {
       strict <- c("raw", "source")
@@ -97,16 +97,22 @@ bids_subject <- new_bids_class(
   }
 )
 
+#' @rdname bids_subject
+#' @export
+bids_subject <- function(project, subject_code, ..., strict = "raw") {
+  BIDSSubject(project = project, subject_code = subject_code, ..., strict = strict)
+}
+
 
 
 ## `print` generic
-S7::method(print.generic, bids_subject) <- function(x, ...) {
-  cat(sprintf("<BIDS Subject> `sub-%s` (project `%s`)\n", x@subject_code, x@project@name))
+S7::method(print.generic, BIDSSubject) <- function(x, ...) {
+  cat(sprintf("<BIDSSubject> `sub-%s` (project `%s`)\n", x@subject_code, x@project@name))
   invisible(x)
 }
 
 ## `resolve_bids_path` generic
-S7::method(resolve_bids_path, bids_subject) <- function(x, ..., storage = c("raw", "source", "derivative", "root"), prefix = NULL, relative_to_project = FALSE) {
+S7::method(resolve_bids_path, BIDSSubject) <- function(x, ..., storage = c("raw", "source", "derivative", "root"), prefix = NULL, relative_to_project = FALSE) {
 
   docstring <- 'Usage -> bidsr::resolve_bids_path(
     x, ...,
@@ -115,7 +121,7 @@ S7::method(resolve_bids_path, bids_subject) <- function(x, ..., storage = c("raw
     relative_to_project = FALSE
 )
 
-  x: BIDS subjecr object; see `?bids_subject`;
+  x: BIDS subjecr object; see `?BIDSSubject`;
 
   storage: which storage to return, choices are
     - "root": project root
@@ -159,12 +165,12 @@ Returns: a resolved path.
 
 
 ## `query_bids` generic
-S7::method(query_bids, bids_subject) <- function(x, search_params, ..., env = parent.frame()) {
+S7::method(query_bids, BIDSSubject) <- function(x, search_params, ..., env = parent.frame()) {
 
 
   docstring <- "Usage -> bidsr::query_bids(subject, search_params, ...)
 
-  subject: BIDS subject (see `?bids_subject`)
+  subject: BIDS subject (see `?BIDSSubject`)
   search_params: query paramenters, can be a string or a list:
     - [type=string] data types to query in raw folder, e.g. 'anat', 'func', ...
     - [type=list] list of data type, storage, ...
@@ -204,12 +210,12 @@ Returns: a data table of files and entities related to the data type.
 
   # DIPSAUS DEBUG START
   # examples <- download_bids_examples(test = TRUE)
-  # project <- bids_project("/Users/dipterix/Library/Caches/org.R-project.R/R/bidsr/bids-examples/bids-examples-master/ieeg_epilepsy_ecog/")
+  # project <- BIDSProject("/Users/dipterix/Library/Caches/org.R-project.R/R/bidsr/bids-examples/bids-examples-master/ieeg_epilepsy_ecog/")
   # subject_code <- "ecog01"
   #
   # project <- "/Users/dipterix/Library/Caches/org.R-project.R/R/bidsr/bids-examples/bids-examples-master/ds000117"
   # subject_code <- "06"
-  # x <- bids_subject(project = project, subject_code = subject_code)
+  # x <- BIDSSubject(project = project, subject_code = subject_code)
   # ii <- 1
   # search_params <- list(
   #   storage = "raw",
@@ -279,6 +285,7 @@ Returns: a data table of files and entities related to the data type.
     data_types <- as.character(unname(unlist(data_types)))
     data_types <- unique(data_types)
   }
+  data_types_lowercase <- tolower(data_types)
   # 1 ses- folder
   level1_files <- list.files(subject_absroot, include.dirs = TRUE, recursive = FALSE, full.names = FALSE, all.files = FALSE)
   level1_dirnames <- level1_files[dir_exists(file_path(subject_absroot, level1_files))]
@@ -378,6 +385,7 @@ Returns: a data table of files and entities related to the data type.
         return(parsed)
       }
     }, error = function(e) {
+      warning("Unable to parse `", path, "` due to: ", e$message)
       NULL
     })
     return(NULL)
@@ -386,6 +394,7 @@ Returns: a data table of files and entities related to the data type.
   # get data files that passed filters
   datafile_pass_filters <- vapply(file_parsed, FUN.VALUE = FALSE, function(parsed) {
     if(is.null(parsed)) { return(FALSE) }
+    if(length(data_types_lowercase) && !isTRUE(tolower(parsed$data_type) %in% data_types_lowercase)) { return(FALSE) }
     if(isTRUE(tolower(parsed@extension) %in% c("tsv", "json", "tsv.gz", "bvec", "bval"))) { return(FALSE) }
     if(length(suffixes) && !isTRUE(tolower(parsed@suffix) %in% suffixes)) { return(FALSE) }
     if(length(entity_filters)) {
@@ -410,7 +419,7 @@ Returns: a data table of files and entities related to the data type.
     lapply(datafiles, function(item) {
       lapply(entity_names, function(enm) {
         e <- item@entities[[enm]]
-        if(S7::S7_inherits(e, bids_entity)) {
+        if(S7::S7_inherits(e, BIDSEntity)) {
           entity_values[[enm]] <- c(entity_values[[enm]], e@value)
         }
         NULL

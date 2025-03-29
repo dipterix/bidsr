@@ -1,21 +1,23 @@
-#' Base abstract class
+#' Low-level abstract class for \code{bidsr}
 #' @description
-#' All \code{bidsr} classes should inherit this abstract class, which provides
-#' consistent \code{S3} generics. This is an abstract class, which should not
-#' be called directly; use \code{\link{new_bids_class}} to create new class
-#' definitions.
+#' Low-level abstract class definition; see \code{\link{new_bids_class}} to
+#' create new class definitions. All \code{bidsr} classes inherit this
+#' abstract class, to provide consistent behavior.
+#' @returns Do not call this \code{S7} class directly, see
+#' \code{\link{new_bids_class}} on how to use it properly
+#'
 #' @export
-bids_class_base <- S7::new_class(
-  name = "bids_class_base",
+BIDSClassBase <- S7::new_class(
+  name = "BIDSClassBase",
   package = "bidsr",
   abstract = TRUE
 )
 
-class(bids_class_base) <- c("bids_class", class(bids_class_base))
+class(BIDSClassBase) <- c("bids_class", class(BIDSClassBase))
 
 #' Create new \code{bidsr} class definition
 #' @description
-#' By default, all generated classes inherit \code{\link{bids_class_base}},
+#' By default, all generated classes inherit \code{\link{BIDSClassBase}},
 #' which provides \code{S3} generics
 #' @param name string, required, name of the class
 #' @param properties a named list where the names are the property names
@@ -44,9 +46,36 @@ class(bids_class_base) <- c("bids_class", class(bids_class_base))
 #' accessible via \code{`@`} operator
 #' @examples
 #'
+#' # ---- Basic usage --------------------------------------------
+#'
+#' Range <- new_bids_class(
+#'   "Range",
+#'   properties = list(
+#'     start = bids_property_numeric("start", "required"),
+#'     end = bids_property_numeric("end", "optional")
+#'   ),
+#'   validator = function(self) {
+#'     if(length(self@end) && self@end < self@start) {
+#'       "@end must be great than or equal to @start"
+#'     }
+#'   }
+#' )
+#'
+#'
+#' r <- Range(start = 10)
+#' r
+#' # get and set properties with @ or $
+#' r$start
+#' r$end <- 40
+#' r$end
+#'
+#' try(Range(start = c(10, 15), end = 20))
+#' try(Range(start = 15, end = 10))
+#'
+#'
 #'
 #' # ---- hide properties and attributes -------------------------
-#' cls <- new_bids_class(
+#' MyClass <- new_bids_class(
 #'   name = "my_class",
 #'   properties = list(
 #'     str = bids_property_character(
@@ -65,7 +94,7 @@ class(bids_class_base) <- c("bids_class", class(bids_class_base))
 #'   hidden_names = c("hidden_method", "hidden_prop")
 #' )
 #'
-#' x <- cls(str = "a")
+#' x <- MyClass(str = "a")
 #' x
 #'
 #' # hidden names will not be displayed
@@ -82,7 +111,7 @@ class(bids_class_base) <- c("bids_class", class(bids_class_base))
 #' @export
 new_bids_class <- function(
     name,
-    parent = bids_class_base,
+    parent = BIDSClassBase,
     abstract = FALSE,
     hidden_names = NULL,
     properties = NULL,
@@ -91,10 +120,14 @@ new_bids_class <- function(
     constructor = NULL
 ) {
 
+  if(grepl("^[a-z0-9]", name, ignore.case = FALSE)) {
+    stop("Invalid BIDS class name: Please use 'UpperCamelCase' instead of ", sQuote(name))
+  }
+
   v <- validator
   # union_validators(
   #   function(self) {
-  #     S7::super(self, to = bids_class_base)
+  #     S7::super(self, to = BIDSClassBase)
   #   },
   #   validator
   # )
@@ -189,7 +222,7 @@ new_bids_class <- function(
 }
 
 # format generic
-S7::method(format.generic, bids_class_base) <- function(x, indent = json_indent(), collapse = "\n", ...) {
+S7::method(format.generic, BIDSClassBase) <- function(x, indent = json_indent(), collapse = "\n", ...) {
   s <- character(0L)
   fun <- attr(x, ".bids_object_extra")$format
   if(is.function(fun)) {
@@ -215,12 +248,12 @@ S7::method(format.generic, bids_class_base) <- function(x, indent = json_indent(
 }
 
 # as.character generic
-S7::method(as.character.generic, bids_class_base) <- function(x, indent = 0, ...) {
+S7::method(as.character.generic, BIDSClassBase) <- function(x, indent = 0, ...) {
   paste(format(x, indent = indent, ...), collapse = "\n")
 }
 
 # print generic
-S7::method(print.generic, bids_class_base) <- function(x, ...) {
+S7::method(print.generic, BIDSClassBase) <- function(x, ...) {
   S7::check_is_S7(x)
   cat(format(x, ...), sep = "\n")
   invisible(x)
@@ -232,7 +265,7 @@ names_bids_class_base <- function(x) {
   nms <- nms[!nms %in% attr(x, ".bids_object_hidden_names")]
   nms
 }
-S7::method(names.generic, bids_class_base) <- names_bids_class_base
+S7::method(names.generic, BIDSClassBase) <- names_bids_class_base
 
 ## `[[` operator
 extract_bids_class_base <- function(x, name) {
@@ -273,7 +306,7 @@ extract_bids_class_base <- function(x, name) {
   return(re)
 }
 S7::method(extract_bracket.generic,
-           list(x = bids_class_base, name = S7::class_any)) <- extract_bids_class_base
+           list(x = BIDSClassBase, name = S7::class_any)) <- extract_bids_class_base
 
 ## `[[<-` operator
 extract_set_bids_class_base <- function(x, name, value) {
@@ -290,17 +323,17 @@ extract_set_bids_class_base <- function(x, name, value) {
 # S7::method(
 #   extract_set_bracket.generic,
 #   list(
-#     x = bids_class_base,
+#     x = BIDSClassBase,
 #     name = S7::class_any,
 #     value = S7::class_any
 #   )
 # ) <- extract_set_bids_class_base
 
 #' @export
-`[[<-.bidsr::bids_class_base` <- extract_set_bids_class_base
+`[[<-.bidsr::BIDSClassBase` <- extract_set_bids_class_base
 
 ## `$` operator
-S7::method(extract.generic, list(x = bids_class_base, name = S7::class_any)) <- function(x, name) {
+S7::method(extract.generic, list(x = BIDSClassBase, name = S7::class_any)) <- function(x, name) {
   x[[name]]
 }
 
@@ -308,7 +341,7 @@ S7::method(extract.generic, list(x = bids_class_base, name = S7::class_any)) <- 
 # S7::method(
 #   extract_set.generic,
 #   list(
-#     x = bids_class_base,
+#     x = BIDSClassBase,
 #     name = S7::class_any,
 #     value = S7::class_any
 #   )
@@ -318,13 +351,13 @@ S7::method(extract.generic, list(x = bids_class_base, name = S7::class_any)) <- 
 # }
 
 #' @export
-`$<-.bidsr::bids_class_base` <- function(x, name, value) {
+`$<-.bidsr::BIDSClassBase` <- function(x, name, value) {
   x[[name]] <- value
   x
 }
 
 ## `as.list` generic
-S7::method(as.list.generic, bids_class_base) <- function(x, all.names = FALSE, sorted = FALSE, recursive = FALSE, ...) {
+S7::method(as.list.generic, BIDSClassBase) <- function(x, all.names = FALSE, sorted = FALSE, recursive = FALSE, ...) {
   nms <- S7::prop_names(x)
   nms <- nms[!nms %in% c("format", "print", attr(x, ".bids_object_hidden_names"))]
 
@@ -341,13 +374,13 @@ S7::method(as.list.generic, bids_class_base) <- function(x, all.names = FALSE, s
     lapply(nms, function(nm) {
       v <- S7::prop(x, nm)
       if( recursive ) {
-        if( S7::S7_inherits(v, bids_class_base) ) {
+        if( S7::S7_inherits(v, BIDSClassBase) ) {
           v <- as.list(v, all.names = all.names, sorted = sorted, recursive = TRUE)
         } else if( is.list(v) && !is.data.frame(v) ) {
           v <- structure(
             names = names(v),
             lapply(v, function(vi) {
-              if( S7::S7_inherits(vi, bids_class_base) ) {
+              if( S7::S7_inherits(vi, BIDSClassBase) ) {
                 vi <- as.list(vi, all.names = all.names, sorted = sorted, recursive = TRUE)
               }
               vi
@@ -370,7 +403,7 @@ S7::method(as.list.generic, bids_class_base) <- function(x, all.names = FALSE, s
 }
 
 ## as.data.frame generic
-S7::method(as.data.frame.generic, bids_class_base) <- function(x, ...) {
+S7::method(as.data.frame.generic, BIDSClassBase) <- function(x, ...) {
   li <- as.list(x, all.names = FALSE, recursive = FALSE, sorted = FALSE)
   as.data.frame(li)
 }

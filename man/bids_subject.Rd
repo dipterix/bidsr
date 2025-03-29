@@ -2,19 +2,22 @@
 % Please edit documentation in R/class041-bids_subject.R
 \name{bids_subject}
 \alias{bids_subject}
+\alias{BIDSSubject}
 \title{'BIDS' subject class}
 \usage{
+BIDSSubject(project, subject_code, ..., strict = "raw")
+
 bids_subject(project, subject_code, ..., strict = "raw")
 }
 \arguments{
-\item{project}{'BIDS' project instance, see \code{\link{bids_project}}, or
+\item{project}{'BIDS' project instance, see \code{\link{BIDSProject}}, or
 a path to the 'BIDS' project}
 
 \item{subject_code}{character, subject code with or without the leading
 \code{'sub-'}. The subject code, after trimming the leading entity key,
 should not contain any additional dash (\code{'-'})}
 
-\item{...}{passed to the constructor of \code{\link{bids_project}}, when
+\item{...}{passed to the constructor of \code{\link{BIDSProject}}, when
 \code{project} is a character string}
 
 \item{strict}{whether to check if the subject folders exist, can be
@@ -37,14 +40,14 @@ if(!isFALSE(examples)) {
 
   project_path <- file.path(examples, "ieeg_epilepsy_ecog")
 
-  project <- bids_project(
+  project <- BIDSProject(
     path = project_path,
     raw_data_relpath = ".",
     derivative_data_relpath = "derivatives"
   )
 
 
-  subject <- bids_subject(project = project, subject_code = "ecog01",
+  subject <- BIDSSubject(project = project, subject_code = "ecog01",
                           strict = FALSE)
 
   storage_root <- resolve_bids_path(subject, storage = "raw")

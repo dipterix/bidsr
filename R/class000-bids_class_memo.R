@@ -7,7 +7,7 @@
 #' There are 5 tiers of class files:
 #'    class00x: (schema and basic definitions)
 #'            001: constants
-#'            002: Abstract base classes (`bids_class_base`), generics, methods
+#'            002: Abstract base classes (`BIDSClassBase`), generics, methods
 #'            003: properties (`bids_property_*`), for convenient `S7` class
 #'                property reuses
 #'            004: schema parsing

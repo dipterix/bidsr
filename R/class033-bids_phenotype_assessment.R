@@ -57,12 +57,12 @@ preset_phenotype_meta <- local({
   meta <- NULL
   function(...) {
     if(is.null(meta)) {
-      meta <<- bids_tabular_meta_sidecar(columns = list(
-        MeasurementToolMetadata = bids_tabular_column_descriptor(
+      meta <<- BIDSTabularMetaSidecar(columns = list(
+        MeasurementToolMetadata = BIDSTabularColumnDescriptor(
           LongName    = "Measurement Tool Metadata",
           Description = "[Optional, object] A description of the measurement tool as a whole. Contains two fields: 'Description' and 'TermURL'. 'Description' is a free text description of the measurement tool. 'TermURL' is a URL to an entity in an ontology corresponding to this tool."
         ),
-        Derivative = bids_tabular_column_descriptor(
+        Derivative = BIDSTabularColumnDescriptor(
           LongName    = "Derivative",
           Description = "[Optional, boolean] Indicates that values in the corresponding column are transformations of values from other columns (for example a summary score based on a subset of items in a questionnaire).",
           Levels = list("true" = "true", "false" = "false")
@@ -80,20 +80,20 @@ preset_phenotype_meta <- local({
 #' @title 'BIDS' phenotype and assessment table class
 #' @description
 #' A tabular containing a list of phenotype & assessment, with their metadata.
-#' The class is a child class of \code{\link{bids_tabular}}, hence see
+#' The class is a child class of \code{\link{BIDSTabular}}, hence see
 #' the methods there.
 #' The original specification is at
 #' \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#phenotypic-and-assessment-data}.
-#' @param content,meta see \code{\link{bids_tabular}}
+#' @param content,meta see \code{\link{BIDSTabular}}
 #' @param x R object such as file path, project instances, etc.
 #' @param ... passed to other methods or ignored
-#' @returns A \code{bids_tabular_phenotype} instance inheriting
-#' \code{\link{bids_tabular}}.
+#' @returns A \code{BIDSTabularPhenotype} instance inheriting
+#' \code{\link{BIDSTabular}}.
 #' @examples
 #'
 #'
 #'
-#' bids_tabular_phenotype(
+#' BIDSTabularPhenotype(
 #'   meta = list(
 #'     MeasurementToolMetadata = list(
 #'       Description = "Adult ADHD Clinical Diagnostic Scale V1.2",
@@ -123,7 +123,7 @@ preset_phenotype_meta <- local({
 #'
 #'
 #' @export
-bids_tabular_phenotype <- new_bids_tabular_class(
+BIDSTabularPhenotype <- new_bids_tabular_class(
   table_name = "phenotype",
   lower_case_column_names = FALSE,
   content_setter = NULL,
@@ -134,13 +134,13 @@ bids_tabular_phenotype <- new_bids_tabular_class(
 
 ## `get_bids_phenotype_data` generic
 S7::method(get_bids_phenotype_data, S7::class_character) <- function(x, ...) {
-  as_bids_tabular(x, cls = bids_tabular_phenotype)
+  as_bids_tabular(x, cls = BIDSTabularPhenotype)
 }
 
-S7::method(get_bids_phenotype_data, bids_tabular_phenotype) <- function(x, ...) {
+S7::method(get_bids_phenotype_data, BIDSTabularPhenotype) <- function(x, ...) {
   x
 }
 
-S7::method(get_bids_phenotype_data, bids_tabular) <- function(x, ...) {
-  as_bids_tabular(x = x, cls = bids_tabular_phenotype)
+S7::method(get_bids_phenotype_data, BIDSTabular) <- function(x, ...) {
+  as_bids_tabular(x = x, cls = BIDSTabularPhenotype)
 }

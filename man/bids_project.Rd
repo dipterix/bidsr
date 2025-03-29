@@ -2,8 +2,17 @@
 % Please edit documentation in R/class040-bids_project.R
 \name{bids_project}
 \alias{bids_project}
+\alias{BIDSProject}
 \title{'BIDS' project class}
 \usage{
+BIDSProject(
+  path,
+  raw_data_relpath = ".",
+  source_data_relpath = "sourcedata",
+  derivative_data_relpath = "derivatives",
+  strict = TRUE
+)
+
 bids_project(
   path,
   raw_data_relpath = ".",
@@ -38,7 +47,7 @@ if(!isFALSE(examples)) {
 
   project_path <- file.path(examples, "ieeg_epilepsy_ecog")
 
-  project <- bids_project(
+  project <- BIDSProject(
     path = project_path,
     raw_data_relpath = ".",
     derivative_data_relpath = "derivatives"

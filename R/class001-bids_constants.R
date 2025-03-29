@@ -24,7 +24,7 @@ BIDS_MAP_MAX_DEPTH <- function() {
 DEFAULT_GENERATED_BY <- function() {
   desc <- read.dcf(system.file("DESCRIPTION", package = "bidsr"))
   desc <- structure(names = colnames(desc), as.list(desc))
-  bids_dataset_generated_by(
+  BIDSDatasetGeneratedBy(
     Name = as.character(desc$Package),
     Version = as.character(desc$Version),
     Description = paste(desc$Description, collapse = "\n"),

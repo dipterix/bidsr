@@ -47,7 +47,7 @@ The specification is at
 
 # ---- Basic usage ----------------------------------------
 behavior_event_file_def <- new_bids_entity_file_class(
-  name = "bids_entity_file_beh_events",
+  name = "BIDSEntityFile_beh_events",
   data_type = "beh",
   suffix = "events"
 )
@@ -87,7 +87,7 @@ get_bids_entity_rules(file1)
 # ---- Using BIDS schema key for specific version ------------------------
 bids_version <- "1.10.1"
 behavior_event_file_def <- new_bids_entity_file_class(
-  name = "bids_entity_file_beh_events",
+  name = "BIDSEntityFile_beh_events",
   data_type = "beh",
   suffix = "events",
   schema_key = "rules.files.raw.task.events",

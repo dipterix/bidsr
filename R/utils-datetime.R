@@ -1,12 +1,3 @@
-bids_data_type <- S7::new_property(
-  class = S7::class_character,
-  validator = validator_nonempty_string
-)
-
-bids_suffix <- S7::new_property(
-  class = S7::class_character,
-  validator = validator_nonempty_string
-)
 
 get_timezone_offset <- function(time_zone = "") {
   if(grepl("^[+-][01][0-9]{3}$", time_zone)) {

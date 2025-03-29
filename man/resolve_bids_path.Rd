@@ -30,7 +30,7 @@ if(!isFALSE(examples)) {
 
   project_path <- file.path(examples, "ieeg_epilepsy_ecog")
 
-  project <- bids_project(
+  project <- BIDSProject(
     path = project_path,
     raw_data_relpath = ".",
     derivative_data_relpath = "derivatives"
@@ -65,7 +65,7 @@ if(!isFALSE(examples)) {
 
   project_path <- file.path(examples, "ieeg_epilepsy_ecog")
 
-  subject <- bids_subject(project = project_path,
+  subject <- BIDSSubject(project = project_path,
                           subject_code = "ecog01")
 
   # raw-data directory
@@ -87,7 +87,7 @@ if(!isFALSE(examples)) {
 # ---- BIDS URI ----------------------------------------------------
 
 # create a BIDS URI
-uri <- bids_uri("bids::sub-01/fmap/sub-01_dir-AP_epi.nii.gz")
+uri <- BIDSURI("bids::sub-01/fmap/sub-01_dir-AP_epi.nii.gz")
 
 # resolving a BIDS URI requires dataset_description.json
 data_description <- get_bids_dataset_description(

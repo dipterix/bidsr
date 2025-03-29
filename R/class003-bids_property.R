@@ -33,8 +33,8 @@
 #' @examples
 #'
 #'
-#' cls <- new_bids_class(
-#'   name = "my_class",
+#' MyClass <- new_bids_class(
+#'   name = "MyClass",
 #'   properties = list(
 #'     str = bids_property_character(
 #'       name = "str",
@@ -56,7 +56,7 @@
 #'   )
 #' )
 #'
-#' instance <- cls(str = "aha")
+#' instance <- MyClass(str = "aha")
 #' instance
 #'
 #' instance$str <- "111"
@@ -66,11 +66,11 @@
 #'
 #'   # what if you enter illegal values
 #'
-#'   cls(str = "")
+#'   MyClass(str = "")
 #'
-#'   cls(str = NA_character_)
+#'   MyClass(str = NA_character_)
 #'
-#'   cls(str = 1)
+#'   MyClass(str = 1)
 #'
 #'
 #' }
@@ -100,6 +100,7 @@ bids_property <- function(name, class = S7::class_any, getter = NULL, setter = N
     name = name
   )
 }
+
 
 #' @rdname bids_property
 #' @export
@@ -133,6 +134,7 @@ bids_property_required <- function(
     validator_wizard("atomic", any.missing = FALSE, len = 1L),
     validator
   )
+
   bids_property(
     class = class,
     getter = getter,
@@ -443,6 +445,7 @@ bids_property_named_list <- function(
     validator_named_list,
     validator
   )
+
   setter_ <- function(self, value) {
     value <- as.list(value)
     if(!length(value)) {
@@ -469,28 +472,10 @@ bids_property_unnamed_list <- function(
     validator_unnamed_list,
     validator
   )
+
   bids_property(class = class, getter = getter, setter = setter,
                 validator = v, default = default, name = name, ...)
 }
-
-#' @rdname bids_property
-#' @export
-bids_property_format <- function(getter) {
-  S7::new_property(
-    class = S7::class_character,
-    getter = getter
-  )
-}
-
-#' @rdname bids_property
-#' @export
-bids_property_print_format <- S7::new_property(
-  class = S7::class_character,
-  getter = function(self) {
-    format(self)
-  }
-)
-
 
 
 #' @rdname bids_property
@@ -548,26 +533,30 @@ bids_property_entity_list <- function(
       stop("Property `", name, "` must be a collection (list) of entities, or a named list of entity values, where the names are entity keys.")
     }
     nms <- names(value)
-    value <- lapply(seq_along(value), function(ii) {
-      v <- value[[ii]]
-      if(S7::S7_inherits(v, bids_entity)) {
-        entity <- v
-        entity_key <- entity$key
-        entity_value <- entity$value
-      } else {
-        if(length(nms) < ii) {
-          stop("Cannot convert `value` into entities": v)
+    value <- drop_nulls(
+      lapply(seq_along(value), function(ii) {
+        v <- value[[ii]]
+        if(length(v) && S7::S7_inherits(v, BIDSEntity)) {
+          entity <- v
+          entity_key <- entity@key
+          entity_value <- entity@value
+        } else {
+          if(length(nms) < ii) {
+            stop("Cannot convert `value` into entities": v)
+          }
+          entity_key <- nms[[ii]]
+          entity_value <- v
+          entity <- NULL
         }
-        entity_key <- nms[[ii]]
-        entity_value <- v
-        entity <- NULL
-      }
-      cls <- guess_entity_class(key = entity_key, object = entity, rules = entity_rules)
-      if(!S7::S7_inherits(entity, cls)) {
-        entity <- cls(key = entity_key, value = entity_value)
-      }
-      entity
-    })
+        if(!length(entity_value)) { return(NULL) }
+        cls <- guess_entity_class(key = entity_key, object = entity, rules = entity_rules)
+        if(!S7::S7_inherits(entity, cls)) {
+          assign("cls", cls, globalenv())
+          entity <- cls(key = entity_key, value = entity_value)
+        }
+        entity
+      })
+    )
     # also assign names
     names(value) <- vapply(value, "[[", FUN.VALUE = "", "key")
     if(is.function(setter)) {
@@ -603,8 +592,8 @@ bids_property_tabular_column_descriptor_list <- function(
         names = cnames,
         lapply(cnames, function(nm) {
           v <- value[[nm]]
-          if(S7::S7_inherits(v, bids_tabular_column_descriptor)) { return(v) }
-          return(bids_tabular_column_descriptor(.list = v))
+          if(S7::S7_inherits(v, BIDSTabularColumnDescriptor)) { return(v) }
+          return(BIDSTabularColumnDescriptor(.list = v))
         })
       )
     } else {
@@ -699,11 +688,11 @@ bids_property_tabular_meta <- function(name = "meta", setter = NULL, preset = NU
   preset_names <- names(preset_meta_colums)
 
   setter_ <-  function(self, value) {
-    if(!S7::S7_inherits(value, bids_tabular_meta_sidecar)) {
+    if(!S7::S7_inherits(value, BIDSTabularMetaSidecar)) {
       value <- as_bids_tabular_meta(meta = value)
     }
 
-    # value is already a bids_tabular_meta_sidecar now
+    # value is already a BIDSTabularMetaSidecar now
     # check whether there are presets
     if(length(preset_meta)) {
       v_cols <- value$columns
@@ -730,7 +719,7 @@ bids_property_tabular_meta <- function(name = "meta", setter = NULL, preset = NU
     self
   }
   bids_property(
-    name = name, class = bids_tabular_meta_sidecar,
+    name = name, class = BIDSTabularMetaSidecar,
     setter = setter_, ...
   )
 }

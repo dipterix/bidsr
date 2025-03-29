@@ -79,7 +79,7 @@ Alternatively, we can read any `tsv` file with `as_bids_tabular`
 
 ```{r}
 participant_path <- file.path(project, "participants.tsv")
-as_bids_tabular(participant_path, cls = bids_tabular_participants)
+as_bids_tabular(participant_path, cls = BIDSTabularParticipants)
 ```
 
 ## Instantiate a `BIDS` subject
@@ -153,7 +153,7 @@ query_bids(subject, list(
 ))
 ```
 
-Here is another example that filters derivative data that is `BIDS` compliant.
+Here is another example that filters derivative files that are `BIDS` compliant.
 
 ```{r}
 query_bids(subject, list(

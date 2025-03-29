@@ -5,7 +5,7 @@
 #' speed to next time; default is true
 #' @param schema_key 'BIDS' schema key if explicit entity rules is needed
 #' @param bids_version 'BIDS' version to query the entity rules
-#' @returns A \code{'bids_entity_file'} instance.
+#' @returns A \code{'BIDSEntityFile'} instance.
 #' @examples
 #'
 #'
@@ -46,6 +46,16 @@
 #'
 #' @export
 parse_path_bids_entity <- function(path, auto_cache = TRUE, schema_key = NA, bids_version = current_bids_version()) {
+
+  # list2env(
+  #   list(
+  #     auto_cache = TRUE,
+  #     schema_key = NA,
+  #     bids_version = current_bids_version()
+  #   ),
+  #   envir = globalenv()
+  # )
+
   stopifnot(length(path) == 1 && !is.na(path))
   stopifnot(length(schema_key) == 1)
 
@@ -56,12 +66,13 @@ parse_path_bids_entity <- function(path, auto_cache = TRUE, schema_key = NA, bid
 
   data_type <- basename(dirname(path))
   if(
+    data_type %in% c(".", "") ||
     startsWith(data_type, "ses-") ||
     startsWith(data_type, "sub-")
   ) {
     # This is a root file for session/subject
     # e.g. sub-06/ses-ieeg01/sub-06_ses-ieeg01_scans.tsv
-    data_type <- "root"
+    data_type <- "_root"
     auto_cache <- FALSE
   }
   file_name <- basename(path)
@@ -103,7 +114,7 @@ parse_path_bids_entity <- function(path, auto_cache = TRUE, schema_key = NA, bid
   }
   if(is.null(definition)) {
 
-    cls_name <- sprintf("bids_entity_file_%s_%s", data_type, tolower(suffix))
+    cls_name <- sprintf("BIDSEntityFile_%s_%s", data_type, tolower(suffix))
     definition <- new_bids_entity_file_class(
       name = cls_name,
       data_type = data_type,

@@ -1,3 +1,56 @@
+# .function_modifiers <- local({
+#
+#   raise_errors <- NULL
+#
+#   set_flag <- function(v) {
+#     if(v) {
+#       v <- TRUE
+#     } else {
+#       v <- NULL
+#     }
+#     raise_errors <<- v
+#   }
+#
+#   check_flag <- function() {
+#     if(isTRUE(raise_errors)) {
+#       invokeRestart("bids_modifier_condition", raise_errors)
+#       stop("Flag is ON, stop evaluating the rests. You should not see this error. Please file a bug report.")
+#     }
+#     NULL
+#   }
+#
+#   list(
+#     set_flag = set_flag,
+#     check_flag = check_flag
+#   )
+#
+# })
+#
+# modify_function <- function(fun) {
+#   if(!is.function(fun)) { return(fun) }
+#   expr <- body(fun)
+#
+#   expr_list <- as.list(expr)
+#   if(length(expr_list)) {
+#     if( identical(expr_list[[1]], as.name("{")) ) {
+#       expr_list <- expr_list[-1]
+#     }
+#   }
+#   body(fun) <- as.call(c(list(as.name("{"), quote( asNamespace("bidsr")$.function_modifiers$check_flag() )), expr_list))
+#
+#   .function_modifiers$set_flag(TRUE)
+#   on.exit({
+#     .function_modifiers$set_flag(FALSE)
+#   })
+#
+#   withRestarts({
+#     fun()
+#   }, bids_modifier_condition = function(e) {
+#   })
+#   .function_modifiers$set_flag(FALSE)
+#   fun
+# }
+
 
 key_missing <- structure(list(), class = "key_missing")
 
