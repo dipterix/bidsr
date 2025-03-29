@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -306,7 +306,6 @@ all the subjects. This file can be queried via method
 <span><span class="co">#&gt;   }</span></span>
 <span><span class="co">#&gt; }</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $content:</span></span>
 <span><span class="co">#&gt;     participant_id   age    sex first_ses      species</span></span>
 <span><span class="co">#&gt;             &lt;char&gt; &lt;int&gt; &lt;char&gt;    &lt;char&gt;       &lt;char&gt;</span></span>
@@ -358,7 +357,7 @@ method. To resolve the root path for raw/source data,</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># resolve subject path (raw data by default)</span></span>
 <span><span class="fu"><a href="../reference/resolve_bids_path.html">resolve_bids_path</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span></span>
-<span><span class="co">#&gt; /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ds000117/./sub-06</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ds000117/./sub-06</span></span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/resolve_bids_path.html">resolve_bids_path</a></span><span class="op">(</span><span class="va">subject</span>, storage <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ds000117/sourcedata/sub-06</span></span></code></pre></div>
@@ -366,7 +365,7 @@ method. To resolve the root path for raw/source data,</p>
 example:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/resolve_bids_path.html">resolve_bids_path</a></span><span class="op">(</span><span class="va">subject</span>, storage <span class="op">=</span> <span class="st">"derivative"</span>, prefix <span class="op">=</span> <span class="st">"freesurfer"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ds000117/derivatives/freesurfer/sub-06</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ds000117/derivatives/freesurfer/sub-06</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="query-subject-files-by-types">Query subject files by types<a class="anchor" aria-label="anchor" href="#query-subject-files-by-types"></a>
@@ -379,12 +378,23 @@ The following example shows all the <code>anat</code> data path, and its
 potential meta files</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/query_bids.html">query_bids</a></span><span class="op">(</span><span class="va">subject</span>, <span class="st">"anat"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          parsed data_type suffix extension    sub    ses   task    acq     ce</span></span>
-<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;lgcl&gt; &lt;char&gt; &lt;lgcl&gt;</span></span>
-<span><span class="co">#&gt; 1: sub-06/s....      anat    T1w    nii.gz     06    mri     NA mprage     NA</span></span>
-<span><span class="co">#&gt;       dir    mod   part  chunk</span></span>
-<span><span class="co">#&gt;    &lt;lgcl&gt; &lt;lgcl&gt; &lt;lgcl&gt; &lt;lgcl&gt;</span></span>
-<span><span class="co">#&gt; 1:     NA     NA     NA     NA</span></span></code></pre></div>
+<span><span class="co">#&gt;           parsed data_type suffix extension    sub    ses    acq   run  echo</span></span>
+<span><span class="co">#&gt;           &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1: sub-06/s....      anat    T1w    nii.gz     06    mri mprage    NA    NA</span></span>
+<span><span class="co">#&gt;  2: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     1</span></span>
+<span><span class="co">#&gt;  3: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     2</span></span>
+<span><span class="co">#&gt;  4: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     3</span></span>
+<span><span class="co">#&gt;  5: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     4</span></span>
+<span><span class="co">#&gt;  6: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     5</span></span>
+<span><span class="co">#&gt;  7: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     6</span></span>
+<span><span class="co">#&gt;  8: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     7</span></span>
+<span><span class="co">#&gt;  9: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     1</span></span>
+<span><span class="co">#&gt; 10: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     2</span></span>
+<span><span class="co">#&gt; 11: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     3</span></span>
+<span><span class="co">#&gt; 12: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     4</span></span>
+<span><span class="co">#&gt; 13: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     5</span></span>
+<span><span class="co">#&gt; 14: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     6</span></span>
+<span><span class="co">#&gt; 15: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     7</span></span></code></pre></div>
 <p>To use fine-grained search parameters, replace <code>'anat'</code>
 with a list of search parameters.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -401,12 +411,23 @@ with a list of search parameters.</p>
 <span>  <span class="co"># filter all suffixes</span></span>
 <span>  suffixes <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          parsed data_type suffix extension    sub    ses   task    acq     ce</span></span>
-<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;lgcl&gt; &lt;char&gt; &lt;lgcl&gt;</span></span>
-<span><span class="co">#&gt; 1: sub-06/s....      anat    T1w    nii.gz     06    mri     NA mprage     NA</span></span>
-<span><span class="co">#&gt;       dir    mod   part  chunk</span></span>
-<span><span class="co">#&gt;    &lt;lgcl&gt; &lt;lgcl&gt; &lt;lgcl&gt; &lt;lgcl&gt;</span></span>
-<span><span class="co">#&gt; 1:     NA     NA     NA     NA</span></span></code></pre></div>
+<span><span class="co">#&gt;           parsed data_type suffix extension    sub    ses    acq   run  echo</span></span>
+<span><span class="co">#&gt;           &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1: sub-06/s....      anat    T1w    nii.gz     06    mri mprage    NA    NA</span></span>
+<span><span class="co">#&gt;  2: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     1</span></span>
+<span><span class="co">#&gt;  3: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     2</span></span>
+<span><span class="co">#&gt;  4: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     3</span></span>
+<span><span class="co">#&gt;  5: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     4</span></span>
+<span><span class="co">#&gt;  6: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     5</span></span>
+<span><span class="co">#&gt;  7: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     6</span></span>
+<span><span class="co">#&gt;  8: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     1     7</span></span>
+<span><span class="co">#&gt;  9: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     1</span></span>
+<span><span class="co">#&gt; 10: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     2</span></span>
+<span><span class="co">#&gt; 11: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     3</span></span>
+<span><span class="co">#&gt; 12: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     4</span></span>
+<span><span class="co">#&gt; 13: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     5</span></span>
+<span><span class="co">#&gt; 14: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     6</span></span>
+<span><span class="co">#&gt; 15: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     7</span></span></code></pre></div>
 <p>Here is another example that filters derivative data that is
 <code>BIDS</code> compliant.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -428,36 +449,34 @@ with a list of search parameters.</p>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           parsed data_type suffix extension    sub    ses            task</span></span>
 <span><span class="co">#&gt;           &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt;          &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1: derivati....      root    meg      json     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  2: derivati....       meg    meg      json     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  3: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  4: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  5: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  6: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  7: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  8: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  9: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt; 10: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt; 11: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt; 12: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt; 13: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt; 14: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;       proc    run</span></span>
-<span><span class="co">#&gt;     &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:    sss   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  2:    sss   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;  3:    sss     01</span></span>
-<span><span class="co">#&gt;  4:    sss     01</span></span>
-<span><span class="co">#&gt;  5:    sss     02</span></span>
-<span><span class="co">#&gt;  6:    sss     02</span></span>
-<span><span class="co">#&gt;  7:    sss     03</span></span>
-<span><span class="co">#&gt;  8:    sss     03</span></span>
-<span><span class="co">#&gt;  9:    sss     04</span></span>
-<span><span class="co">#&gt; 10:    sss     04</span></span>
-<span><span class="co">#&gt; 11:    sss     05</span></span>
-<span><span class="co">#&gt; 12:    sss     05</span></span>
-<span><span class="co">#&gt; 13:    sss     06</span></span>
-<span><span class="co">#&gt; 14:    sss     06</span></span></code></pre></div>
+<span><span class="co">#&gt;  1: derivati....       meg    meg      json     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  2: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  3: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  4: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  5: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  6: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  7: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  8: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  9: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 10: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 11: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 12: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 13: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;       proc   run</span></span>
+<span><span class="co">#&gt;     &lt;char&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt;  1:    sss    NA</span></span>
+<span><span class="co">#&gt;  2:    sss     1</span></span>
+<span><span class="co">#&gt;  3:    sss     1</span></span>
+<span><span class="co">#&gt;  4:    sss     2</span></span>
+<span><span class="co">#&gt;  5:    sss     2</span></span>
+<span><span class="co">#&gt;  6:    sss     3</span></span>
+<span><span class="co">#&gt;  7:    sss     3</span></span>
+<span><span class="co">#&gt;  8:    sss     4</span></span>
+<span><span class="co">#&gt;  9:    sss     4</span></span>
+<span><span class="co">#&gt; 10:    sss     5</span></span>
+<span><span class="co">#&gt; 11:    sss     5</span></span>
+<span><span class="co">#&gt; 12:    sss     6</span></span>
+<span><span class="co">#&gt; 13:    sss     6</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -485,9 +504,9 @@ electrode coordinates:</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">filter_result</span></span>
-<span><span class="co">#&gt;          parsed data_type suffix extension    sub    ses            task    run</span></span>
-<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt;          &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: sub-06/s....      func events       tsv     06    mri facerecognition     02</span></span></code></pre></div>
+<span><span class="co">#&gt;          parsed data_type suffix extension    sub    ses            task   run</span></span>
+<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt;          &lt;char&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1: sub-06/s....      func events       tsv     06    mri facerecognition     2</span></span></code></pre></div>
 <p>The first column <code>"filter_result"</code> is the parsed file
 object with entity information:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">

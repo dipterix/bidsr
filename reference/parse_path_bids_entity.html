@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +32,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Parse 'BIDS' entities from file path</h1>
-      <small class="dont-index">Source: <a href="https://github.com/dipterix/bidsr/blob/main/R/class020-bids_filename_registry.R" class="external-link"><code>R/class020-bids_filename_registry.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/dipterix/bidsr/blob/main/R/class022-bids_file_entity_parser.R" class="external-link"><code>R/class022-bids_file_entity_parser.R</code></a></small>
       <div class="d-none name"><code>parse_path_bids_entity.Rd</code></div>
     </div>
 
@@ -42,7 +42,12 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">parse_path_bids_entity</span><span class="op">(</span><span class="va">path</span>, auto_new <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">parse_path_bids_entity</span><span class="op">(</span></span>
+<span>  <span class="va">path</span>,</span>
+<span>  auto_cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  schema_key <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  bids_version <span class="op">=</span> <span class="fu">current_bids_version</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -54,9 +59,17 @@
 or relative path from the 'BIDS' root directory</p></dd>
 
 
-<dt id="arg-auto-new">auto_new<a class="anchor" aria-label="anchor" href="#arg-auto-new"></a></dt>
-<dd><p>whether to automatically generate class definition if
-missing; default is true</p></dd>
+<dt id="arg-auto-cache">auto_cache<a class="anchor" aria-label="anchor" href="#arg-auto-cache"></a></dt>
+<dd><p>whether to automatically cache the class definition to
+speed to next time; default is true</p></dd>
+
+
+<dt id="arg-schema-key">schema_key<a class="anchor" aria-label="anchor" href="#arg-schema-key"></a></dt>
+<dd><p>'BIDS' schema key if explicit entity rules is needed</p></dd>
+
+
+<dt id="arg-bids-version">bids_version<a class="anchor" aria-label="anchor" href="#arg-bids-version"></a></dt>
+<dd><p>'BIDS' version to query the entity rules</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -73,7 +86,7 @@ missing; default is true</p></dd>
 <span class="r-in"><span><span class="co"># --- parse ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="va">parsed_filename</span> <span class="op">&lt;-</span> <span class="fu">parse_path_bids_entity</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">parsed_filename</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> anat/sub-01_chunk-001_T1w.nii.gz</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> anat/sub-01_chunk-001_t1w.nii.gz</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">parsed_filename</span><span class="op">$</span><span class="fu">get_bids_entity</span><span class="op">(</span><span class="st">"sub"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "01"</span>
@@ -88,19 +101,19 @@ missing; default is true</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># data is T1-weighted</span></span></span>
 <span class="r-in"><span><span class="va">parsed_filename</span><span class="op">$</span><span class="va">suffix</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "T1w"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "t1w"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># --- usage ------------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co"># use it as character</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">"/path/to/bids/dir/sub-01"</span>, <span class="va">parsed_filename</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/path/to/bids/dir/sub-01/anat/sub-01_chunk-001_T1w.nii.gz"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/path/to/bids/dir/sub-01/anat/sub-01_chunk-001_t1w.nii.gz"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># modify</span></span></span>
 <span class="r-in"><span><span class="va">parsed_filename</span><span class="op">$</span><span class="va">entities</span><span class="op">$</span><span class="va">task</span> <span class="op">&lt;-</span> <span class="st">"special"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># new file path: anat/sub-01_task-special_chunk-001_T1w.nii.gz</span></span></span>
 <span class="r-in"><span><span class="va">parsed_filename</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> anat/sub-01_task-special_chunk-001_T1w.nii.gz</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> anat/sub-01_task-special_chunk-001_t1w.nii.gz</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># ---- schema -----------------------------------------------</span></span></span>
 <span class="r-in"><span><span class="co"># get BIDS entity rules</span></span></span>
@@ -125,37 +138,31 @@ missing; default is true</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "label"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $rec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "prohibited" "label"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $dir</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "label"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $run</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "prohibited" "index"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $mod</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "label"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "index"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $echo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "prohibited" "index"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $flip</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "prohibited" "index"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $inv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "prohibited" "index"     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $mt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "prohibited" "label"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "index"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $part</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "label"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $recording</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "prohibited" "label"     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $space</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "label"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $chunk</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "index"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $res</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "label"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $den</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "label"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "optional" "label"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

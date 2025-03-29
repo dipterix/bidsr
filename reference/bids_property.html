@@ -9,7 +9,7 @@ class generators such as new_bids_class."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -199,9 +199,11 @@ class generators such as <code><a href="new_bids_class.html">new_bids_class</a><
 <span>  setter <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  validator <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  default <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  rules <span class="op">=</span> <span class="fu">blank_named_list</span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  class <span class="op">=</span> <span class="fu">S7</span><span class="fu">::</span><span class="va"><a href="https://rconsortium.github.io/S7/reference/base_classes.html" class="external-link">class_list</a></span></span>
+<span>  class <span class="op">=</span> <span class="fu">S7</span><span class="fu">::</span><span class="va"><a href="https://rconsortium.github.io/S7/reference/base_classes.html" class="external-link">class_list</a></span>,</span>
+<span>  identifier <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  schema_key <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  bids_version <span class="op">=</span> <span class="fu">current_bids_version</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">bids_property_tabular_column_descriptor_list</span><span class="op">(</span></span>
@@ -294,12 +296,16 @@ default is 1</p></dd>
 a character strings of candidate choices.</p></dd>
 
 
-<dt id="arg-rules">rules<a class="anchor" aria-label="anchor" href="#arg-rules"></a></dt>
-<dd><p>for 'BIDS' entities, a named list, where the keys are
-entity keys, and values are vector of length 0 to 2, indicating the type
-(<code>'required'</code>, <code>'optional'</code>, or <code>'prohibited'</code>) and data
-format (<code>'index'</code>, <code>'label'</code>); see
-<code><a href="bids_entity_file_registry.html">bids_entity_file_registry</a></code> for usages.</p></dd>
+<dt id="arg-identifier">identifier<a class="anchor" aria-label="anchor" href="#arg-identifier"></a></dt>
+<dd><p><code>"data_type/suffix"</code> combination to get entity rules</p></dd>
+
+
+<dt id="arg-schema-key">schema_key<a class="anchor" aria-label="anchor" href="#arg-schema-key"></a></dt>
+<dd><p>'BIDS' schema key if explicit entity rules is needed</p></dd>
+
+
+<dt id="arg-bids-version">bids_version<a class="anchor" aria-label="anchor" href="#arg-bids-version"></a></dt>
+<dd><p>'BIDS' version to query the entity rules</p></dd>
 
 
 <dt id="arg-name-meta">name_meta<a class="anchor" aria-label="anchor" href="#arg-name-meta"></a></dt>

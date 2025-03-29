@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +95,7 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># resolved absolute path</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">resolved</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /path/to/BIDS/folder/sub-01/fmap/sub-01_dir-AP_epi.nii.gz</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000; font-weight: bold;">/path/to/BIDS/folder/sub-01/fmap/sub-01_dir-AP_epi.nii.gz</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `raw_resolution` is relative to the parent directory where</span></span></span>
 <span class="r-in"><span><span class="co"># `dataset_description.json` is stored</span></span></span>
@@ -106,10 +106,10 @@
 <span class="r-in"><span><span class="va">resolved</span> <span class="op">&lt;-</span> <span class="fu"><a href="resolve_bids_path.html">resolve_bids_path</a></span><span class="op">(</span><span class="va">uri</span>, <span class="va">dataset_description</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">resolved</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /path/to/BIDS/folder/derivatives/derivative1/sub-02/anat/sub-02_T1w.nii.gz</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000; font-weight: bold;">/path/to/BIDS/folder/derivatives/derivative1/sub-02/anat/sub-02_T1w.nii.gz</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">resolved</span>, <span class="st">"raw_resolution"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> derivatives/derivative1/sub-02/anat/sub-02_T1w.nii.gz</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000; font-weight: bold;">derivatives/derivative1/sub-02/anat/sub-02_T1w.nii.gz</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

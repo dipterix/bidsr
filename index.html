@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -139,10 +139,8 @@
 <code class="sourceCode R"><span><span class="co">## Path to `ieeg_motorMiller2007`</span></span>
 <span><span class="va">project_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">example_root</span>, <span class="st">"ieeg_motorMiller2007"</span><span class="op">)</span></span>
 <span></span>
-<span></span>
 <span><span class="co">## BIDS project instance</span></span>
 <span><span class="va">project</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bids_project.html">bids_project</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span>
-<span></span>
 <span></span>
 <span><span class="co">## The top-level `dataset_description.json` and `participants.tsv` </span></span>
 <span><span class="co">## can be parsed via</span></span>
@@ -153,7 +151,6 @@
 <span><span class="co">## To obtain the values, use `$` operator (same as `.` in `Python`):</span></span>
 <span><span class="va">description</span><span class="op">$</span><span class="va">BIDSVersion</span></span>
 <span><span class="co">#&gt; [1] "1.0.2"</span></span>
-<span></span>
 <span></span>
 <span><span class="co">## Given a project path or instance, a `BIDS` subject can be instantiated via </span></span>
 <span><span class="co">## the following two ways. </span></span>
@@ -169,37 +166,36 @@
 <span><span class="co">## use `query_modality` method to query the files</span></span>
 <span><span class="va">ieeg_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/query_bids.html">query_bids</a></span><span class="op">(</span><span class="va">subject</span>, <span class="st">"ieeg"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ieeg_table</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          parsed data_type     suffix extension    sub    ses    acq     space</span></span>
-<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt;     &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;lgcl&gt;    &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA      ACPC</span></span>
-<span><span class="co">#&gt; 2: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA Talairach</span></span>
-<span><span class="co">#&gt; 3: sub-bp/s....      ieeg   channels       tsv     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4: sub-bp/s....      ieeg     events       tsv     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5: sub-bp/s....      ieeg       ieeg       eeg     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6: sub-bp/s....      ieeg       ieeg      vhdr     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 7: sub-bp/s....      ieeg       ieeg      vmrk     bp     01     NA      &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;      task    run</span></span>
-<span><span class="co">#&gt;    &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:   &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2:   &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3:  motor      1</span></span>
-<span><span class="co">#&gt; 4:  motor      1</span></span>
-<span><span class="co">#&gt; 5:  motor     01</span></span>
-<span><span class="co">#&gt; 6:  motor     01</span></span>
-<span><span class="co">#&gt; 7:  motor     01</span></span>
+<span><span class="co">#&gt;          parsed data_type     suffix extension    sub    ses     space   task</span></span>
+<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt;     &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: sub-bp/s....      ieeg electrodes       tsv     bp     01      ACPC   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 2: sub-bp/s....      ieeg electrodes       tsv     bp     01 Talairach   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 3: sub-bp/s....      ieeg   channels       tsv     bp     01      &lt;NA&gt;  motor</span></span>
+<span><span class="co">#&gt; 4: sub-bp/s....      ieeg     events       tsv     bp     01      &lt;NA&gt;  motor</span></span>
+<span><span class="co">#&gt; 5: sub-bp/s....      ieeg       ieeg       eeg     bp     01      &lt;NA&gt;  motor</span></span>
+<span><span class="co">#&gt; 6: sub-bp/s....      ieeg       ieeg      vhdr     bp     01      &lt;NA&gt;  motor</span></span>
+<span><span class="co">#&gt; 7: sub-bp/s....      ieeg       ieeg      vmrk     bp     01      &lt;NA&gt;  motor</span></span>
+<span><span class="co">#&gt;      run</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:    NA</span></span>
+<span><span class="co">#&gt; 2:    NA</span></span>
+<span><span class="co">#&gt; 3:     1</span></span>
+<span><span class="co">#&gt; 4:     1</span></span>
+<span><span class="co">#&gt; 5:     1</span></span>
+<span><span class="co">#&gt; 6:     1</span></span>
+<span><span class="co">#&gt; 7:     1</span></span>
 <span></span>
 <span></span>
 <span><span class="co">## The first column contains a list of file instances. Here's an </span></span>
 <span><span class="co">## example to read the `ACPC` electrode coordinates:</span></span>
-<span></span>
 <span><span class="va">subset_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">ieeg_table</span>, <span class="va">space</span> <span class="op">==</span> <span class="st">"ACPC"</span> <span class="op">&amp;</span> <span class="va">suffix</span> <span class="op">==</span> <span class="st">"electrodes"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">subset_result</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          parsed data_type     suffix extension    sub    ses    acq  space</span></span>
-<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt;     &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;lgcl&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA   ACPC</span></span>
-<span><span class="co">#&gt;      task    run</span></span>
-<span><span class="co">#&gt;    &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:   &lt;NA&gt;   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;          parsed data_type     suffix extension    sub    ses  space   task</span></span>
+<span><span class="co">#&gt;          &lt;AsIs&gt;    &lt;char&gt;     &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: sub-bp/s....      ieeg electrodes       tsv     bp     01   ACPC   &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;      run</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:    NA</span></span>
 <span></span>
 <span><span class="co"># Get parsed 'BIDS' file object</span></span>
 <span><span class="va">path_parsed</span> <span class="op">&lt;-</span> <span class="va">subset_result</span><span class="op">$</span><span class="va">parsed</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -241,7 +237,6 @@
 <span><span class="co">#&gt; [1] "ACPC"</span></span>
 <span></span>
 <span><span class="co">## List all available entities</span></span>
-<span></span>
 <span><span class="va">path_parsed</span><span class="op">$</span><span class="va">entities</span></span>
 <span><span class="co">#&gt; $sub</span></span>
 <span><span class="co">#&gt; sub-bp</span></span>
@@ -249,15 +244,22 @@
 <span><span class="co">#&gt; $ses</span></span>
 <span><span class="co">#&gt; ses-01</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $task</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $acq</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $run</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $space</span></span>
 <span><span class="co">#&gt; space-ACPC</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $desc</span></span>
 <span></span>
 <span><span class="co">## If supported by schema, the `BIDS` entity rules for the </span></span>
 <span><span class="co">## file can be queried via</span></span>
-<span></span>
 <span><span class="va">path_parsed</span><span class="op">$</span><span class="fu">get_bids_entity_rules</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $sub</span></span>
 <span><span class="co">#&gt; [1] "required" "label"   </span></span>
@@ -266,19 +268,19 @@
 <span><span class="co">#&gt; [1] "optional" "label"   </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $task</span></span>
-<span><span class="co">#&gt; [1] "prohibited" "label"     </span></span>
+<span><span class="co">#&gt; [1] "optional" "label"   </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $acq</span></span>
 <span><span class="co">#&gt; [1] "optional" "label"   </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $run</span></span>
-<span><span class="co">#&gt; [1] "prohibited" "index"     </span></span>
+<span><span class="co">#&gt; [1] "optional" "index"   </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $space</span></span>
 <span><span class="co">#&gt; [1] "optional" "label"   </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $recording</span></span>
-<span><span class="co">#&gt; [1] "prohibited" "label"</span></span></code></pre></div>
+<span><span class="co">#&gt; $desc</span></span>
+<span><span class="co">#&gt; [1] "optional" "label"</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

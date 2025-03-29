@@ -13,7 +13,7 @@ default calls low-level function save_bids_tabular_default by default."></head><
 
     <a class="navbar-brand me-2" href="../index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -217,7 +217,6 @@ converted to lower case; default is <code>TRUE</code></p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $content:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         a      b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;num&gt; &lt;char&gt;</span>
@@ -244,17 +243,16 @@ converted to lower case; default is <code>TRUE</code></p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "LongName": "An integer"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># save to tsv</span></span></span>
 <span class="r-in"><span><span class="va">tsv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".tsv"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu">save_bids_tabular</span><span class="op">(</span><span class="va">tabular</span>, <span class="va">tsv</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">paths</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $table_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/Rtmp4v73Xg/file1b84205800cc.tsv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/RtmpkvoRGh/file1bad1f27df5f.tsv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sidecar_path</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/Rtmp4v73Xg/file1b84205800cc.json</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/RtmpkvoRGh/file1bad1f27df5f.json</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use base R to read</span></span></span>
@@ -284,7 +282,6 @@ converted to lower case; default is <code>TRUE</code></p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">tsv</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">sidecar_path</span><span class="op">)</span></span></span>
