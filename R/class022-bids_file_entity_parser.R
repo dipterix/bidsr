@@ -49,6 +49,11 @@ parse_path_bids_entity <- function(path, auto_cache = TRUE, schema_key = NA, bid
   stopifnot(length(path) == 1 && !is.na(path))
   stopifnot(length(schema_key) == 1)
 
+  using_current_schema <- identical(bids_version, current_bids_version())
+  if(!using_current_schema) {
+    auto_cache <- FALSE
+  }
+
   data_type <- basename(dirname(path))
   if(
     startsWith(data_type, "ses-") ||
@@ -90,10 +95,10 @@ parse_path_bids_entity <- function(path, auto_cache = TRUE, schema_key = NA, bid
   identifier <- tolower(sprintf("%s/%s", data_type, suffix))
 
   definition <- NULL
-  if(!is.na(schema_key)) {
+  if(auto_cache && !is.na(schema_key)) {
     definition <- bids_entity_file_registry$query_by_schema_key(schema_key)
   }
-  if(is.null(definition)) {
+  if(auto_cache && is.null(definition)) {
     definition <- bids_entity_file_registry$query_by_datatype_suffix(identifier)
   }
   if(is.null(definition)) {

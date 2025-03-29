@@ -1,3 +1,5 @@
+# Registry for "active" BIDS version
+
 bids_entity_file_registry <- local({
 
   # key is datatype/suffix/schema_key

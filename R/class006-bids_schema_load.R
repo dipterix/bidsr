@@ -7,16 +7,16 @@
 
   ensure_globals <- function() {
     if(!length(bids_versions)) {
-      files <- sort(list.files(
+      files <- list.files(
         system.file("bids-schema", package = "bidsr"),
         pattern = "schema-.*\\.json",
         recursive = FALSE,
         full.names = FALSE,
         ignore.case = TRUE
-      ),
-      decreasing = TRUE)
+      )
       v <- gsub("^schema-", "", files, ignore.case = TRUE)
       v <- gsub(".json", "", v, ignore.case = TRUE)
+      v <- v[order(package_version(v), decreasing = TRUE)]
       bids_versions <<- v
     }
     if(is.null(schema_list)) {
@@ -26,13 +26,20 @@
   }
 
   get_bids_versions <- function() {
+    if(!initialized) { ensure_globals() }
     bids_versions
   }
 
   use_bids_version <- function(version = NULL) {
     if(!initialized) { ensure_globals() }
     version <- match.arg(version, choices = bids_versions)
+    current_ver <- Sys.getenv("BIDSR_BIDS_VERSION", unset = "")
     Sys.setenv("BIDSR_BIDS_VERSION" = version)
+
+    if(!identical(current_ver, version)) {
+      bids_entity_file_registry$clear_all()
+    }
+
     invisible(version)
   }
 
@@ -71,7 +78,7 @@
 
 })
 
-bids_versions <- .bids_schema_loader$bids_versions
+bids_versions <- .bids_schema_loader$get_bids_versions
 use_bids_version <- .bids_schema_loader$use_bids_version
 current_bids_version <- .bids_schema_loader$current_bids_version
 bids_schema <- .bids_schema_loader$get_schema
