@@ -73,7 +73,6 @@ parse_path_bids_entity <- function(path, auto_cache = TRUE, schema_key = NA, bid
     # This is a root file for session/subject
     # e.g. sub-06/ses-ieeg01/sub-06_ses-ieeg01_scans.tsv
     data_type <- "_root"
-    auto_cache <- FALSE
   }
   file_name <- basename(path)
   parsed <- strsplit(file_name, "_")[[1]]
@@ -114,7 +113,18 @@ parse_path_bids_entity <- function(path, auto_cache = TRUE, schema_key = NA, bid
   }
   if(is.null(definition)) {
 
+    if(!is.na(schema_key) && data_type %in% c("", ".", "_root") ) {
+      # unknown data_type, derive data_type from the schema
+      schema_combo <- bids_schema(bids_version = bids_version)
+      rules <- schema_combo$original[schema_key]
+      if(length(rules$datatypes) == 1) {
+        data_type <- rules$datatypes
+      }
+    }
+
+
     cls_name <- sprintf("BIDSEntityFile_%s_%s", data_type, tolower(suffix))
+
     definition <- new_bids_entity_file_class(
       name = cls_name,
       data_type = data_type,
@@ -123,7 +133,7 @@ parse_path_bids_entity <- function(path, auto_cache = TRUE, schema_key = NA, bid
       bids_version = bids_version
     )
 
-    if( auto_cache ) {
+    if( auto_cache && grepl("^[a-zA-Z0-9]", data_type) ) {
       # register it
       registry_impl <- bids_entity_file_registry$registry_impl()
       if(!is.na(schema_key)) {

@@ -264,7 +264,7 @@ new_bids_entity_file_class <- function(name, data_type, suffix, schema_key = NA,
     stop("Unable to create new BIDS entity collection for suffix: ", sQuote(suffix))
   }
 
-  if(data_type %in% c("root", ".", "", "/") || suffix %in% c("", ".")) {
+  if(data_type %in% c("_root", ".", "", "/") || suffix %in% c("", ".")) {
     identifier <- NULL
   } else {
     identifier <- tolower(sprintf("%s/%s", data_type, suffix))

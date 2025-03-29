@@ -14,7 +14,8 @@ Brain Imaging Data Structure (`BIDS`) is a standard for organizing
 neuroimaging and behavioral data (see
 <https://bids.neuroimaging.io/index.html>). Package `bidsr` aims at
 providing comprehensive tools to query and manipulate ‘BIDS’ data files.
-This package is experimental, please see [Road-map](#road-map) below.
+This package is experimental, please check out the
+[Road-map](https://github.com/dipterix/bidsr/blob/main/Roadmap.md).
 
 ## Installation
 
