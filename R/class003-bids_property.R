@@ -51,7 +51,7 @@
 #'   methods = list(
 #'     # read-only methods
 #'     format = function(self, ...) {
-#'       sprintf("my_class@str -> %s", self$str)
+#'       sprintf("MyClass@str -> %s", self$str)
 #'     }
 #'   )
 #' )
@@ -551,7 +551,6 @@ bids_property_entity_list <- function(
         if(!length(entity_value)) { return(NULL) }
         cls <- guess_entity_class(key = entity_key, object = entity, rules = entity_rules)
         if(!S7::S7_inherits(entity, cls)) {
-          assign("cls", cls, globalenv())
           entity <- cls(key = entity_key, value = entity_value)
         }
         entity

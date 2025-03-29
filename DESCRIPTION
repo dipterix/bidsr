@@ -1,6 +1,6 @@
 Package: bidsr
 Title: A Brain Imaging Data Structure ('BIDS') Parser in R
-Version: 0.0.3
+Version: 0.0.4
 URL: https://dipterix.org/bidsr/, https://github.com/dipterix/bidsr/
 BugReport: https://github.com/dipterix/bidsr/issues
 Authors@R: 

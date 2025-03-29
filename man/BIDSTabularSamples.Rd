@@ -3,27 +3,27 @@
 %   R/class032-bids_samples.R
 \name{get_bids_samples}
 \alias{get_bids_samples}
-\alias{bids_tabular_samples}
+\alias{BIDSTabularSamples}
 \title{'BIDS' samples table class}
 \usage{
 get_bids_samples(x, ...)
 
-bids_tabular_samples(content, meta = NULL)
+BIDSTabularSamples(content, meta = NULL)
 }
 \arguments{
 \item{x}{R object such as file path, project instances, etc.}
 
 \item{...}{passed to other methods or ignored}
 
-\item{content, meta}{see \code{\link{bids_tabular}}}
+\item{content, meta}{see \code{\link{BIDSTabular}}}
 }
 \value{
-A \code{bids_tabular_samples} instance inheriting
-\code{\link{bids_tabular}}.
+A \code{BIDSTabularSamples} instance inheriting
+\code{\link{BIDSTabular}}.
 }
 \description{
 A tabular containing a list of samples and their metadata.
-The class is a child class of \code{\link{bids_tabular}}, hence see
+The class is a child class of \code{\link{BIDSTabular}}, hence see
 the methods there.
 The original specification is at
 \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#samples-file}.
@@ -32,7 +32,7 @@ The original specification is at
 
 
 # basic
-tabular <- bids_tabular_samples(
+tabular <- BIDSTabularSamples(
   data.frame(
     sample_id = "sample-001",
     participant_id = "sub-001",
@@ -43,14 +43,14 @@ tabular
 
 
 # convert existing tabular
-tabular <- bids_tabular(
+tabular <- BIDSTabular(
   data.frame(
     sample_id = "sample-001",
     participant_id = "sub-001",
     sample_type = "cell line"
   )
 )
-tabular <- as_bids_tabular(tabular, cls = bids_tabular_samples)
+tabular <- as_bids_tabular(tabular, cls = BIDSTabularSamples)
 
 
 # save to tsv

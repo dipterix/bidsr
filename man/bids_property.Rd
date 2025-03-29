@@ -286,7 +286,7 @@ MyClass <- new_bids_class(
   methods = list(
     # read-only methods
     format = function(self, ...) {
-      sprintf("my_class@str -> \%s", self$str)
+      sprintf("MyClass@str -> \%s", self$str)
     }
   )
 )

@@ -76,7 +76,7 @@ class(BIDSClassBase) <- c("bids_class", class(BIDSClassBase))
 #'
 #' # ---- hide properties and attributes -------------------------
 #' MyClass <- new_bids_class(
-#'   name = "my_class",
+#'   name = "MyClass",
 #'   properties = list(
 #'     str = bids_property_character(
 #'       name = "str", type = "required"),
@@ -85,7 +85,7 @@ class(BIDSClassBase) <- c("bids_class", class(BIDSClassBase))
 #'   methods = list(
 #'     # read-only methods
 #'     format = function(self, ...) {
-#'       sprintf("my_class@str -> %s", self$str)
+#'       sprintf("MyClass@str -> %s", self$str)
 #'     },
 #'     hidden_method = function(self) {
 #'       "Nonononono"

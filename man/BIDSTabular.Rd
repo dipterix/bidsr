@@ -4,9 +4,9 @@
 \name{as_bids_tabular}
 \alias{as_bids_tabular}
 \alias{save_bids_tabular}
-\alias{bids_tabular}
-\alias{bids_tabular_column_descriptor}
-\alias{bids_tabular_meta_sidecar}
+\alias{BIDSTabular}
+\alias{BIDSTabularColumnDescriptor}
+\alias{BIDSTabularMetaSidecar}
 \alias{save_bids_tabular_default}
 \alias{new_bids_tabular_class}
 \title{Class definitions and utilities for 'BIDS' tabular}
@@ -15,11 +15,11 @@ as_bids_tabular(x, ...)
 
 save_bids_tabular(x, path, meta = TRUE, ...)
 
-bids_tabular_column_descriptor(..., .list = list())
+BIDSTabularColumnDescriptor(..., .list = list())
 
-bids_tabular_meta_sidecar(columns = list())
+BIDSTabularMetaSidecar(columns = list())
 
-bids_tabular(content, meta = NULL)
+BIDSTabular(content, meta = NULL)
 
 save_bids_tabular_default(
   x,
@@ -33,7 +33,7 @@ save_bids_tabular_default(
 
 new_bids_tabular_class(
   table_name,
-  parent = bids_tabular,
+  parent = BIDSTabular,
   content_setter = NULL,
   meta_preset = NULL,
   prepare_save = NULL,
@@ -44,19 +44,19 @@ new_bids_tabular_class(
 \item{x}{R object that can be converted (e.g. list, table), or a path
 to a tabular file.}
 
-\item{..., .list}{for \code{bids_tabular_column_descriptor}, this is
+\item{..., .list}{for \code{BIDSTabularColumnDescriptor}, this is
 a list of key-value properties; for \code{as_bids_tabular}, this is passed
-to \code{bids_tabular_meta_sidecar}}
+to \code{BIDSTabularMetaSidecar}}
 
 \item{path}{path to save the file; the file is always saved as
 tabular-separated value ('TSV') format}
 
-\item{meta}{instance of \code{bids_tabular_meta_sidecar}, a class containing
+\item{meta}{instance of \code{BIDSTabularMetaSidecar}, a class containing
 a list of descriptors for each column (see argument \code{columns})}
 
 \item{columns}{a named list, where each key correspond to a table column
 name, and each item is a named list of descriptors, or a
-\code{bids_tabular_column_descriptor} instance}
+\code{BIDSTabularColumnDescriptor} instance}
 
 \item{content}{a data frame or table with column names non-blanks and
 possibly all in snake-cases (see specification); \code{bidsr} does not check
@@ -71,25 +71,25 @@ to 'BIDS' time-stamp format; default is to keep the milliseconds and use
 'UTC' timezone.}
 
 \item{table_name}{name of the table, used to generate a new class;
-the class name will be \code{bids_tabular_<table_name>}}
+the class name will be \code{BIDSTabular_<table_name>}}
 
-\item{parent}{parent class of the new class; default is \code{bids_tabular}}
+\item{parent}{parent class of the new class; default is \code{BIDSTabular}}
 
 \item{content_setter}{a \code{setter} function to set the content; see
 \code{\link{bids_property}}}
 
 \item{meta_preset}{a \code{preset} function to set the meta; see
-\code{bids_tabular_meta_sidecar}}
+\code{BIDSTabularMetaSidecar}}
 
 \item{prepare_save}{a function to prepare the content before saving; should
-take the \code{bids_tabular} object as the first argument, and return the
+take the \code{BIDSTabular} object as the first argument, and return the
 content to be saved}
 
 \item{lower_case_column_names}{if \code{TRUE}, the column names will be
 converted to lower case; default is \code{TRUE}}
 }
 \value{
-A component in \code{bids_tabular}.
+A component in \code{BIDSTabular}.
 }
 \description{
 Official specification link:

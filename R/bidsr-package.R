@@ -19,23 +19,16 @@ NULL
 
 .onLoad <- function(libname, pkgname) {
 
-  ns <- asNamespace(pkgname)
-  fun_names <- ls(ns)
-
-  lapply(fun_names, function(nm) {
-    fun <- ns[[nm]]
-    if(is.function(fun)) {
-      ns[[nm]] <- utils::removeSource(fun)
-    }
-  })
-
   S7::methods_register()
 
-  suppressWarnings({
-    tryCatch({
-      # build_default_filename_registry()
-    }, error = function(e) {})
-  })
+  current_ver <- as.character(Sys.getenv("BIDSR_BIDS_VERSION", unset = ""))
+  if( length(current_ver) == 1 && !is.na(current_ver) && nzchar(current_ver) ) {
+    suppressWarnings({
+      tryCatch({
+        use_bids_version(current_ver)
+      }, error = function(e) {})
+    })
+  }
 }
 
 .onAttach <- function(libname, pkgname) {

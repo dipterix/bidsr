@@ -3,12 +3,12 @@
 %   R/class030-bids_dataset_description.R
 \name{get_bids_dataset_description}
 \alias{get_bids_dataset_description}
-\alias{bids_dataset_description}
+\alias{BIDSDatasetDescription}
 \title{Class definition of 'BIDS' data-set description}
 \usage{
 get_bids_dataset_description(x, parent_directory, ...)
 
-bids_dataset_description(
+BIDSDatasetDescription(
   Name = character(0),
   BIDSVersion = character(0),
   DatasetLinks = list(),
@@ -61,7 +61,7 @@ base schema and one or more library schema.}
 to the creation/curation of the data-set}
 
 \item{GeneratedBy}{(recommended) will be converted to
-\code{\link{bids_dataset_generated_by}}}
+\code{\link{BIDSDatasetGeneratedBy}}}
 
 \item{SourceDatasets}{Used to specify the locations and relevant
 attributes of all source data-sets. Valid keys in each object include
@@ -96,7 +96,7 @@ for specification.
 \examples{
 
 # ---- Manually enter entries ----------------------------------------
-dataset_description <- bids_dataset_description(
+dataset_description <- BIDSDatasetDescription(
   # a parent directory is mandatory as it defines what data
   # dataset_description.json applies to
 

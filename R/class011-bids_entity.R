@@ -23,13 +23,13 @@
 #' @examples
 #'
 #'
-#' entity_int <- bids_entity_index_optional(key = "run", value = "001")
+#' entity_int <- BIDSEntity_index_optional(key = "run", value = "001")
 #' entity_int$value <- integer()
 #'
 #' print(entity_int) # nothing will be printed out
 #'
 #' # subject entity
-#' entity_subject <- bids_entity_any_required(key = "sub", value = "HUP225")
+#' entity_subject <- BIDSEntity_any_required(key = "sub", value = "HUP225")
 #'
 #' print(entity_subject)
 #'
@@ -45,9 +45,9 @@
 #' \dontrun{
 #'
 #'   # trying to set invalid values will result in errors
-#'   bids_entity_index_required(key = "run")
+#'   BIDSEntity_index_required(key = "run")
 #'
-#'   entity_int <- bids_entity_index_required(key = "run", value = "001")
+#'   entity_int <- BIDSEntity_index_required(key = "run", value = "001")
 #'
 #'   # trying to unset require entity
 #'   entity_int$value <- integer()
@@ -56,7 +56,7 @@
 #'   entity_int$value <- "asdad"
 #'
 #'   # trying to set prohibited entiry
-#'   bids_entity_index_prohibited("invalid", 123)
+#'   BIDSEntity_index_prohibited("invalid", 123)
 #'
 #' }
 #'

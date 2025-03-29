@@ -3,27 +3,27 @@
 %   R/class031-bids_participants.R
 \name{get_bids_participants}
 \alias{get_bids_participants}
-\alias{bids_tabular_participants}
+\alias{BIDSTabularParticipants}
 \title{'BIDS' participant table class}
 \usage{
 get_bids_participants(x, ...)
 
-bids_tabular_participants(content, meta = NULL)
+BIDSTabularParticipants(content, meta = NULL)
 }
 \arguments{
 \item{x}{R object such as file path, project instances, etc.}
 
 \item{...}{passed to other methods or ignored}
 
-\item{content, meta}{see \code{\link{bids_tabular}}}
+\item{content, meta}{see \code{\link{BIDSTabular}}}
 }
 \value{
-A \code{bids_tabular_participants} instance inheriting
-\code{\link{bids_tabular}}.
+A \code{BIDSTabularParticipants} instance inheriting
+\code{\link{BIDSTabular}}.
 }
 \description{
 A tabular containing a list of participants and their demographics.
-The class is a child class of \code{\link{bids_tabular}}, hence see
+The class is a child class of \code{\link{BIDSTabular}}, hence see
 the methods there.
 The original specification is at
 \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#participants-file}.
@@ -33,7 +33,7 @@ The original specification is at
 
 
 # basic
-tabular <- bids_tabular_participants(
+tabular <- BIDSTabularParticipants(
   data.frame(
     participant_id = "sub-001"
   )
@@ -47,16 +47,16 @@ if(!isFALSE(examples)) {
 
   file <- file.path(examples, "ieeg_epilepsy_ecog", "participants.tsv")
 
-  # read tabular as bids_tabular_participants
-  as_bids_tabular(file, cls = bids_tabular_participants)
+  # read tabular as BIDSTabularParticipants
+  as_bids_tabular(file, cls = BIDSTabularParticipants)
 
   # convert existing tabular
-  tabular <- bids_tabular(
+  tabular <- BIDSTabular(
     data.frame(
       participant_id = "sub-001"
     )
   )
-  tabular <- as_bids_tabular(tabular, cls = bids_tabular_participants)
+  tabular <- as_bids_tabular(tabular, cls = BIDSTabularParticipants)
 
   # save to tsv
   tsv <- file.path(tempdir(), "participants.tsv")

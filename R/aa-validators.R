@@ -1,5 +1,24 @@
 union_validators <- function(..., .list = list()) {
+  dot_len <- ...length()
+  list_len <- length(.list)
+
+  total_len <- dot_len + list_len
+  if( total_len == 0L ) { return(NULL) }
+
+
+  if( total_len == 1L ) {
+    if(dot_len == 1L) {
+      return(...elt(1))
+    } else {
+      return(.list[[1]])
+    }
+  }
+
   validators <- drop_nulls(c(list(...), .list))
+  if(length(validators) == 1) {
+    return(validators[[1]])
+  }
+
   function(value) {
     for(is_valid in validators) {
       if(is.function(is_valid)) {

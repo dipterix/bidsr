@@ -25,49 +25,6 @@ You can install the development version of `bidsr` like so:
 pak::pak("dipterix/bidsr")
 ```
 
-## Road-map
-
-Current milestone:
-
-- Base classes
-  - [x] R `S7` base classes and properties
-  - [x] tabular data
-  - [x] `JSON` side-car
-  - [x] `BIDS` entity
-- Class definitions for common files
-  - Modality agnostic files:
-    - [x] `dataset_description.json`
-    - [x] `README`
-    - [ ] `CITATION.cff`, `CHANGES`, `LICENSE`
-    - [x] `participants.tsv`, `participants.json`
-    - [x] `samples.tsv`, `samples.json`
-    - [x] `phenotype/`
-    - [x] Scans file
-    - [x] Sessions file
-  - Modality specific files:
-    - [x] Query files by data type for each subject
-    - [x] Use `BIDS` schema to generate file entity rules dynamically
-- Query `BIDS` files
-  - [x] Get top-level files
-  - [x] Analyze and list subject data by types
-  - [ ] Find side-car and meta-data information using the `BIDS`
-    inheritance principle (test needed)
-
-Next milestone:
-
-- Provide read functions to handle common file formats
-  - [x] `JSON` format
-  - [x] `.tsv` or `.csv` format
-  - [ ] `.nii` format
-  - [ ] `.mat`, `.edf`, … (electrophysiology)
-- [ ] Provide handler registry to access and process data files
-
-A tentative to-do list:
-
-- [ ] Modify the path
-- [ ] Use `BIDS` schema to validation rules dynamically
-- [ ] Validate `BIDS` files
-
 ## Example
 
 This example demonstrates high-level tools to query a ‘BIDS’ project.
@@ -152,7 +109,7 @@ print(path_parsed)
 
 electrode_path <- file.path(project, path_parsed)
 as_bids_tabular(electrode_path)
-#> <BIDS Tabular>[bids_tabular]
+#> <BIDS Tabular>[BIDSTabular]
 #> $meta:
 #> {}
 #> 
@@ -176,9 +133,9 @@ as_bids_tabular(electrode_path)
 
 ## Object `path_parsed` is a file entity class, with the entities parsed
 class(path_parsed)
-#> [1] "bidsr::bids_entity_file_ieeg_electrodes"
-#> [2] "bidsr::bids_entity_file"                
-#> [3] "bidsr::bids_class_base"                 
+#> [1] "bidsr::BIDSEntityFile_ieeg_electrodes"
+#> [2] "bidsr::BIDSEntityFile"                
+#> [3] "bidsr::BIDSClassBase"                 
 #> [4] "S7_object"
 
 path_parsed$get_bids_entity("space")
@@ -192,19 +149,8 @@ path_parsed$entities
 #> $ses
 #> ses-01
 #> 
-#> $task
-#> 
-#> 
-#> $acq
-#> 
-#> 
-#> $run
-#> 
-#> 
 #> $space
 #> space-ACPC
-#> 
-#> $desc
 
 ## If supported by schema, the `BIDS` entity rules for the 
 ## file can be queried via
