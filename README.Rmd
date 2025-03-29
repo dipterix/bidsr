@@ -94,10 +94,8 @@ Let's inspect the project `ieeg_motorMiller2007` from the official `BIDS` exampl
 ## Path to `ieeg_motorMiller2007`
 project_path <- file.path(example_root, "ieeg_motorMiller2007")
 
-
 ## BIDS project instance
 project <- bids_project(path = project_path)
-
 
 ## The top-level `dataset_description.json` and `participants.tsv` 
 ## can be parsed via
@@ -107,7 +105,6 @@ participants <- project$get_bids_participants()
 
 ## To obtain the values, use `$` operator (same as `.` in `Python`):
 description$BIDSVersion
-
 
 ## Given a project path or instance, a `BIDS` subject can be instantiated via 
 ## the following two ways. 
@@ -127,7 +124,6 @@ print(ieeg_table)
 
 ## The first column contains a list of file instances. Here's an 
 ## example to read the `ACPC` electrode coordinates:
-
 subset_result <- subset(ieeg_table, space == "ACPC" & suffix == "electrodes")
 print(subset_result)
 
@@ -147,12 +143,10 @@ class(path_parsed)
 path_parsed$get_bids_entity("space")
 
 ## List all available entities
-
 path_parsed$entities
 
 ## If supported by schema, the `BIDS` entity rules for the 
 ## file can be queried via
-
 path_parsed$get_bids_entity_rules()
 ```
 

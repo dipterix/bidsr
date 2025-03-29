@@ -25,11 +25,9 @@
 #' @param collapse for collapsed property, passed to \code{\link{paste}}
 #' @param choices for properties that can only be chosen from given choices;
 #' a character strings of candidate choices.
-#' @param rules for 'BIDS' entities, a named list, where the keys are
-#' entity keys, and values are vector of length 0 to 2, indicating the type
-#' (\code{'required'}, \code{'optional'}, or \code{'prohibited'}) and data
-#' format (\code{'index'}, \code{'label'}); see
-#' \code{\link{bids_entity_file_registry}} for usages.
+#' @param identifier \code{"data_type/suffix"} combination to get entity rules
+#' @param schema_key 'BIDS' schema key if explicit entity rules is needed
+#' @param bids_version 'BIDS' version to query the entity rules
 #' @param ... passed to other methods
 #' @returns All functions call \code{\link[S7]{new_property}} internally.
 #' @examples
@@ -493,32 +491,49 @@ bids_property_print_format <- S7::new_property(
   }
 )
 
+
+
 #' @rdname bids_property
 #' @export
 bids_property_entity_list <- function(
     name, getter = NULL, setter = NULL, validator = NULL, default = list(),
-    rules = blank_named_list(), ..., class = S7::class_list) {
+    ..., class = S7::class_list, identifier = NULL, schema_key = NA,
+    bids_version = current_bids_version()) {
 
   force(name)
-
-  rules <- as.list(rules)
   default <- as.list(default)
 
-  required_keys <- unlist(lapply(names(rules), function(nm) {
-    if("required" %in% rules[[nm]]) { return(nm) }
+  # get schema rules... schema is too big and I don't want it to use too much space
+  if(!length(identifier) && is.na(schema_key)) {
+    rules <- list(entity_rules = list())
+  } else {
+    rules <- get_schema_entity_rule(identifier = identifier, schema_key = schema_key, bids_version = bids_version)
+  }
+  entity_rules <- rules$entities
+
+  required_keys <- unlist(lapply(names(entity_rules), function(nm) {
+    if("required" %in% entity_rules[[nm]]) { return(nm) }
     return()
   }))
 
-  prohibited_rules <- unlist(lapply(names(rules), function(nm) {
-    if("prohibited" %in% rules[[nm]]) { return(nm) }
+  prohibited_keys <- unlist(lapply(names(entity_rules), function(nm) {
+    if("prohibited" %in% entity_rules[[nm]]) { return(nm) }
     return()
   }))
 
   validator_ <- function(value) {
     keys <- names(value)
-    missing_required <- required_keys[!required_keys %in% keys]
-    if(length(missing_required)) {
-      return(sprintf("Missing required entities: %s", paste(sQuote(missing_required), collapse = ", ")))
+    if(length(required_keys)) {
+      missing_required <- required_keys[!required_keys %in% keys]
+      if(length(missing_required)) {
+        return(sprintf("Missing required entities: %s", paste(sQuote(missing_required), collapse = ", ")))
+      }
+    }
+    if(length(prohibited_keys)) {
+      has_prohibited <- keys[keys %in% prohibited_keys]
+      if(length(has_prohibited)) {
+        warning(sprintf("Contains prohibited entities: %s", paste(sQuote(prohibited_keys), collapse = ", ")))
+      }
     }
 
     if(is.function(validator)) {
@@ -547,7 +562,7 @@ bids_property_entity_list <- function(
         entity_value <- v
         entity <- NULL
       }
-      cls <- guess_entity_class(key = entity_key, object = entity, rules = rules)
+      cls <- guess_entity_class(key = entity_key, object = entity, rules = entity_rules)
       if(!S7::S7_inherits(entity, cls)) {
         entity <- cls(key = entity_key, value = entity_value)
       }
@@ -565,7 +580,7 @@ bids_property_entity_list <- function(
 
   re <- bids_property(class = class, getter = getter, setter = setter_,
                       validator = validator_, default = default, name = name, ...)
-  re$entity_rules <- rules
+  re$entity_rules <- entity_rules
   re
 }
 

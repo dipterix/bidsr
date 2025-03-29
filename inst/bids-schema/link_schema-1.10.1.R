@@ -36,6 +36,29 @@ register_file_schema_key <- function(bids_version) {
 
   schema_key_prefix <- schema_key_prefix[has_rules]
 
+  # calculate identifier
+  identifier_map <- data.table::rbindlist(lapply(schema_key_prefix, function(key) {
+    rule <- get_schema_file_entity_rules(key)
+    tbl <- expand.grid(rule$datatypes, rule$suffixes)
+    id <- sprintf("%s/%s", tbl[[1]], tbl[[2]])
+    data.table::data.table(
+      schema_key = key,
+      entity_identifier = id
+    )
+  }))
+
+  identifiers <- sort(unique(identifier_map$entity_identifier))
+
+  lapply(identifiers, function(identifier) {
+    schema_keys <- identifier_map[entity_identifier == identifier, schema_key]
+
+    # It is unclear how to use these rules when multiple rules map to the same
+    # datatype/suffix identifier. We can only find the rules in common
+
+    rule <- get_schema_file_entity_rules(schema_keys[[1]])
+    # rule$
+  })
+
   rules <- list()
   for(key in schema_key_prefix) {
     rule <- get_schema_file_entity_rules(key)
@@ -44,7 +67,7 @@ register_file_schema_key <- function(bids_version) {
     dups <- id[id %in% names(rules)]
     rule$key <- key
     if(length(dups)) {
-      existing <- rules[dups[[1]]]
+      existing <- rules[[dups[[1]]]]
       testthat::expect_equal(rule$entities, existing$entities)
     }
     for(ii in id[!id %in% dups]) {

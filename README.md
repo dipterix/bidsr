@@ -87,10 +87,8 @@ Let’s inspect the project `ieeg_motorMiller2007` from the official
 ## Path to `ieeg_motorMiller2007`
 project_path <- file.path(example_root, "ieeg_motorMiller2007")
 
-
 ## BIDS project instance
 project <- bids_project(path = project_path)
-
 
 ## The top-level `dataset_description.json` and `participants.tsv` 
 ## can be parsed via
@@ -101,7 +99,6 @@ participants <- project$get_bids_participants()
 ## To obtain the values, use `$` operator (same as `.` in `Python`):
 description$BIDSVersion
 #> [1] "1.0.2"
-
 
 ## Given a project path or instance, a `BIDS` subject can be instantiated via 
 ## the following two ways. 
@@ -117,37 +114,36 @@ subject <- bids_subject(project = project_path, subject_code = "bp")
 ## use `query_modality` method to query the files
 ieeg_table <- query_bids(subject, "ieeg")
 print(ieeg_table)
-#>          parsed data_type     suffix extension    sub    ses    acq     space
-#>          <AsIs>    <char>     <char>    <char> <char> <char> <lgcl>    <char>
-#> 1: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA      ACPC
-#> 2: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA Talairach
-#> 3: sub-bp/s....      ieeg   channels       tsv     bp     01     NA      <NA>
-#> 4: sub-bp/s....      ieeg     events       tsv     bp     01     NA      <NA>
-#> 5: sub-bp/s....      ieeg       ieeg       eeg     bp     01     NA      <NA>
-#> 6: sub-bp/s....      ieeg       ieeg      vhdr     bp     01     NA      <NA>
-#> 7: sub-bp/s....      ieeg       ieeg      vmrk     bp     01     NA      <NA>
-#>      task    run
-#>    <char> <char>
-#> 1:   <NA>   <NA>
-#> 2:   <NA>   <NA>
-#> 3:  motor      1
-#> 4:  motor      1
-#> 5:  motor     01
-#> 6:  motor     01
-#> 7:  motor     01
+#>          parsed data_type     suffix extension    sub    ses     space   task
+#>          <AsIs>    <char>     <char>    <char> <char> <char>    <char> <char>
+#> 1: sub-bp/s....      ieeg electrodes       tsv     bp     01      ACPC   <NA>
+#> 2: sub-bp/s....      ieeg electrodes       tsv     bp     01 Talairach   <NA>
+#> 3: sub-bp/s....      ieeg   channels       tsv     bp     01      <NA>  motor
+#> 4: sub-bp/s....      ieeg     events       tsv     bp     01      <NA>  motor
+#> 5: sub-bp/s....      ieeg       ieeg       eeg     bp     01      <NA>  motor
+#> 6: sub-bp/s....      ieeg       ieeg      vhdr     bp     01      <NA>  motor
+#> 7: sub-bp/s....      ieeg       ieeg      vmrk     bp     01      <NA>  motor
+#>      run
+#>    <int>
+#> 1:    NA
+#> 2:    NA
+#> 3:     1
+#> 4:     1
+#> 5:     1
+#> 6:     1
+#> 7:     1
 
 
 ## The first column contains a list of file instances. Here's an 
 ## example to read the `ACPC` electrode coordinates:
-
 subset_result <- subset(ieeg_table, space == "ACPC" & suffix == "electrodes")
 print(subset_result)
-#>          parsed data_type     suffix extension    sub    ses    acq  space
-#>          <AsIs>    <char>     <char>    <char> <char> <char> <lgcl> <char>
-#> 1: sub-bp/s....      ieeg electrodes       tsv     bp     01     NA   ACPC
-#>      task    run
-#>    <char> <char>
-#> 1:   <NA>   <NA>
+#>          parsed data_type     suffix extension    sub    ses  space   task
+#>          <AsIs>    <char>     <char>    <char> <char> <char> <char> <char>
+#> 1: sub-bp/s....      ieeg electrodes       tsv     bp     01   ACPC   <NA>
+#>      run
+#>    <int>
+#> 1:    NA
 
 # Get parsed 'BIDS' file object
 path_parsed <- subset_result$parsed[[1]]
@@ -189,7 +185,6 @@ path_parsed$get_bids_entity("space")
 #> [1] "ACPC"
 
 ## List all available entities
-
 path_parsed$entities
 #> $sub
 #> sub-bp
@@ -197,15 +192,22 @@ path_parsed$entities
 #> $ses
 #> ses-01
 #> 
+#> $task
+#> 
+#> 
 #> $acq
+#> 
+#> 
+#> $run
 #> 
 #> 
 #> $space
 #> space-ACPC
+#> 
+#> $desc
 
 ## If supported by schema, the `BIDS` entity rules for the 
 ## file can be queried via
-
 path_parsed$get_bids_entity_rules()
 #> $sub
 #> [1] "required" "label"   
@@ -214,17 +216,17 @@ path_parsed$get_bids_entity_rules()
 #> [1] "optional" "label"   
 #> 
 #> $task
-#> [1] "prohibited" "label"     
+#> [1] "optional" "label"   
 #> 
 #> $acq
 #> [1] "optional" "label"   
 #> 
 #> $run
-#> [1] "prohibited" "index"     
+#> [1] "optional" "index"   
 #> 
 #> $space
 #> [1] "optional" "label"   
 #> 
-#> $recording
-#> [1] "prohibited" "label"
+#> $desc
+#> [1] "optional" "label"
 ```

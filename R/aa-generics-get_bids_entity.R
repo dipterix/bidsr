@@ -9,7 +9,7 @@
 #' @examples
 #'
 #' # Quick usage
-#' get_bids_entity("sub-YAB_ses-01_task-AV_ieeg.mat", "sub")
+#' get_bids_entity("ieeg/sub-YAB_ses-01_task-AV_ieeg.mat", "sub")
 #'
 #' get_bids_entity_rules("ieeg/sub-YAB_ses-01_task-AV_channels.tsv")
 #'

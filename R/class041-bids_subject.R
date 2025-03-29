@@ -227,6 +227,7 @@ Returns: a data table of files and entities related to the data type.
   #     run ~ as.integer(run) == 2
   #   )
   # )
+  # search_params <- "anat"
   # env <- parent.frame()
 
   force(env)
@@ -425,6 +426,9 @@ Returns: a data table of files and entities related to the data type.
     })
   )
 
+  entity_values <- entity_values[vapply(entity_values, function(x) { length(x) > 0 }, FALSE)]
+  entity_names <- names(entity_values)
+
   # now let's filter meta
   meta_pass_filters <- vapply(file_parsed, FUN.VALUE = FALSE, function(parsed) {
     if(is.null(parsed)) { return(FALSE) }
@@ -458,7 +462,7 @@ Returns: a data table of files and entities related to the data type.
   file_parsed <- file_parsed[pass_filters]
 
   entity_names <- lapply(file_parsed, function(item) {
-    names(item@entities)
+    names(item@entities)[vapply(item@entities, function(x) { length(x$value) > 0 }, FALSE)]
   })
   entity_names <- unique(unlist(entity_names))
 

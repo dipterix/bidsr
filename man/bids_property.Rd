@@ -182,9 +182,11 @@ bids_property_entity_list(
   setter = NULL,
   validator = NULL,
   default = list(),
-  rules = blank_named_list(),
   ...,
-  class = S7::class_list
+  class = S7::class_list,
+  identifier = NULL,
+  schema_key = NA,
+  bids_version = current_bids_version()
 )
 
 bids_property_tabular_column_descriptor_list(
@@ -249,11 +251,11 @@ default is 1}
 \item{choices}{for properties that can only be chosen from given choices;
 a character strings of candidate choices.}
 
-\item{rules}{for 'BIDS' entities, a named list, where the keys are
-entity keys, and values are vector of length 0 to 2, indicating the type
-(\code{'required'}, \code{'optional'}, or \code{'prohibited'}) and data
-format (\code{'index'}, \code{'label'}); see
-\code{\link{bids_entity_file_registry}} for usages.}
+\item{identifier}{\code{"data_type/suffix"} combination to get entity rules}
+
+\item{schema_key}{'BIDS' schema key if explicit entity rules is needed}
+
+\item{bids_version}{'BIDS' version to query the entity rules}
 
 \item{name_meta}{for tabular content, the name of the meta property; default
 is \code{"meta"}}

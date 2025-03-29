@@ -22,7 +22,7 @@ NULL
 
   suppressWarnings({
     tryCatch({
-      build_default_filename_registry()
+      # build_default_filename_registry()
     }, error = function(e) {})
   })
 }

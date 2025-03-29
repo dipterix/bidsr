@@ -82,7 +82,7 @@ bids_entity <- new_bids_class(
 )
 
 ## `format`
-S7::method(format.generic, bids_schema) <- function(x, ...) {
+S7::method(format.generic, bids_entity) <- function(x, ...) {
   v <- x@value
   if(length(v) && !is.na(v)) {
     if(is.numeric(v)) {
