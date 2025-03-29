@@ -381,6 +381,7 @@ S7::method(as_bids_tabular, S7::class_character) <- function(x, meta = NULL, ...
 
 
 #' @rdname BIDSTabular
+#' @export
 new_bids_tabular_class <- function(
     table_name, parent = BIDSTabular,
     content_setter = NULL, meta_preset = NULL, prepare_save = NULL,

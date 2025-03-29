@@ -13,6 +13,7 @@ Useful links:
 \itemize{
   \item \url{https://dipterix.org/bidsr/}
   \item \url{https://github.com/dipterix/bidsr/}
+  \item Report bugs at \url{https://github.com/dipterix/bidsr/issues}
 }
 
 }

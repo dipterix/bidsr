@@ -14,7 +14,7 @@
 #'
 #' @export
 download_bids_examples <- function(test = FALSE) {
-  url = "https://github.com/bids-standard/bids-examples/archive/refs/heads/master.zip"
+  url <- "https://github.com/bids-standard/bids-examples/archive/refs/heads/master.zip"
   cache_root <- tools::R_user_dir(package = "bidsr", which = "cache")
   example_root <- file_path(cache_root, "bids-examples")
 

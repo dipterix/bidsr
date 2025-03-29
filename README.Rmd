@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 Brain Imaging Data Structure (`BIDS`) is a standard for organizing neuroimaging and behavioral data (see https://bids.neuroimaging.io/index.html). 
-Package `bidsr` aims at providing comprehensive tools to query and manipulate 'BIDS' data files. 
+Package `bidsr` aims at providing comprehensive tools to query and manipulate `BIDS` data files. 
 This package is experimental, please check out the [Road-map](https://github.com/dipterix/bidsr/blob/main/Roadmap.md).
 
 ## Installation
@@ -38,8 +38,8 @@ pak::pak("dipterix/bidsr")
 
 ## Example
 
-This example demonstrates high-level tools to query a 'BIDS' project. 
-The code requires executing a built-in command to download ['BIDS' example data-sets](https://github.com/bids-standard/bids-examples). 
+This example demonstrates high-level tools to query a `BIDS` project. 
+The code requires executing a built-in command to download [`BIDS` example data-sets](https://github.com/bids-standard/bids-examples). 
 Please copy-paste-run the following R commands:
 
 ```{r, results='hide'}
