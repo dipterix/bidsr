@@ -8,6 +8,8 @@
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/dipterix/bidsr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dipterix/bidsr/actions/workflows/R-CMD-check.yaml)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/bidsr)](https://CRAN.R-project.org/package=bidsr)
 <!-- badges: end -->
 
 Brain Imaging Data Structure (`BIDS`) is a standard for organizing
