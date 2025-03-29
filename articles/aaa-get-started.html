@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,7 @@ data-sets</a>. Please copy-paste-run the following R commands:</p>
 <span><span class="va">project</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bids_project.html">bids_project</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">project_path</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">project</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;ds000117&gt;[bids_project] at:</span></span>
+<span><span class="co">#&gt; &lt;ds000117&gt;[BIDSProject] at:</span></span>
 <span><span class="co">#&gt;   /home/runner/.cache/R/bidsr/bids-examples/bids-examples-master/ds000117</span></span>
 <span><span class="co">#&gt;   - raw-data path: .</span></span>
 <span><span class="co">#&gt;   - source-data path: sourcedata</span></span>
@@ -239,8 +239,8 @@ all the subjects. This file can be queried via method
 <code>as_bids_tabular</code></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">participant_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">project</span>, <span class="st">"participants.tsv"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">participant_path</span>, cls <span class="op">=</span> <span class="va">bids_tabular_participants</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;BIDS Tabular&gt;[bids_tabular_participants]</span></span>
+<span><span class="fu"><a href="../reference/BIDSTabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">participant_path</span>, cls <span class="op">=</span> <span class="va">BIDSTabularParticipants</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;BIDS Tabular&gt;[BIDSTabular]</span></span>
 <span><span class="co">#&gt; $meta:</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "age": {</span></span>
@@ -274,52 +274,23 @@ all the subjects. This file can be queried via method
 <span><span class="co">#&gt;         "Description": "mri was the first session"</span></span>
 <span><span class="co">#&gt;       }</span></span>
 <span><span class="co">#&gt;     }</span></span>
-<span><span class="co">#&gt;   },</span></span>
-<span><span class="co">#&gt;   "participant_id": {</span></span>
-<span><span class="co">#&gt;     "LongName": "Participant ID",</span></span>
-<span><span class="co">#&gt;     "Description": "A participant identifier of the form sub-&lt;label&gt;, matching a participant entity found in the dataset",</span></span>
-<span><span class="co">#&gt;     "TermURL": "https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#participants-file"</span></span>
-<span><span class="co">#&gt;   },</span></span>
-<span><span class="co">#&gt;   "species": {</span></span>
-<span><span class="co">#&gt;     "LongName": "Species",</span></span>
-<span><span class="co">#&gt;     "Description": "The species column SHOULD be a binomial species name from the NCBI Taxonomy (for example, homo sapiens, mus musculus, rattus norvegicus). For backwards compatibility, if species is absent, the participant is assumed to be homo sapiens.",</span></span>
-<span><span class="co">#&gt;     "TermURL": "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi"</span></span>
-<span><span class="co">#&gt;   },</span></span>
-<span><span class="co">#&gt;   "handedness": {</span></span>
-<span><span class="co">#&gt;     "LongName": "Subject handedness",</span></span>
-<span><span class="co">#&gt;     "Description": "String value indicating one of \"left\", \"right\", \"ambidextrous\"",</span></span>
-<span><span class="co">#&gt;     "Levels": {</span></span>
-<span><span class="co">#&gt;       "left": "left",</span></span>
-<span><span class="co">#&gt;       "right": "right",</span></span>
-<span><span class="co">#&gt;       "ambidextrous": "ambidextrous"</span></span>
-<span><span class="co">#&gt;     },</span></span>
-<span><span class="co">#&gt;     "TermURL": "https://bids-specification.readthedocs.io/en/stable/glossary.html#objects.columns.handedness"</span></span>
-<span><span class="co">#&gt;   },</span></span>
-<span><span class="co">#&gt;   "strain": {</span></span>
-<span><span class="co">#&gt;     "LongName": "Strain",</span></span>
-<span><span class="co">#&gt;     "Description": "For species different from homo sapiens, string value indicating the strain of the species, for example: C57BL/6J"</span></span>
-<span><span class="co">#&gt;   },</span></span>
-<span><span class="co">#&gt;   "strain_rrid": {</span></span>
-<span><span class="co">#&gt;     "LongName": "Strain RRID",</span></span>
-<span><span class="co">#&gt;     "Description": "For species different from homo sapiens, research resource identifier (RRID) of the strain of the species",</span></span>
-<span><span class="co">#&gt;     "TermURL": "https://rrid.site/data/source/nlx_154697-1/search"</span></span>
 <span><span class="co">#&gt;   }</span></span>
 <span><span class="co">#&gt; }</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $content:</span></span>
-<span><span class="co">#&gt;     participant_id   age    sex first_ses      species</span></span>
-<span><span class="co">#&gt;             &lt;char&gt; &lt;int&gt; &lt;char&gt;    &lt;char&gt;       &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1:         sub-01    31   male       meg homo sapiens</span></span>
-<span><span class="co">#&gt;  2:         sub-02    25   male       meg homo sapiens</span></span>
-<span><span class="co">#&gt;  3:         sub-03    30   male       meg homo sapiens</span></span>
-<span><span class="co">#&gt;  4:         sub-04    26 female       meg homo sapiens</span></span>
-<span><span class="co">#&gt;  5:         sub-05    23 female       meg homo sapiens</span></span>
-<span><span class="co">#&gt; ---                                                   </span></span>
-<span><span class="co">#&gt; 13:         sub-13    25 female       meg homo sapiens</span></span>
-<span><span class="co">#&gt; 14:         sub-14    24 female       mri homo sapiens</span></span>
-<span><span class="co">#&gt; 15:         sub-15    30   male       mri homo sapiens</span></span>
-<span><span class="co">#&gt; 16:         sub-16    25   male       mri homo sapiens</span></span>
-<span><span class="co">#&gt; 17:  sub-emptyroom    NA   &lt;NA&gt;      &lt;NA&gt; homo sapiens</span></span></code></pre></div>
+<span><span class="co">#&gt;     participant_id   age    sex first_ses</span></span>
+<span><span class="co">#&gt;             &lt;char&gt; &lt;int&gt; &lt;char&gt;    &lt;char&gt;</span></span>
+<span><span class="co">#&gt;  1:         sub-01    31      M       meg</span></span>
+<span><span class="co">#&gt;  2:         sub-02    25      M       meg</span></span>
+<span><span class="co">#&gt;  3:         sub-03    30      M       meg</span></span>
+<span><span class="co">#&gt;  4:         sub-04    26      F       meg</span></span>
+<span><span class="co">#&gt;  5:         sub-05    23      F       meg</span></span>
+<span><span class="co">#&gt; ---                                      </span></span>
+<span><span class="co">#&gt; 13:         sub-13    25      F       meg</span></span>
+<span><span class="co">#&gt; 14:         sub-14    24      F       mri</span></span>
+<span><span class="co">#&gt; 15:         sub-15    30      M       mri</span></span>
+<span><span class="co">#&gt; 16:         sub-16    25      M       mri</span></span>
+<span><span class="co">#&gt; 17:  sub-emptyroom    NA   &lt;NA&gt;      &lt;NA&gt;</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -334,7 +305,7 @@ instantiated via</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">subject</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;BIDS Subject&gt; `sub-06` (project `ds000117`)</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;BIDSSubject&gt; `sub-06` (project `ds000117`)</span></span></code></pre></div>
 <p>All <code>BIDS</code> subjects have entity key <code>sub-</code> that
 marks the subject code, for example, <code>sub-06</code> means subject
 <code>06</code>, hence the entity key <code>sub-</code> can be omitted,
@@ -428,7 +399,7 @@ with a list of search parameters.</p>
 <span><span class="co">#&gt; 13: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     5</span></span>
 <span><span class="co">#&gt; 14: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     6</span></span>
 <span><span class="co">#&gt; 15: sub-06/s....      anat  FLASH    nii.gz     06    mri   &lt;NA&gt;     2     7</span></span></code></pre></div>
-<p>Here is another example that filters derivative data that is
+<p>Here is another example that filters derivative files that are
 <code>BIDS</code> compliant.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/query_bids.html">query_bids</a></span><span class="op">(</span><span class="va">subject</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -449,34 +420,36 @@ with a list of search parameters.</p>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           parsed data_type suffix extension    sub    ses            task</span></span>
 <span><span class="co">#&gt;           &lt;AsIs&gt;    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt;          &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1: derivati....       meg    meg      json     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  2: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  3: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  4: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  5: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  6: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  7: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  8: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt;  9: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt; 10: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt; 11: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
-<span><span class="co">#&gt; 12: derivati....       meg    log       txt     06    meg facerecognition</span></span>
-<span><span class="co">#&gt; 13: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  1: derivati....     _root    meg      json     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  2: derivati....       meg    meg      json     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  3: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  4: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  5: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  6: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  7: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  8: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt;  9: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 10: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 11: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 12: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 13: derivati....       meg    log       txt     06    meg facerecognition</span></span>
+<span><span class="co">#&gt; 14: derivati....       meg    meg       fif     06    meg facerecognition</span></span>
 <span><span class="co">#&gt;       proc   run</span></span>
 <span><span class="co">#&gt;     &lt;char&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt;  1:    sss    NA</span></span>
-<span><span class="co">#&gt;  2:    sss     1</span></span>
+<span><span class="co">#&gt;  2:    sss    NA</span></span>
 <span><span class="co">#&gt;  3:    sss     1</span></span>
-<span><span class="co">#&gt;  4:    sss     2</span></span>
+<span><span class="co">#&gt;  4:    sss     1</span></span>
 <span><span class="co">#&gt;  5:    sss     2</span></span>
-<span><span class="co">#&gt;  6:    sss     3</span></span>
+<span><span class="co">#&gt;  6:    sss     2</span></span>
 <span><span class="co">#&gt;  7:    sss     3</span></span>
-<span><span class="co">#&gt;  8:    sss     4</span></span>
+<span><span class="co">#&gt;  8:    sss     3</span></span>
 <span><span class="co">#&gt;  9:    sss     4</span></span>
-<span><span class="co">#&gt; 10:    sss     5</span></span>
+<span><span class="co">#&gt; 10:    sss     4</span></span>
 <span><span class="co">#&gt; 11:    sss     5</span></span>
-<span><span class="co">#&gt; 12:    sss     6</span></span>
-<span><span class="co">#&gt; 13:    sss     6</span></span></code></pre></div>
+<span><span class="co">#&gt; 12:    sss     5</span></span>
+<span><span class="co">#&gt; 13:    sss     6</span></span>
+<span><span class="co">#&gt; 14:    sss     6</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -528,8 +501,8 @@ can be read by joining the project root path</p>
 <span><span class="co"># or </span></span>
 <span><span class="va">event_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/resolve_bids_path.html">resolve_bids_path</a></span><span class="op">(</span><span class="va">project</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">event_file</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">event_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;BIDS Tabular&gt;[bids_tabular]</span></span>
+<span><span class="fu"><a href="../reference/BIDSTabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">event_path</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;BIDS Tabular&gt;[BIDSTabular]</span></span>
 <span><span class="co">#&gt; $meta:</span></span>
 <span><span class="co">#&gt; {}</span></span>
 <span><span class="co">#&gt; </span></span>

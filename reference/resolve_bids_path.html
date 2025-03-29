@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +76,7 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">project_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">examples</span>, <span class="st">"ieeg_epilepsy_ecog"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">project</span> <span class="op">&lt;-</span> <span class="fu"><a href="bids_project.html">bids_project</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">project</span> <span class="op">&lt;-</span> <span class="fu"><a href="bids_project.html">BIDSProject</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    path <span class="op">=</span> <span class="va">project_path</span>,</span></span>
 <span class="r-in"><span>    raw_data_relpath <span class="op">=</span> <span class="st">"."</span>,</span></span>
 <span class="r-in"><span>    derivative_data_relpath <span class="op">=</span> <span class="st">"derivatives"</span></span></span>
@@ -111,7 +111,7 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="va">project_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">examples</span>, <span class="st">"ieeg_epilepsy_ecog"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="va">subject</span> <span class="op">&lt;-</span> <span class="fu"><a href="bids_subject.html">bids_subject</a></span><span class="op">(</span>project <span class="op">=</span> <span class="va">project_path</span>,</span></span>
+<span class="r-in"><span>  <span class="va">subject</span> <span class="op">&lt;-</span> <span class="fu"><a href="bids_subject.html">BIDSSubject</a></span><span class="op">(</span>project <span class="op">=</span> <span class="va">project_path</span>,</span></span>
 <span class="r-in"><span>                          subject_code <span class="op">=</span> <span class="st">"ecog01"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># raw-data directory</span></span></span>
@@ -133,10 +133,10 @@
 <span class="r-in"><span><span class="co"># ---- BIDS URI ----------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># create a BIDS URI</span></span></span>
-<span class="r-in"><span><span class="va">uri</span> <span class="op">&lt;-</span> <span class="fu"><a href="bids_uri.html">bids_uri</a></span><span class="op">(</span><span class="st">"bids::sub-01/fmap/sub-01_dir-AP_epi.nii.gz"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">uri</span> <span class="op">&lt;-</span> <span class="fu"><a href="BIDSURI.html">BIDSURI</a></span><span class="op">(</span><span class="st">"bids::sub-01/fmap/sub-01_dir-AP_epi.nii.gz"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># resolving a BIDS URI requires dataset_description.json</span></span></span>
-<span class="r-in"><span><span class="va">data_description</span> <span class="op">&lt;-</span> <span class="fu"><a href="bids_dataset_description.html">get_bids_dataset_description</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">data_description</span> <span class="op">&lt;-</span> <span class="fu"><a href="BIDSDatasetDescription.html">get_bids_dataset_description</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  parent_directory <span class="op">=</span> <span class="st">"/path/to/BIDS/folder"</span>,</span></span>
 <span class="r-in"><span>  Name <span class="op">=</span> <span class="st">"A dummy experiments"</span>,</span></span>
 <span class="r-in"><span>  BIDSVersion <span class="op">=</span> <span class="st">"1.6.0"</span>,</span></span>

@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,68 +64,6 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"dipterix/bidsr"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="road-map">Road-map<a class="anchor" aria-label="anchor" href="#road-map"></a>
-</h2>
-<p>Current milestone:</p>
-<ul>
-<li>Base classes
-<ul class="task-list">
-<li><label><input type="checkbox" checked>R <code>S7</code> base classes and properties</label></li>
-<li><label><input type="checkbox" checked>tabular data</label></li>
-<li><label><input type="checkbox" checked><code>JSON</code> side-car</label></li>
-<li><label><input type="checkbox" checked><code>BIDS</code> entity</label></li>
-</ul>
-</li>
-<li>Class definitions for common files
-<ul>
-<li>Modality agnostic files:
-<ul class="task-list">
-<li><label><input type="checkbox" checked><code>dataset_description.json</code></label></li>
-<li><label><input type="checkbox" checked><code>README</code></label></li>
-<li><label><input type="checkbox"><code>CITATION.cff</code>, <code>CHANGES</code>, <code>LICENSE</code></label></li>
-<li><label><input type="checkbox" checked><code>participants.tsv</code>, <code>participants.json</code></label></li>
-<li><label><input type="checkbox" checked><code>samples.tsv</code>, <code>samples.json</code></label></li>
-<li><label><input type="checkbox" checked><code>phenotype/</code></label></li>
-<li><label><input type="checkbox" checked>Scans file</label></li>
-<li><label><input type="checkbox" checked>Sessions file</label></li>
-</ul>
-</li>
-<li>Modality specific files:
-<ul class="task-list">
-<li><label><input type="checkbox" checked>Query files by data type for each subject</label></li>
-<li><label><input type="checkbox" checked>Use <code>BIDS</code> schema to generate file entity rules dynamically</label></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Query <code>BIDS</code> files
-<ul class="task-list">
-<li><label><input type="checkbox" checked>Get top-level files</label></li>
-<li><label><input type="checkbox" checked>Analyze and list subject data by types</label></li>
-<li><label><input type="checkbox">Find side-car and meta-data information using the <code>BIDS</code> inheritance principle (test needed)</label></li>
-</ul>
-</li>
-</ul>
-<p>Next milestone:</p>
-<ul>
-<li>Provide read functions to handle common file formats
-<ul class="task-list">
-<li><label><input type="checkbox" checked><code>JSON</code> format</label></li>
-<li><label><input type="checkbox" checked><code>.tsv</code> or <code>.csv</code> format</label></li>
-<li><label><input type="checkbox"><code>.nii</code> format</label></li>
-<li><label><input type="checkbox"><code>.mat</code>, <code>.edf</code>, … (electrophysiology)</label></li>
-</ul>
-</li>
-<li><label><input type="checkbox">Provide handler registry to access and process data files</label></li>
-</ul>
-<p>A tentative to-do list:</p>
-<ul class="task-list">
-<li><label><input type="checkbox">Modify the path</label></li>
-<li><label><input type="checkbox">Use <code>BIDS</code> schema to validation rules dynamically</label></li>
-<li><label><input type="checkbox">Validate <code>BIDS</code> files</label></li>
-</ul>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -203,8 +141,8 @@
 <span><span class="co">#&gt; sub-bp/ses-01/ieeg/sub-bp_ses-01_space-ACPC_electrodes.tsv</span></span>
 <span></span>
 <span><span class="va">electrode_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">project</span>, <span class="va">path_parsed</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/bids_tabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">electrode_path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;BIDS Tabular&gt;[bids_tabular]</span></span>
+<span><span class="fu"><a href="reference/BIDSTabular.html">as_bids_tabular</a></span><span class="op">(</span><span class="va">electrode_path</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;BIDS Tabular&gt;[BIDSTabular]</span></span>
 <span><span class="co">#&gt; $meta:</span></span>
 <span><span class="co">#&gt; {}</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -228,9 +166,9 @@
 <span></span>
 <span><span class="co">## Object `path_parsed` is a file entity class, with the entities parsed</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">path_parsed</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "bidsr::bids_entity_file_ieeg_electrodes"</span></span>
-<span><span class="co">#&gt; [2] "bidsr::bids_entity_file"                </span></span>
-<span><span class="co">#&gt; [3] "bidsr::bids_class_base"                 </span></span>
+<span><span class="co">#&gt; [1] "bidsr::BIDSEntityFile_ieeg_electrodes"</span></span>
+<span><span class="co">#&gt; [2] "bidsr::BIDSEntityFile"                </span></span>
+<span><span class="co">#&gt; [3] "bidsr::BIDSClassBase"                 </span></span>
 <span><span class="co">#&gt; [4] "S7_object"</span></span>
 <span></span>
 <span><span class="va">path_parsed</span><span class="op">$</span><span class="fu">get_bids_entity</span><span class="op">(</span><span class="st">"space"</span><span class="op">)</span></span>
@@ -244,19 +182,8 @@
 <span><span class="co">#&gt; $ses</span></span>
 <span><span class="co">#&gt; ses-01</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $task</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $acq</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $run</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $space</span></span>
 <span><span class="co">#&gt; space-ACPC</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $desc</span></span>
 <span></span>
 <span><span class="co">## If supported by schema, the `BIDS` entity rules for the </span></span>
 <span><span class="co">## file can be queried via</span></span>

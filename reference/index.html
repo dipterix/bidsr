@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bidsr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,94 +47,94 @@
 
       <dl><dt>
 
-          <code><a href="bids_class_base.html">bids_class_base()</a></code>
+          <code><a href="BIDSClassBase.html">BIDSClassBase()</a></code>
 
         </dt>
-        <dd>Base abstract class</dd>
+        <dd>Low-level abstract class for <code>bidsr</code></dd>
       </dl><dl><dt>
 
-          <code><a href="bids_dataset_description.html">get_bids_dataset_description()</a></code> <code><a href="bids_dataset_description.html">bids_dataset_description()</a></code>
+          <code><a href="BIDSDatasetDescription.html">get_bids_dataset_description()</a></code> <code><a href="BIDSDatasetDescription.html">BIDSDatasetDescription()</a></code>
 
         </dt>
         <dd>Class definition of 'BIDS' data-set description</dd>
       </dl><dl><dt>
 
-          <code><a href="bids_dataset_generated_by.html">bids_dataset_generated_by()</a></code>
+          <code><a href="BIDSDatasetGeneratedBy.html">BIDSDatasetGeneratedBy()</a></code>
 
         </dt>
         <dd>Class definition for 'BIDS' meta-data <code>'GeneratedBy'</code></dd>
       </dl><dl><dt>
 
-          <code><a href="bids_entity.html">bids_entity_label_required()</a></code> <code><a href="bids_entity.html">bids_entity_label_optional()</a></code> <code><a href="bids_entity.html">bids_entity_label_prohibited()</a></code> <code><a href="bids_entity.html">bids_entity_index_required()</a></code> <code><a href="bids_entity.html">bids_entity_index_optional()</a></code> <code><a href="bids_entity.html">bids_entity_index_prohibited()</a></code> <code><a href="bids_entity.html">bids_entity_any_required()</a></code> <code><a href="bids_entity.html">bids_entity_any_optional()</a></code> <code><a href="bids_entity.html">bids_entity_any_prohibited()</a></code>
+          <code><a href="BIDSEntity.html">BIDSEntity_label_required()</a></code> <code><a href="BIDSEntity.html">BIDSEntity_label_optional()</a></code> <code><a href="BIDSEntity.html">BIDSEntity_label_prohibited()</a></code> <code><a href="BIDSEntity.html">BIDSEntity_index_required()</a></code> <code><a href="BIDSEntity.html">BIDSEntity_index_optional()</a></code> <code><a href="BIDSEntity.html">BIDSEntity_index_prohibited()</a></code> <code><a href="BIDSEntity.html">BIDSEntity_any_required()</a></code> <code><a href="BIDSEntity.html">BIDSEntity_any_optional()</a></code> <code><a href="BIDSEntity.html">BIDSEntity_any_prohibited()</a></code>
 
         </dt>
         <dd>Class definitions of 'BIDS' entity</dd>
       </dl><dl><dt>
 
-          <code><a href="bids_map.html">bids_map()</a></code>
+          <code><a href="BIDSMap.html">BIDSMap()</a></code>
 
         </dt>
         <dd>Low-level nested map to store key-value data with inherited structure</dd>
       </dl><dl><dt>
 
-          <code><a href="bids_project.html">bids_project()</a></code>
-
-        </dt>
-        <dd>'BIDS' project class</dd>
-      </dl><dl><dt>
-
-          <code><a href="bids_property.html">bids_property()</a></code> <code><a href="bids_property.html">bids_property_optional()</a></code> <code><a href="bids_property.html">bids_property_required()</a></code> <code><a href="bids_property.html">bids_property_prohibited()</a></code> <code><a href="bids_property.html">bids_property_recommended()</a></code> <code><a href="bids_property.html">bids_property_deprecated()</a></code> <code><a href="bids_property.html">bids_property_character()</a></code> <code><a href="bids_property.html">bids_property_collapsed_character()</a></code> <code><a href="bids_property.html">bids_property_choice()</a></code> <code><a href="bids_property.html">bids_property_numeric()</a></code> <code><a href="bids_property.html">bids_property_integerish()</a></code> <code><a href="bids_property.html">bids_property_list()</a></code> <code><a href="bids_property.html">bids_property_named_list()</a></code> <code><a href="bids_property.html">bids_property_unnamed_list()</a></code> <code><a href="bids_property.html">bids_property_format()</a></code> <code><a href="bids_property.html">bids_property_print_format</a></code> <code><a href="bids_property.html">bids_property_entity_list()</a></code> <code><a href="bids_property.html">bids_property_tabular_column_descriptor_list()</a></code> <code><a href="bids_property.html">bids_property_data_frame()</a></code> <code><a href="bids_property.html">bids_property_tabular_content()</a></code> <code><a href="bids_property.html">bids_property_tabular_meta()</a></code>
-
-        </dt>
-        <dd><code>'S7'</code> property for 'BIDS' classes</dd>
-      </dl><dl><dt>
-
-          <code><a href="bids_subject.html">bids_subject()</a></code>
-
-        </dt>
-        <dd>'BIDS' subject class</dd>
-      </dl><dl><dt>
-
-          <code><a href="bids_tabular.html">as_bids_tabular()</a></code> <code><a href="bids_tabular.html">save_bids_tabular()</a></code> <code><a href="bids_tabular.html">bids_tabular_column_descriptor()</a></code> <code><a href="bids_tabular.html">bids_tabular_meta_sidecar()</a></code> <code><a href="bids_tabular.html">bids_tabular()</a></code> <code><a href="bids_tabular.html">save_bids_tabular_default()</a></code> <code><a href="bids_tabular.html">new_bids_tabular_class()</a></code>
+          <code><a href="BIDSTabular.html">as_bids_tabular()</a></code> <code><a href="BIDSTabular.html">save_bids_tabular()</a></code> <code><a href="BIDSTabular.html">BIDSTabularColumnDescriptor()</a></code> <code><a href="BIDSTabular.html">BIDSTabularMetaSidecar()</a></code> <code><a href="BIDSTabular.html">BIDSTabular()</a></code> <code><a href="BIDSTabular.html">save_bids_tabular_default()</a></code> <code><a href="BIDSTabular.html">new_bids_tabular_class()</a></code>
 
         </dt>
         <dd>Class definitions and utilities for 'BIDS' tabular</dd>
       </dl><dl><dt>
 
-          <code><a href="bids_tabular_participants.html">get_bids_participants()</a></code> <code><a href="bids_tabular_participants.html">bids_tabular_participants()</a></code>
+          <code><a href="BIDSTabularParticipants.html">get_bids_participants()</a></code> <code><a href="BIDSTabularParticipants.html">BIDSTabularParticipants()</a></code>
 
         </dt>
         <dd>'BIDS' participant table class</dd>
       </dl><dl><dt>
 
-          <code><a href="bids_tabular_phenotype.html">get_bids_phenotype_data()</a></code> <code><a href="bids_tabular_phenotype.html">bids_tabular_phenotype()</a></code>
+          <code><a href="BIDSTabularPhenotype.html">get_bids_phenotype_data()</a></code> <code><a href="BIDSTabularPhenotype.html">BIDSTabularPhenotype()</a></code>
 
         </dt>
         <dd>'BIDS' phenotype and assessment table class</dd>
       </dl><dl><dt>
 
-          <code><a href="bids_tabular_samples.html">get_bids_samples()</a></code> <code><a href="bids_tabular_samples.html">bids_tabular_samples()</a></code>
+          <code><a href="BIDSTabularSamples.html">get_bids_samples()</a></code> <code><a href="BIDSTabularSamples.html">BIDSTabularSamples()</a></code>
 
         </dt>
         <dd>'BIDS' samples table class</dd>
       </dl><dl><dt>
 
-          <code><a href="bids_tabular_scans.html">bids_tabular_scans()</a></code>
+          <code><a href="BIDSTabularScans.html">BIDSTabularScans()</a></code>
 
         </dt>
         <dd>'BIDS' scans table class</dd>
       </dl><dl><dt>
 
-          <code><a href="bids_tabular_sessions.html">bids_tabular_sessions()</a></code>
+          <code><a href="BIDSTabularSessions.html">BIDSTabularSessions()</a></code>
 
         </dt>
         <dd>'BIDS' sessions table class</dd>
       </dl><dl><dt>
 
-          <code><a href="bids_uri.html">bids_uri()</a></code>
+          <code><a href="BIDSURI.html">BIDSURI()</a></code>
 
         </dt>
         <dd>'BIDS' uniform resource indicator ('URI') class definition</dd>
+      </dl><dl><dt>
+
+          <code><a href="bids_project.html">BIDSProject()</a></code> <code><a href="bids_project.html">bids_project()</a></code>
+
+        </dt>
+        <dd>'BIDS' project class</dd>
+      </dl><dl><dt>
+
+          <code><a href="bids_property.html">bids_property()</a></code> <code><a href="bids_property.html">bids_property_optional()</a></code> <code><a href="bids_property.html">bids_property_required()</a></code> <code><a href="bids_property.html">bids_property_prohibited()</a></code> <code><a href="bids_property.html">bids_property_recommended()</a></code> <code><a href="bids_property.html">bids_property_deprecated()</a></code> <code><a href="bids_property.html">bids_property_character()</a></code> <code><a href="bids_property.html">bids_property_collapsed_character()</a></code> <code><a href="bids_property.html">bids_property_choice()</a></code> <code><a href="bids_property.html">bids_property_numeric()</a></code> <code><a href="bids_property.html">bids_property_integerish()</a></code> <code><a href="bids_property.html">bids_property_list()</a></code> <code><a href="bids_property.html">bids_property_named_list()</a></code> <code><a href="bids_property.html">bids_property_unnamed_list()</a></code> <code><a href="bids_property.html">bids_property_entity_list()</a></code> <code><a href="bids_property.html">bids_property_tabular_column_descriptor_list()</a></code> <code><a href="bids_property.html">bids_property_data_frame()</a></code> <code><a href="bids_property.html">bids_property_tabular_content()</a></code> <code><a href="bids_property.html">bids_property_tabular_meta()</a></code>
+
+        </dt>
+        <dd><code>'S7'</code> property for 'BIDS' classes</dd>
+      </dl><dl><dt>
+
+          <code><a href="bids_subject.html">BIDSSubject()</a></code> <code><a href="bids_subject.html">bids_subject()</a></code>
+
+        </dt>
+        <dd>'BIDS' subject class</dd>
       </dl><dl><dt>
 
           <code><a href="download_bids_examples.html">download_bids_examples()</a></code>
