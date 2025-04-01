@@ -6,7 +6,7 @@
 \alias{bidsr-package}
 \title{bidsr: A Brain Imaging Data Structure ('BIDS') Parser}
 \description{
-Parse and read the files that comply with the brain imaging data structure, or 'BIDS' format, see the publication from Gorgolewski, K., Auer, T., Calhoun, V. et al. (2016) \doi{10.1038/sdata.2016.44}. Provides query functions to extract and check the 'BIDS' entity information (such as subject, session, task, etc.) from the file names according to the specification. The package is developed and used in the reproducible analysis and visualization of intracranial electroencephalography, or 'RAVE', see Magnotti, J. F., Wang, Z., and Beauchamp, M. S. (2020) \doi{10.1016/j.neuroimage.2020.117341}. For proper attributions, see 'citation("bidsr")'.
+Parse and read the files that comply with the brain imaging data structure, or 'BIDS' format, see the publication from Gorgolewski, K., Auer, T., Calhoun, V. et al. (2016) \doi{10.1038/sdata.2016.44}. Provides query functions to extract and check the 'BIDS' entity information (such as subject, session, task, etc.) from the file paths and suffixes according to the specification. The package is developed and used in the reproducible analysis and visualization of intracranial electroencephalography, or 'RAVE', see Magnotti, J. F., Wang, Z., and Beauchamp, M. S. (2020) \doi{10.1016/j.neuroimage.2020.117341}; see 'citation("bidsr")' for details and attributions.
 }
 \seealso{
 Useful links:
