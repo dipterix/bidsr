@@ -48,6 +48,7 @@ preset_samples_meta <- local({
 
 
 #' @title 'BIDS' samples table class
+#' @author Zhengjia Wang
 #' @description
 #' A tabular containing a list of samples and their metadata.
 #' The class is a child class of \code{\link{BIDSTabular}}, hence see

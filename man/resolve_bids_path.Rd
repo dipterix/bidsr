@@ -104,3 +104,6 @@ data_description <- get_bids_dataset_description(
 resolve_bids_path(uri, data_description)
 
 }
+\author{
+Zhengjia Wang
+}

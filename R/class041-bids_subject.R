@@ -1,4 +1,5 @@
 #' @name bids_subject
+#' @author Zhengjia Wang
 #' @title 'BIDS' subject class
 #' @param project 'BIDS' project instance, see \code{\link{BIDSProject}}, or
 #' a path to the 'BIDS' project

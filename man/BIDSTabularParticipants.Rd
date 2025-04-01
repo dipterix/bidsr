@@ -74,3 +74,6 @@ if(!isFALSE(examples)) {
 }
 
 }
+\author{
+Zhengjia Wang
+}

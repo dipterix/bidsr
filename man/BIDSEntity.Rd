@@ -116,22 +116,32 @@ print(entity_subject)
 entity_subject$index_format <- "\%03d"
 print(entity_subject)
 
-\dontrun{
 
-  # trying to set invalid values will result in errors
+# trying to set invalid values will result in errors
+try({
   BIDSEntity_index_required(key = "run")
+})
 
-  entity_int <- BIDSEntity_index_required(key = "run", value = "001")
 
-  # trying to unset require entity
+entity_int <- BIDSEntity_index_required(key = "run", value = "001")
+
+# trying to unset require entity
+try({
   entity_int$value <- integer()
+})
 
-  # trying to set invalid entity
+# trying to set invalid entity
+try({
   entity_int$value <- "asdad"
+})
 
-  # trying to set prohibited entiry
+# trying to set prohibited entiry
+try({
   BIDSEntity_index_prohibited("invalid", 123)
+})
+
 
 }
-
+\author{
+Zhengjia Wang
 }

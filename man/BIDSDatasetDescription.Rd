@@ -89,6 +89,10 @@ textual or a URI.}
 data-set (not the corresponding paper). \code{'DOIs'} should be expressed
 as a valid 'URI'}
 }
+\value{
+A \code{S7} description object that contains all the fields
+describing the data set; see 'Examples' for usages.
+}
 \description{
 See \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#dataset_descriptionjson}
 for specification.
@@ -136,6 +140,10 @@ dataset_description <- BIDSDatasetDescription(
   )
 )
 
+# access the information
+dataset_description$License
+
+dataset_description$GeneratedBy[[1]]$Container
 
 # ---- Read from file ---------------------------------------------
 
@@ -156,4 +164,7 @@ if(!isFALSE(examples)) {
   format(x)
 }
 
+}
+\author{
+Zhengjia Wang
 }

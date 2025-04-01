@@ -57,6 +57,7 @@ as_bids_tabular_table <- function(x, meta, ..., cls = NULL) {
 
 
 #' @name BIDSTabular
+#' @author Zhengjia Wang
 #' @title Class definitions and utilities for 'BIDS' tabular
 #' @description
 #' Official specification link:

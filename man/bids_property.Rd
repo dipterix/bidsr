@@ -297,18 +297,24 @@ instance
 instance$str <- "111"
 instance
 
-\dontrun{
 
-  # what if you enter illegal values
+# what if you enter illegal values
 
+try({
   MyClass(str = "")
+})
 
+try({
   MyClass(str = NA_character_)
+})
 
+try({
   MyClass(str = 1)
+})
+
 
 
 }
-
-
+\author{
+Zhengjia Wang
 }

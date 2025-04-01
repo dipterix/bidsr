@@ -1,4 +1,5 @@
 #' @title Resolve path of a 'BIDS' object
+#' @author Zhengjia Wang
 #' @param x 'BIDS' object such as project or subject
 #' @param ... passed to generic methods
 #' @returns A character of the resolved path

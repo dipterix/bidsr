@@ -1,4 +1,5 @@
 #' @title 'BIDS' project class
+#' @author Zhengjia Wang
 #' @name bids_project
 #' @param path absolute path to the 'BIDS' project directory;
 #' @param raw_data_relpath raw data-set path, relative (to the \code{path});

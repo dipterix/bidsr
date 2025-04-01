@@ -23,6 +23,12 @@ new_bids_entity_file_class(
 
 \item{bids_version}{'BIDS' version to query the entity rules}
 }
+\value{
+A class definition with proper entity constraints according to
+\code{data_type}-\code{suffix} combinations, or a specific \code{schema_key}.
+The function rarely needs to be called directly unless the schema key is
+missing from the specification.
+}
 \description{
 Low-level function to generate file name definitions with entity
 constraints; use \code{\link{parse_path_bids_entity}} instead.
@@ -105,4 +111,7 @@ get_bids_entity_rules(file2)
 
 
 
+}
+\author{
+Zhengjia Wang
 }

@@ -1,6 +1,7 @@
 
 # ---- query_bids -------------------------------------------------------
 #' @title Query 'BIDS'
+#' @author Zhengjia Wang
 #' @description
 #' Query 'BIDS' project and analyze the files
 #' @param x 'BIDS' objects such as subject

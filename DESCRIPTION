@@ -1,20 +1,32 @@
 Package: bidsr
-Title: A Brain Imaging Data Structure ('BIDS') Parser in R
+Title: A Brain Imaging Data Structure ('BIDS') Parser
 Version: 0.1.0
 URL: https://dipterix.org/bidsr/, https://github.com/dipterix/bidsr/
 BugReports: https://github.com/dipterix/bidsr/issues
 Authors@R: 
+    c(
     person("Zhengjia", "Wang", email = "dipterix.wang@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-5629-1116"))
+          comment = c(ORCID = "0000-0001-5629-1116")),
+    person("Trustees of the University of Pennsylvania", role = c("cph"), 
+          comment = "All files in this package unless explicitly stated in the file or listed in the 'Copyright' section below.")
+    )
 Description: 
-    Read, parse, modify the files to comply with brain imaging data structure 
-    ('BIDS') <doi:10.1038/sdata.2016.44> in R.
+    Parse and read the files that comply with the brain imaging data 
+    structure, or 'BIDS' format, see the publication from Gorgolewski, K., 
+    Auer, T., Calhoun, V. et al. (2016) <doi:10.1038/sdata.2016.44>.
+    Provides query functions to extract and check the 'BIDS' entity 
+    information (such as subject, session, task, etc.) from the file paths
+    and suffixes according to the specification. The package is developed 
+    and used in the reproducible analysis and visualization of intracranial 
+    electroencephalography, or 'RAVE', see Magnotti, J. F., Wang, Z., and 
+    Beauchamp, M. S. (2020) <doi:10.1016/j.neuroimage.2020.117341>; see
+    'citation("bidsr")' for details and attributions.
 Copyright:
     This software includes material (schema files from directory 
     'inst/bids-schema') from the 'BIDS' specification, which is licensed 
     under a Creative Commons Attribution 4.0 International License; see
     a copy of the license under 'inst/bids-schema/LICENSE.txt', and website
-    <https://bids.neuroimaging.io> for details.
+    <https://bids.neuroimaging.io> for details. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-US

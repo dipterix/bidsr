@@ -25,3 +25,6 @@ repository.
 download_bids_examples(test = TRUE)
 
 }
+\author{
+Zhengjia Wang
+}

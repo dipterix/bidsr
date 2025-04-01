@@ -161,6 +161,7 @@ is_child_bids_entity_file <- function(definition) {
 }
 
 #' @title Class generator for 'BIDS' file class with entities
+#' @author Zhengjia Wang
 #' @description
 #' Low-level function to generate file name definitions with entity
 #' constraints; use \code{\link{parse_path_bids_entity}} instead.
@@ -172,6 +173,10 @@ is_child_bids_entity_file <- function(definition) {
 #' @param suffix file suffix
 #' @param schema_key schema key if explicit entity rules are required
 #' @param bids_version 'BIDS' version to query the entity rules
+#' @returns A class definition with proper entity constraints according to
+#' \code{data_type}-\code{suffix} combinations, or a specific \code{schema_key}.
+#' The function rarely needs to be called directly unless the schema key is
+#' missing from the specification.
 #' @examples
 #'
 #'

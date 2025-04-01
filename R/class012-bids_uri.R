@@ -27,6 +27,7 @@ parse_bids_uri <- function(uri) {
 }
 
 #' 'BIDS' uniform resource indicator ('URI') class definition
+#' @author Zhengjia Wang
 #' @param uri 'URI' string or another 'BIDS-URI' object
 #' @returns A \code{BIDSURI} instance.
 #'

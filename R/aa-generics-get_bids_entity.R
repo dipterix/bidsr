@@ -1,5 +1,6 @@
 # ---- Entity -------------------------------------------------------
 #' @title Get 'BIDS' entity values from file
+#' @author Zhengjia Wang
 #' @param x 'BIDS' file path or parsed object; see 'Examples'
 #' @param key entity key
 #' @param value_only whether to return the value only; default is true; set

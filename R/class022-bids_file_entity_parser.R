@@ -1,4 +1,5 @@
 #' @title Parse 'BIDS' entities from file path
+#' @author Zhengjia Wang
 #' @param path path to the entity file, recommended to input the absolute path
 #' or relative path from the 'BIDS' root directory
 #' @param auto_cache whether to automatically cache the class definition to

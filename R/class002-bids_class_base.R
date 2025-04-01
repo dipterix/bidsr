@@ -1,4 +1,5 @@
 #' Low-level abstract class for \code{bidsr}
+#' @author Zhengjia Wang
 #' @description
 #' Low-level abstract class definition; see \code{\link{new_bids_class}} to
 #' create new class definitions. All \code{bidsr} classes inherit this
@@ -16,6 +17,7 @@ BIDSClassBase <- S7::new_class(
 class(BIDSClassBase) <- c("bids_class", class(BIDSClassBase))
 
 #' Create new \code{bidsr} class definition
+#' @author Zhengjia Wang
 #' @description
 #' By default, all generated classes inherit \code{\link{BIDSClassBase}},
 #' which provides \code{S3} generics
@@ -44,6 +46,8 @@ class(BIDSClassBase) <- c("bids_class", class(BIDSClassBase))
 #' operator, or \code{\link{names}} function. The hidden properties or methods
 #' cannot be queried via these two ways. However, properties can still be
 #' accessible via \code{`@`} operator
+#' @returns A \code{S7} object inheriting the \code{'bidsr::BIDSClassBase'}
+#' class.
 #' @examples
 #'
 #' # ---- Basic usage --------------------------------------------

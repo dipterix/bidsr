@@ -15,3 +15,6 @@ Low-level abstract class definition; see \code{\link{new_bids_class}} to
 create new class definitions. All \code{bidsr} classes inherit this
 abstract class, to provide consistent behavior.
 }
+\author{
+Zhengjia Wang
+}

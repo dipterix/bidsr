@@ -78,6 +78,7 @@ preset_phenotype_meta <- local({
 
 
 #' @title 'BIDS' phenotype and assessment table class
+#' @author Zhengjia Wang
 #' @description
 #' A tabular containing a list of phenotype & assessment, with their metadata.
 #' The class is a child class of \code{\link{BIDSTabular}}, hence see

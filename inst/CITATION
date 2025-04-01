@@ -1,0 +1,56 @@
+
+bibentry(bibtype = "Article",
+         title        = "{RAVE}: Comprehensive open-source software for reproducible analysis and visualization of intracranial EEG data",
+         author       = c(as.person("John F. Magnotti"),
+                          as.person("Zhengjia Wang"),
+                          as.person("Michael S. Beauchamp")),
+         journal      = "NeuroImage",
+         year         = "2020",
+         volume       = "223",
+         pages        = "117341",
+         doi          = "10.1016/j.neuroimage.2020.117341",
+         header       = "To cite `bidsr` in publications us, (`bidsr` is developed by the RAVE team)",
+         footer       = "",
+         textVersion  = "Magnotti, JF, and Wang, Z, and Beauchamp, MS. RAVE: comprehensive open-source software for reproducible analysis and visualization of intracranial EEG data. NeuroImage, 223, p.117341."
+)
+
+
+bibentry(
+  bibtype = "Article",
+  title = "The brain imaging data structure, a format for organizing and describing outputs of neuroimaging experiments",
+  author = c(
+    person("Krzysztof J.", "Gorgolewski"),
+    person("Tibor", "Auer"),
+    person("Vince D.", "Calhoun"),
+    person("R. Cameron", "Craddock"),
+    person("Samir", "Das"),
+    person("Eugene P.", "Duff"),
+    person("Guillaume", "Flandin"),
+    person("Satrajit S.", "Ghosh"),
+    person("Tristan", "Glatard"),
+    person("Yaroslav O.", "Halchenko"),
+    person("Daniel A.", "Handwerker"),
+    person("Michael", "Hanke"),
+    person("David", "Keator"),
+    person("Xiangrui", "Li"),
+    person("Zachary", "Michael"),
+    person("Camille", "Maumet"),
+    person("B. Nolan", "Nichols"),
+    person("Thomas E.", "Nichols"),
+    person("John", "Pellman"),
+    person("Jean-Baptiste", "Poline"),
+    person("Ariel", "Rokem"),
+    person("Gunnar", "Schaefer"),
+    person("Vanessa", "Sochat"),
+    person("William", "Triplett"),
+    person("Jessica A.", "Turner"),
+    person("Gaël", "Varoquaux"),
+    person("Russell A.", "Poldrack")
+  ),
+  journal = "Scientific Data",
+  year = 2016,
+  volume = "3",
+  pages = "160044",
+  doi = "10.1038/sdata.2016.44",
+  header = "To cite BIDS specification,"
+)

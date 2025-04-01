@@ -49,6 +49,10 @@ create the \code{'S7'} object. The first argument should be an instance
 of the parent class (if used). The subsequent arguments are used to set
 the properties.}
 }
+\value{
+A \code{S7} object inheriting the \code{'bidsr::BIDSClassBase'}
+class.
+}
 \description{
 By default, all generated classes inherit \code{\link{BIDSClassBase}},
 which provides \code{S3} generics
@@ -117,4 +121,7 @@ x$hidden_method()
 
 
 
+}
+\author{
+Zhengjia Wang
 }

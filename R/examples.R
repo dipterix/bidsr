@@ -1,4 +1,5 @@
 #' @title Download 'BIDS' example data-sets
+#' @author Zhengjia Wang
 #' @description
 #' See \url{https://github.com/bids-standard/bids-examples} for the full
 #' repository.

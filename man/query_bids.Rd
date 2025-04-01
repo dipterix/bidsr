@@ -20,3 +20,6 @@ A data table of query results
 \description{
 Query 'BIDS' project and analyze the files
 }
+\author{
+Zhengjia Wang
+}

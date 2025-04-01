@@ -4,9 +4,9 @@
 \name{bidsr-package}
 \alias{bidsr}
 \alias{bidsr-package}
-\title{bidsr: A Brain Imaging Data Structure ('BIDS') Parser in R}
+\title{bidsr: A Brain Imaging Data Structure ('BIDS') Parser}
 \description{
-Read, parse, modify the files to comply with brain imaging data structure ('BIDS') \doi{10.1038/sdata.2016.44} in R.
+Parse and read the files that comply with the brain imaging data structure, or 'BIDS' format, see the publication from Gorgolewski, K., Auer, T., Calhoun, V. et al. (2016) \doi{10.1038/sdata.2016.44}. Provides query functions to extract and check the 'BIDS' entity information (such as subject, session, task, etc.) from the file names according to the specification. The package is developed and used in the reproducible analysis and visualization of intracranial electroencephalography, or 'RAVE', see Magnotti, J. F., Wang, Z., and Beauchamp, M. S. (2020) \doi{10.1016/j.neuroimage.2020.117341}. For proper attributions, see 'citation("bidsr")'.
 }
 \seealso{
 Useful links:
@@ -19,6 +19,11 @@ Useful links:
 }
 \author{
 \strong{Maintainer}: Zhengjia Wang \email{dipterix.wang@gmail.com} (\href{https://orcid.org/0000-0001-5629-1116}{ORCID})
+
+Other contributors:
+\itemize{
+  \item Trustees of the University of Pennsylvania (All files in this package unless explicitly stated in the file or listed in the 'Copyright' section below.) [copyright holder]
+}
 
 }
 \keyword{internal}

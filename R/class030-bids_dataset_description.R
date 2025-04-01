@@ -3,6 +3,7 @@
 
 
 #' Class definition for 'BIDS' meta-data \code{'GeneratedBy'}
+#' @author Zhengjia Wang
 #' @description
 #' See definition at \url{https://bids-specification.readthedocs.io/en/stable/glossary.html#objects.metadata.GeneratedBy}
 #' @param Name (character, required) name of the pipeline or process that
@@ -55,6 +56,7 @@ S7::method(format.generic, BIDSDatasetGeneratedBy) <- function(x, ..., indent = 
 }
 
 #' Class definition of 'BIDS' data-set description
+#' @author Zhengjia Wang
 #' @description
 #' See \url{https://bids-specification.readthedocs.io/en/stable/modality-agnostic-files.html#dataset_descriptionjson}
 #' for specification.
@@ -102,7 +104,8 @@ S7::method(format.generic, BIDSDatasetGeneratedBy) <- function(x, ..., indent = 
 #' @param DatasetDOI (optional string) The Digital Object Identifier of the
 #' data-set (not the corresponding paper). \code{'DOIs'} should be expressed
 #' as a valid 'URI'
-#'
+#' @returns A \code{S7} description object that contains all the fields
+#' describing the data set; see 'Examples' for usages.
 #'
 #' @examples
 #'
@@ -147,6 +150,10 @@ S7::method(format.generic, BIDSDatasetGeneratedBy) <- function(x, ..., indent = 
 #'   )
 #' )
 #'
+#' # access the information
+#' dataset_description$License
+#'
+#' dataset_description$GeneratedBy[[1]]$Container
 #'
 #' # ---- Read from file ---------------------------------------------
 #'

@@ -1,4 +1,5 @@
 #' Low-level nested map to store key-value data with inherited structure
+#' @author Zhengjia Wang
 #' @param parent \code{NULL} if the map is at the top level, or another
 #' map to inherit
 #' @param search_depth integer maximum search depths; default is \code{29};

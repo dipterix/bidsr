@@ -62,3 +62,6 @@ BIDSTabularPhenotype(
 
 
 }
+\author{
+Zhengjia Wang
+}

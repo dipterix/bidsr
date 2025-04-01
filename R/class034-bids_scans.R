@@ -59,6 +59,7 @@ preset_scans_meta <- local({
 
 
 #' @title 'BIDS' scans table class
+#' @author Zhengjia Wang
 #' @description
 #' A tabular containing a list of scans and their metadata.
 #' The class is a child class of \code{\link{BIDSTabular}}, hence see

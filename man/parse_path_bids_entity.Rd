@@ -67,3 +67,6 @@ parsed_filename$get_bids_entity_rules()
 
 
 }
+\author{
+Zhengjia Wang
+}

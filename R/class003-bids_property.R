@@ -1,4 +1,5 @@
 #' @name bids_property
+#' @author Zhengjia Wang
 #' @title \code{'S7'} property for 'BIDS' classes
 #' @description
 #' Used in \code{property} to generate properties with constraints in
@@ -62,18 +63,21 @@
 #' instance$str <- "111"
 #' instance
 #'
-#' \dontrun{
 #'
-#'   # what if you enter illegal values
+#' # what if you enter illegal values
 #'
+#' try({
 #'   MyClass(str = "")
+#' })
 #'
+#' try({
 #'   MyClass(str = NA_character_)
+#' })
 #'
+#' try({
 #'   MyClass(str = 1)
+#' })
 #'
-#'
-#' }
 #'
 #'
 #' @export

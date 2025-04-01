@@ -58,6 +58,7 @@ preset_sessions_meta <- local({
 })
 
 #' @title 'BIDS' sessions table class
+#' @author Zhengjia Wang
 #' @description
 #' A tabular containing a list of sessions and their metadata.
 #' The class is a child class of \code{\link{BIDSTabular}}, hence see

@@ -55,6 +55,7 @@ preset_participants_meta <- local({
 })
 
 #' @title 'BIDS' participant table class
+#' @author Zhengjia Wang
 #' @description
 #' A tabular containing a list of participants and their demographics.
 #' The class is a child class of \code{\link{BIDSTabular}}, hence see
