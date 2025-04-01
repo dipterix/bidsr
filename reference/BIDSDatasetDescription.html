@@ -169,6 +169,15 @@ data-set (not the corresponding paper). <code>'DOIs'</code> should be expressed
 as a valid 'URI'</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A <code>S7</code> description object that contains all the fields
+describing the data set; see 'Examples' for usages.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
+    <p>Zhengjia Wang</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -214,6 +223,17 @@ as a valid 'URI'</p></dd>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># access the information</span></span></span>
+<span class="r-in"><span><span class="va">dataset_description</span><span class="op">$</span><span class="va">License</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CC0"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dataset_description</span><span class="op">$</span><span class="va">GeneratedBy</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">Container</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "r-package"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Tag</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "dipterix/bidsr:0.0.1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># ---- Read from file ---------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
