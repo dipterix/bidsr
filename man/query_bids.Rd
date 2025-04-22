@@ -4,13 +4,15 @@
 \alias{query_bids}
 \title{Query 'BIDS'}
 \usage{
-query_bids(x, search_params, ...)
+query_bids(x, search_params, env = parent.frame(), ...)
 }
 \arguments{
 \item{x}{'BIDS' objects such as subject}
 
 \item{search_params}{searching parameters, leave it blank to see help
 documentations}
+
+\item{env}{where to resolve selectors}
 
 \item{...}{passed to down-stream methods}
 }

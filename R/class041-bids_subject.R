@@ -166,7 +166,7 @@ Returns: a resolved path.
 
 
 ## `query_bids` generic
-S7::method(query_bids, BIDSSubject) <- function(x, search_params, ..., env = parent.frame()) {
+S7::method(query_bids, BIDSSubject) <- function(x, search_params, env = parent.frame(), ...) {
 
 
   docstring <- "Usage -> bidsr::query_bids(subject, search_params, ...)
