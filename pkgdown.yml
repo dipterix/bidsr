@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   aaa-get-started: aaa-get-started.html
-last_built: 2025-07-22T17:19Z
+last_built: 2025-07-22T17:39Z
 urls:
   reference: https://dipterix.org/bidsr/reference
   article: https://dipterix.org/bidsr/articles
