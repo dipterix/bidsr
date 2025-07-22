@@ -2,71 +2,39 @@
 
 0 errors | 0 warnings | 1 note
 
-* This is a new release.
-
-Addressing CRAN comments:
-
 ```
-Please write references in the description of the DESCRIPTION file in the form
-authors (year) <doi:...>
-(If you want to add a title as well please put it in quotes: "Title")
-For more details: <https://contributor.r-project.org/cran-cookbook/description_issues.html#references>
-So please add authors and (year) as well.
+In https://www.stats.ox.ac.uk/pub/bdr/donttest/bidsr.out
+
+* checking for new files in some other directories ... NOTE
+Found the following files/directories:
+  ‘~/.cache/R/bidsr’ ‘~/.cache/R/bidsr/bids-examples’
+  ...
 ```
 
-Thanks, added `authors (year) <doi:...>`
+### What are those artifacts
 
+These files are official example files provided by `BIDS`, a neuroscience format standard on file organization. These files are used by `bidsr` to build documentations and for package users to validate the parsing functions.
 
-```
-The Description field is intended to be a (one paragraph) description of what the package does and why it may be useful. Please add more details about the package functionality and implemented methods in your Description text.
-For more details: <https://contributor.r-project.org/cran-cookbook/general_issues.html#description-length>
-```
+### The cause of these artifacts
 
-Added text: `... Provides query functions to extract and check the 'BIDS' entity information (such as subject, session, task, etc.) from the file names according to the specification...`. 
+These artifacts are caused by calling `bidsr` function `download_bids_examples` without the argument `test=TRUE`. Although I tried to call `download_bids_examples(test=TRUE)` in the examples to avoid downloading this example, I over-looked two documents, where `download_bids_examples()` is called:
 
-```
-Please add \value to .Rd files regarding exported methods and explain the functions results in the documentation. Please write about the structure of the output (class) and also what the output means. (If a function does not return a value, please document that too, e.g. \value{No return value, called for side effects} or similar)
-For more details: <https://contributor.r-project.org/cran-cookbook/docs_issues.html#missing-value-tags-in-.rd-files>
-Missing Rd-tags:
-     BIDSDatasetDescription.Rd: \value
-     new_bids_class.Rd: \value
-     new_bids_entity_file_class.Rd: \value
-```
+* `README.Rmd`
+* `vignettes/aaa-get-started.Rmd`
 
-Thanks, added value field.
-
+To mitigate this issue, I have added the following code blocks to remove the artifacts.
 
 ```
-\dontrun{} should only be used if the example really cannot be executed (e.g. because of missing additional software, missing API keys, ...) by the user. That's why wrapping examples in \dontrun{} adds the comment ("# Not run:") as a warning for the user. Does not seem necessary. Please replace \dontrun with \donttest.
-Please unwrap the examples if they are executable in < 5 sec, or replace dontrun{} with \donttest{}.
-For more details: <https://contributor.r-project.org/cran-cookbook/general_issues.html#structuring-of-examples>
-```
+#| r
 
-Thanks, I have removed all `\dontrun` from the examples and wrapped them with `try({})` as they are used to demonstrate incorrect usages.
+cache_root <- tools::R_user_dir(package = "bidsr", which = "cache")
 
+if(file.exists(cache_root)) {
 
-```
-Please make sure that you do not change the user's options, par or working directory. If you really have to do so within functions, please ensure with an *immediate* call of on.exit() that the settings are reset when the function is exited.
-e.g.:
-...
-old <- options() # code line i
-on.exit(options(old)) # code line i+1
-...
-options(timeout = 3600)# somewhere after
-...
-e.g.: R/examples.R
-```
-
-I believe this could be a false positive as the code indeed called `on.exit` on line `i+1` but the code arrangement made it appear to be not... Thanks for checking it!
+  unlink(cache_root, recursive = TRUE)
+  
+}
 
 ```
-f <- tempfile(fileext = ".zip")
-old_opt <- options(timeout = 3600)
-on.exit({
-  options(old_opt)
-  unlink(f)
-})
-```
 
-
-Also please note that I have added University of Pennsylvania to the author list `role=cph` to comply with the university IP rules.
+These code blocks ensure that `~/.cache/R/bidsr` is removed at the end of the document.

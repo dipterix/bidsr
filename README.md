@@ -179,3 +179,4 @@ path_parsed$get_bids_entity_rules()
 #> $desc
 #> [1] "optional" "label"
 ```
+

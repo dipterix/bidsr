@@ -112,4 +112,9 @@ path_parsed$get_bids_entity_rules()
 
 
 
-
+```{r, echo=FALSE, results='hide'}
+cache_root <- tools::R_user_dir(package = "bidsr", which = "cache")
+if(file.exists(cache_root)) {
+  unlink(cache_root, recursive = TRUE)
+}
+```
