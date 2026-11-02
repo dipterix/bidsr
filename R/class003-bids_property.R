@@ -490,7 +490,8 @@ bids_property_entity_list <- function(
     bids_version = current_bids_version()) {
 
   force(name)
-  default <- as.list(default)
+  # Defer list conversion until S7 evaluates the default for an instance.
+  default <- substitute(as.list(value), list(value = default))
 
   # get schema rules... schema is too big and I don't want it to use too much space
   if(!length(identifier) && is.na(schema_key)) {
@@ -627,7 +628,7 @@ bids_property_tabular_column_descriptor_list <- function(
 #' @export
 bids_property_data_frame <- function(
     name, getter = NULL, setter = NULL, validator = NULL,
-    default = data.frame(), ..., class = S7::class_data.frame) {
+    default = NULL, ..., class = S7::class_data.frame) {
 
   bids_property(
     name = name,

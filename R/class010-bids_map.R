@@ -183,7 +183,7 @@ S7::method(names.generic, BIDSMap) <- function(x) {
 }
 
 # `[[`
-S7::method(extract_bracket.generic, list(x = BIDSMap, name = S7::class_any)) <- function(x, name, ..., impl = FALSE) {
+S7::method(extract_bracket.generic, BIDSMap) <- function(x, name, ..., impl = FALSE) {
   S7::check_is_S7(x, BIDSMap)
   get_bids_map_value(x = x, name = name, root = x, search_depth = x@search_depth, impl = impl)
 }

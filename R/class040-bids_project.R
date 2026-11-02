@@ -176,7 +176,7 @@ S7::method(print.generic, BIDSProject) <- function(x, width = getOption("width",
 
 ## `[[` generic
 TOP_LEVEL_GETTERS <- c("get_bids_dataset_description", "get_bids_participants", "get_bids_samples", "get_bids_phenotype_data")
-S7::method(extract_bracket.generic, list(x = BIDSProject, name = S7::class_any)) <- function(x, name, ...) {
+S7::method(extract_bracket.generic, BIDSProject) <- function(x, name, ...) {
   if(name %in% TOP_LEVEL_GETTERS) {
     re <- switch (
       name,

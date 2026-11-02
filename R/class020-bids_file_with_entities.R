@@ -83,7 +83,7 @@ S7::method(names.generic, BIDSEntityFile) <- function(x) {
 }
 
 ## `[[`
-S7::method(extract_bracket.generic, list(x = BIDSEntityFile, name = S7::class_any)) <- function(x, name, ...) {
+S7::method(extract_bracket.generic, BIDSEntityFile) <- function(x, name, ...) {
 
   switch (
     name,

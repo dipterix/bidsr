@@ -164,7 +164,7 @@ BIDSTabularColumnDescriptor <- new_bids_class(
   constructor = function(..., .list = list()) {
     props <- c(list(...), .list)
     object <- S7::new_object(
-      .parent = S7::S7_object(),
+      S7::S7_object(),
       LongName = character(0L),
       Description = character(0L),
       Levels = list(),
@@ -398,6 +398,16 @@ new_bids_tabular_class <- function(
     methods <- NULL
   }
 
+  constructor <- function(content, meta = NULL) {
+    content <- data.table::as.data.table(content)
+    meta <- as_bids_tabular_meta(meta)
+    S7::new_object(
+      parent(content = content, meta = meta),
+      content = content,
+      meta = meta
+    )
+  }
+
   new_bids_class(
     name = class_name,
     parent = parent,
@@ -415,7 +425,7 @@ new_bids_tabular_class <- function(
       )
     ),
     methods = methods,
-    constructor = bids_tabular_constuctor
+    constructor = constructor
   )
 }
 

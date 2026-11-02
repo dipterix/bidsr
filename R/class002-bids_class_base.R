@@ -309,8 +309,7 @@ extract_bids_class_base <- function(x, name) {
 
   return(re)
 }
-S7::method(extract_bracket.generic,
-           list(x = BIDSClassBase, name = S7::class_any)) <- extract_bids_class_base
+S7::method(extract_bracket.generic, BIDSClassBase) <- extract_bids_class_base
 
 ## `[[<-` operator
 extract_set_bids_class_base <- function(x, name, value) {
@@ -337,7 +336,7 @@ extract_set_bids_class_base <- function(x, name, value) {
 `[[<-.bidsr::BIDSClassBase` <- extract_set_bids_class_base
 
 ## `$` operator
-S7::method(extract.generic, list(x = BIDSClassBase, name = S7::class_any)) <- function(x, name) {
+S7::method(extract.generic, BIDSClassBase) <- function(x, name) {
   x[[name]]
 }
 

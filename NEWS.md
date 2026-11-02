@@ -1,3 +1,7 @@
+# bidsr (development version)
+
+* Updates for compatibility with S7 > 0.2.2.
+
 # bidsr 0.1.1
 
 * Fixed `query_bids` with new argument `env` to capture the current parsing context

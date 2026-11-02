@@ -19,7 +19,11 @@ NULL
 
 .onLoad <- function(libname, pkgname) {
 
-  S7::methods_register()
+  if ("S7_on_load" %in% getNamespaceExports("S7")) {
+    getExportedValue("S7", "S7_on_load")()
+  } else {
+    S7::methods_register()
+  }
 
   current_ver <- as.character(Sys.getenv("BIDSR_BIDS_VERSION", unset = ""))
   if( length(current_ver) == 1 && !is.na(current_ver) && nzchar(current_ver) ) {
@@ -37,5 +41,8 @@ NULL
   }
 }
 
-
-
+.onUnload <- function(libpath) {
+  if ("S7_on_unload" %in% getNamespaceExports("S7")) {
+    getExportedValue("S7", "S7_on_unload")()
+  }
+}
