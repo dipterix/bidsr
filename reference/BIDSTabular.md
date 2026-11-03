@@ -208,10 +208,10 @@ tsv <- tempfile(fileext = ".tsv")
 paths <- save_bids_tabular(tabular, tsv)
 print(paths)
 #> $table_path
-#> /tmp/RtmpbQRerM/file183421ad93ed.tsv
+#> /tmp/Rtmp9cc0w1/file18f633ca951f.tsv
 #> 
 #> $sidecar_path
-#> /tmp/RtmpbQRerM/file183421ad93ed.json
+#> /tmp/Rtmp9cc0w1/file18f633ca951f.json
 #> 
 
 # use base R to read
