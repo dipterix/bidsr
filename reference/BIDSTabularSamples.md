@@ -113,10 +113,10 @@ tsv <- file.path(tempdir(), "samples.tsv")
 paths <- save_bids_tabular(tabular, tsv)
 print(paths)
 #> $table_path
-#> /tmp/RtmpFVKeJk/samples.tsv
+#> /tmp/RtmpbQRerM/samples.tsv
 #> 
 #> $sidecar_path
-#> /tmp/RtmpFVKeJk/samples.json
+#> /tmp/RtmpbQRerM/samples.json
 #> 
 
 # use base R to read

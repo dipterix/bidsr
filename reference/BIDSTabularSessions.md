@@ -97,10 +97,10 @@ paths <- save_bids_tabular(tabular, tsv)
 
 print(paths)
 #> $table_path
-#> /tmp/RtmpFVKeJk/sessions.tsv
+#> /tmp/RtmpbQRerM/sessions.tsv
 #> 
 #> $sidecar_path
-#> /tmp/RtmpFVKeJk/sessions.json
+#> /tmp/RtmpbQRerM/sessions.json
 #> 
 
 
