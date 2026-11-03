@@ -402,7 +402,7 @@ new_bids_tabular_class <- function(
     content <- data.table::as.data.table(content)
     meta <- as_bids_tabular_meta(meta)
     S7::new_object(
-      parent(content = content, meta = meta),
+      if (parent@abstract) S7::S7_object() else parent(content = content, meta = meta),
       content = content,
       meta = meta
     )

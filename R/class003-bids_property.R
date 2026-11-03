@@ -653,19 +653,10 @@ bids_property_tabular_content <- function(name = "content", setter = NULL, ..., 
       value <- data.table::as.data.table(value)
     }
     if( lower_case_column_names ) {
-      nms <- tolower(names(value))
-      names(value) <- tolower(nms)
-    } else {
-      nms <- names(value)
+      names(value) <- tolower(names(value))
     }
 
     meta <- S7::prop(self, name_meta)
-    for(nm in nms) {
-      descriptor <- meta$columns[[nm]]
-      if(!is.list(descriptor)) {
-        meta$columns[[nm]] <- list()
-      }
-    }
 
     if(is.function(setter)) {
       self <- setter(self, value)
@@ -673,6 +664,7 @@ bids_property_tabular_content <- function(name = "content", setter = NULL, ..., 
       S7::prop(self, name) <- value
     }
 
+    # the meta setter registers any columns missing from `meta`
     S7::prop(self, name_meta) <- meta
 
     self

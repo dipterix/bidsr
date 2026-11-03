@@ -214,15 +214,31 @@ new_bids_class <- function(
     constructor = constructor
   )
 
-  attr(cls, ".bids_object_extra") <- methods
-  attr(cls, ".bids_object_hidden_names") <- hidden_names
-
-  cls_parent <- class(parent)
-  cls_parent <- cls_parent[!cls_parent %in% c("bids_class", "S7_class", "S7_object")]
-  class(cls) <- unique(c(sprintf("%s_definition", name), cls_parent, "bids_class", class(cls)))
+  cls <- decorate_bids_class(cls, methods = methods, hidden_names = hidden_names)
 
   cls
 
+}
+
+decorate_bids_class <- function(cls, methods, hidden_names) {
+  attr(cls, ".bids_object_extra") <- methods
+  attr(cls, ".bids_object_hidden_names") <- hidden_names
+
+  cls_parent <- class(cls@parent)
+  cls_parent <- cls_parent[!cls_parent %in% c("bids_class", "S7_class", "S7_object")]
+  class(cls) <- unique(c(sprintf("%s_definition", cls@name), cls_parent, "bids_class", class(cls)))
+  cls
+}
+
+# S7 >= 1.0 stores the class before `new_bids_class` decorates it
+bids_class_definition <- function(x) {
+  cls <- S7::S7_class(x)
+  if(inherits(cls, "bids_class")) { return(cls) }
+  decorate_bids_class(
+    cls,
+    methods = attr(x, ".bids_object_extra"),
+    hidden_names = attr(x, ".bids_object_hidden_names")
+  )
 }
 
 # format generic
@@ -231,7 +247,7 @@ S7::method(format.generic, BIDSClassBase) <- function(x, indent = json_indent(),
   fun <- attr(x, ".bids_object_extra")$format
   if(is.function(fun)) {
     if(names(formals(fun))[[1]] == "cls") {
-      s <- fun(cls = S7::S7_class(x), indent = indent, ...)
+      s <- fun(cls = bids_class_definition(x), indent = indent, ...)
     } else {
       s <- fun(self = x, indent = indent, ...)
     }
@@ -298,7 +314,7 @@ extract_bids_class_base <- function(x, name) {
       fun <- function(...) {
         call <- match.call()
         call[[1]] <- re
-        call$cls <- S7::S7_class(x)
+        call$cls <- bids_class_definition(x)
         env <- parent.frame()
         eval(call, env)
       }
