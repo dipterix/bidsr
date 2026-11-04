@@ -51,8 +51,8 @@ child_map$key2
 # mask key2
 child_map$key2 <- "a"
 child_map
-#> <bidsr::map f4e3fe82-2b3a-489f-a07b-b73e4380b169>
-#>   (parent: 8cde91aa-1a5b-4e33-be8c-8196a42fa6c7)
+#> <bidsr::map 07385fcb-64f7-471d-b912-2ccd51719fb9>
+#>   (parent: 45c9c208-dbf9-444e-9818-19d531922543)
 #> [key2, key3]
 #>   (Inherited) [key1]
 

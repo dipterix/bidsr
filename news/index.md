@@ -2,6 +2,8 @@
 
 ## bidsr 0.1.2
 
+CRAN release: 2026-11-03
+
 - Updates for compatibility with `S7` \> 0.2.2.
 - Tabular subclasses now construct their parent class first, so a
   parent’s `content_setter` also runs.
